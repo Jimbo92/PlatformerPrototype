@@ -22,7 +22,7 @@ namespace Platformer_Prototype
         }
 
       
-        cameraState cameraMode = cameraState.FREE;
+        cameraState cameraMode = cameraState.FOLLOW;
 
         public Vector2 Position = Vector2.Zero;
         Vector2 Speed = Vector2.Zero;

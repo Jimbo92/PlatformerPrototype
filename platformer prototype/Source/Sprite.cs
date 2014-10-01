@@ -14,6 +14,13 @@ namespace Platformer_Prototype
 {
     class Sprite
     {
+        enum ESpriteType
+        {
+            Basic,
+            Anim
+        };
+        private ESpriteType SpriteType = ESpriteType.Basic;
+
         public Texture2D Texture;
         public int Rows;
         public int Columns;
@@ -26,12 +33,14 @@ namespace Platformer_Prototype
 
         public Sprite(ContentManager getContent, string getTexture, int getWidth, int getHeight)
         {
+            SpriteType = ESpriteType.Basic;
             Texture = getContent.Load<Texture2D>(getTexture);
             Width = getWidth;
             Height = getHeight;
         }
         public Sprite(ContentManager getContent, string getTexture, int getWidth, int getHeight, int getRows, int getColumns)
         {
+            SpriteType = ESpriteType.Anim;
             Texture = getContent.Load<Texture2D>(getTexture);
             Width = getWidth;
             Height = getHeight;
@@ -50,39 +59,40 @@ namespace Platformer_Prototype
             }
         }
 
-        public void Draw(SpriteBatch sB, Vector2 getPosition)
+        public void Draw(SpriteBatch sB, Vector2 getPosition, float getRotation, SpriteEffects getEffects)
         {
-            destinationRectangle = new Rectangle((int)getPosition.X, (int)getPosition.Y, Width, Height);
+            if (SpriteType == ESpriteType.Basic)
+            {
+                destinationRectangle = new Rectangle((int)getPosition.X, (int)getPosition.Y, Width, Height);
+                sB.Draw(Texture,
+                    destinationRectangle,
+                    null,
+                    Color.White,
+                    getRotation,
+                    new Vector2(destinationRectangle.Width / 2, destinationRectangle.Height / 2),
+                    getEffects,
+                    0);
+            }
+            if (SpriteType == ESpriteType.Anim)
+            {
+                int sourceWidth = Texture.Width / Columns;
+                int sourceHeight = Texture.Height / Rows;
 
-            sB.Draw(Texture,
-                destinationRectangle,
-                null,
-                Color.White,
-                0,
-                new Vector2(destinationRectangle.Width / 2, destinationRectangle.Height / 2),
-                SpriteEffects.None,
-                0);
+                int row = (int)((float)CurrentFrame / (float)Columns);
+                int column = (int)CurrentFrame % Columns;
+
+                sourceRectangle = new Rectangle(sourceWidth * column, sourceHeight * row, sourceWidth, sourceHeight);
+                destinationRectangle = new Rectangle((int)getPosition.X, (int)getPosition.Y, Width, Height);
+
+                sB.Draw(Texture,
+                    destinationRectangle,
+                    sourceRectangle,
+                    Color.White,
+                    getRotation,
+                    new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2),
+                    getEffects,
+                    0);
+            }
         }
-        public void Draw(SpriteBatch sB, Vector2 getPosition, float getRotation)
-        {
-            int sourceWidth = Texture.Width / Columns;
-            int sourceHeight = Texture.Height / Rows;
-
-            int row = (int)((float)CurrentFrame / (float)Columns);
-            int column = (int)CurrentFrame % Columns;
-
-            sourceRectangle = new Rectangle(sourceWidth * column, sourceHeight * row, sourceWidth, sourceHeight);
-            destinationRectangle = new Rectangle((int)getPosition.X, (int)getPosition.Y, Width, Height);
-
-            sB.Draw(Texture,
-                destinationRectangle,
-                sourceRectangle,
-                Color.White,
-                getRotation,
-                new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2),
-                SpriteEffects.None,
-                0);
-        }
-
     }
 }

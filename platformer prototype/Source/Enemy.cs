@@ -18,8 +18,8 @@ namespace Platformer_Prototype
         public Rectangle Bounds;
         public Vector2 Speed;
         public bool isDead = true;
-        public int Width = 32;
-        public int Height = 32;
+        public int Width = 24;
+        public int Height = 24;
 
         private BaseEngine BEngine;
         private Game1 game1;
@@ -28,7 +28,7 @@ namespace Platformer_Prototype
 
         public Enemy(ContentManager getContent)
         {
-            Position = new Vector2(110, 50);
+            Position = Vector2.Zero;
 
         }
 

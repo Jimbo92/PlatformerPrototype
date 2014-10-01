@@ -25,8 +25,8 @@ namespace Platformer_Prototype
         public Player player;
 
         public Enemy[] enemies = new Enemy[20];
-        
 
+        Random random = new Random();
 
         private Game1 game1;
         public Camera camera;
@@ -58,7 +58,13 @@ namespace Platformer_Prototype
         
             for (int i = 0; i < enemies.Length; i++)
             {
+                int randomX = random.Next(100, 1200);
                 enemies[i] = new Enemy(getContent);
+                
+                    enemies[i].isDead = false;
+                    enemies[i].Position = new Vector2(randomX, 0);
+                
+          
             }
         
             camera = new Camera(player);
@@ -223,7 +229,7 @@ namespace Platformer_Prototype
                     }
 
 
-            bool debug = true;
+            bool debug = false;
             if (debug == true)
                 foreach (Rectangle Rect in Canvas)
                     sB.Draw(game1.levelTex, Rect, Scale, Color.Red);
