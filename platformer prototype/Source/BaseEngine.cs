@@ -21,10 +21,13 @@ namespace Platformer_Prototype
         public int TileX;
         public int TileY;
         public Vector2 Ratio;
+        public Background background;
+        public Player player;
+        public Enemy enemy;
 
-        private Player player;
+
         private Game1 game1;
-        private Camera camera;
+        public Camera camera;
         
         public int[,] mapFake = new int[,]
         {
@@ -45,18 +48,21 @@ namespace Platformer_Prototype
 
         //-----------------------------------------------------
 
-        public BaseEngine(Player getPlayer)
+        public BaseEngine(ContentManager getContent, Vector2 getScreenSize)
         {
-            player = getPlayer;
+            player = new Player(getContent);
+            enemy = new Enemy(getContent);
 
             camera = new Camera(player);
+            background = new Background(getContent, getScreenSize);
         }
 
         public void Update(Game1 getGame1)
         {
             game1 = getGame1;
             camera.Update(game1);
-
+            player.Update(game1, this);
+            background.Update(camera);
 
             // Check for Map boundries-----------------
             if (player.Position.Y > game1.GraphicsDevice.Viewport.Height)
@@ -70,7 +76,8 @@ namespace Platformer_Prototype
             //Will Check up to 6 Rectangles
 
             player.Position.X += (int)player.Speed.X;
-            updateHitboxes();
+            player.updateBounds(camera.Position);
+            updateHitboxes(player.Position, player.Bounds);
             foreach (Rectangle canvas in Canvas)
                 player.checkCollisionsX(canvas);
 
@@ -79,13 +86,33 @@ namespace Platformer_Prototype
             //Will Check up to 6 Rectangles
 
             player.Position.Y += (int)player.Speed.Y;
-            updateHitboxes();
+            player.updateBounds(camera.Position);
+            updateHitboxes(player.Position, player.Bounds); 
             foreach (Rectangle canvas in Canvas)
                 player.checkCollisionsY(canvas);
 
+            // Check X Collisions-----------------------------
+            //Will Check up to 6 Rectangles
+
+            enemy.Position.X += (int)enemy.Speed.X;
+            enemy.updateBounds(camera.Position);
+            updateHitboxes(enemy.Position, enemy.Bounds);
+            foreach (Rectangle canvas in Canvas)
+                enemy.checkCollisionsX(canvas);
+
+
+            // Check Y Collisions-----------------------------
+            //Will Check up to 6 Rectangles
+
+            enemy.Position.Y += (int)enemy.Speed.Y;
+            enemy.updateBounds(camera.Position);
+            updateHitboxes(enemy.Position, enemy.Bounds);
+            foreach (Rectangle canvas in Canvas)
+                enemy.checkCollisionsY(canvas);
+
         }
 
-        public void updateHitboxes()
+        public void updateHitboxes(Vector2 position, Rectangle bounds)
         {
             float leftovers = 0;
             if (game1.GraphicsDevice.Viewport.Height % tileSize != 0)
@@ -94,16 +121,16 @@ namespace Platformer_Prototype
             int yLength = map.GetLength(0);
             int difference = yLength - (int)Math.Ceiling((float)game1.GraphicsDevice.Viewport.Height / tileSize);
 
-            TileX = (int)Math.Floor((player.Position.X) / tileSize);
-            TileY = ((int)Math.Floor((player.Position.Y + (difference * (tileSize)) + (leftovers)) / tileSize));
+            TileX = (int)Math.Floor((position.X) / tileSize);
+            TileY = ((int)Math.Floor((position.Y + (difference * (tileSize)) + (leftovers)) / tileSize));
 
 
             // original statement    Canvas[0] = new Rectangle(TileX * 100 + (int)camera.Position.X, ((TileY + 1) * 100) + (int)camera.Position.Y, 100, 100);
 
-            player.Bounds = new Rectangle((int)player.Position.X + (int)camera.Position.X, (int)player.Position.Y + (int)camera.Position.Y, player.Width, player.Height);
+       
 
-            Ratio.X = (float)Math.Ceiling(player.Bounds.Width / (float)tileSize); //;;;;;;;;;;;;;;;;
-            Ratio.Y = (float)Math.Ceiling(player.Bounds.Height / (float)tileSize); //;;;;;;;;;;;;;;;;;
+            Ratio.X = (float)Math.Ceiling(bounds.Width / (float)tileSize); //;;;;;;;;;;;;;;;;
+            Ratio.Y = (float)Math.Ceiling(bounds.Height / (float)tileSize); //;;;;;;;;;;;;;;;;;
             if (Ratio.X == 0)
                 Ratio.X = 1;
             if (Ratio.Y == 0)
@@ -166,6 +193,8 @@ namespace Platformer_Prototype
             int yLength = map.GetLength(0);
             Rectangle tileDraw;
 
+            background.Draw(sB);
+
             for (int i = 0; i < xLength; i++)
                 for (int j = yLength - 1; j > -1; j--)
                     if (map[j, i] == 1)
@@ -181,6 +210,9 @@ namespace Platformer_Prototype
             if (debug == true)
                 foreach (Rectangle Rect in Canvas)
                     sB.Draw(game1.levelTex, Rect, Scale, Color.Red);
+
+           player.Draw(sB);
+           enemy.Draw(sB);
         }
     }
 }

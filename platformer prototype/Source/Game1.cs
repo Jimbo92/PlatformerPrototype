@@ -33,10 +33,10 @@ namespace Platformer_Prototype
         //Texture2D playerTex; //actual player image
         //--------------------------------------------
         BaseEngine BEngine;
-        Player player;
 
         SpriteFont font;
 
+        public static Vector2 ScreenSize;
 
         public Game1()
             : base()
@@ -46,6 +46,8 @@ namespace Platformer_Prototype
         }
         protected override void Initialize()
         {
+            ScreenSize = new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+
             //Sets Mouse cursor invisible
             IsMouseVisible = false;
 
@@ -60,8 +62,7 @@ namespace Platformer_Prototype
 
             font = Content.Load<SpriteFont>("CopperplateGothicBold");
 
-            player = new Player(Content);
-            BEngine = new BaseEngine(player);
+            BEngine = new BaseEngine(Content, ScreenSize);
 
         }
 
@@ -78,7 +79,6 @@ namespace Platformer_Prototype
             if (Input.KeyboardPressed(Keys.Escape))
                 Exit();
 
-            player.Update(this, BEngine);
             BEngine.Update(this);
 
 
@@ -95,12 +95,10 @@ namespace Platformer_Prototype
             spriteBatch.Begin();
 
             string text1 = "Camera :" + cameraMode;
-            string text2 = "Position :" + player.Position.X.ToString() + "," + player.Position.Y.ToString();
+            string text2 = "Position :" + BEngine.player.Position.X.ToString() + "," + BEngine.player.Position.Y.ToString();
             string text3 = "FPS:" + frameRate;
 
             BEngine.Draw(spriteBatch);
-
-            player.Draw(spriteBatch);
 
 
           

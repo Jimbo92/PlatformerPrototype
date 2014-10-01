@@ -1,0 +1,14 @@
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\Content\BackgroundHills.png
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\Content\BackgroundSky2.png
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\Content\CrosshairSS.png
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\Content\mario.jpg
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\Content\level.jpg
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\Content\CopperplateGothicBold.xnb
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\Platformer Prototype.exe
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\Platformer Prototype.pdb
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\Lidgren.Network.dll
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\MonoGame.Framework.dll
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\OpenTK.dll
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\bin\WindowsGL\Debug\Tao.Sdl.dll
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\obj\x86\Debug\Platformer Prototype.exe
+G:\Cert II - Game Programming Foundations\projects\Assignment Projects\Final\PlatformerPrototype v1.3\Platformer Prototype\obj\x86\Debug\Platformer Prototype.pdb

@@ -12,14 +12,12 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Platformer_Prototype
 {
-    class Player
+    class Enemy
     {
-        //public Sprite player;
         public Vector2 Position;
         public Rectangle Bounds;
         public Vector2 Speed;
-        public Sprite Crosshair;
-        public int Width = 16;
+        public int Width = 32;
         public int Height = 32;
 
         private BaseEngine BEngine;
@@ -27,11 +25,10 @@ namespace Platformer_Prototype
        
         //--------------------------------------------
 
-        public Player(ContentManager getContent)
+        public Enemy(ContentManager getContent)
         {
-            Position = new Vector2(100, 50);
+            Position = new Vector2(110, 50);
 
-            Crosshair = new Sprite(getContent, "crosshairss", 98, 98, 1, 3);
         }
 
         public void updateBounds(Vector2 camera)
@@ -44,8 +41,6 @@ namespace Platformer_Prototype
             BEngine = getEngine;
             game1 = getGame1;
            
-            //Sprites
-            Crosshair.UpdateAnimation(0.3f);
 
             //Gravity--------------
             if (Speed.Y < 12)
@@ -151,10 +146,8 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
-            sB.Draw(game1.levelTex, Bounds, BEngine.Scale, Color.BlueViolet);
+            sB.Draw(game1.levelTex, Bounds, BEngine.Scale, Color.Red);
 
-            //Sprites
-            Crosshair.Draw(sB, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 0);
         }
 
     }
