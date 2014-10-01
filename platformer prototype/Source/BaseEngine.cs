@@ -21,8 +21,10 @@ namespace Platformer_Prototype
         public int TileX;
         public int TileY;
         public Vector2 Ratio;
+        public Background background;
+        public Player player;
 
-        private Player player;
+
         private Game1 game1;
         private Camera camera;
         
@@ -45,18 +47,20 @@ namespace Platformer_Prototype
 
         //-----------------------------------------------------
 
-        public BaseEngine(Player getPlayer)
+        public BaseEngine(ContentManager getContent, Vector2 getScreenSize)
         {
-            player = getPlayer;
+            player = new Player(getContent);
 
             camera = new Camera(player);
+            background = new Background(getContent, getScreenSize);
         }
 
         public void Update(Game1 getGame1)
         {
             game1 = getGame1;
             camera.Update(game1);
-
+            player.Update(game1, this);
+            background.Update(camera);
 
             // Check for Map boundries-----------------
             if (player.Position.Y > game1.GraphicsDevice.Viewport.Height)
@@ -166,6 +170,8 @@ namespace Platformer_Prototype
             int yLength = map.GetLength(0);
             Rectangle tileDraw;
 
+            background.Draw(sB);
+
             for (int i = 0; i < xLength; i++)
                 for (int j = yLength - 1; j > -1; j--)
                     if (map[j, i] == 1)
@@ -181,6 +187,8 @@ namespace Platformer_Prototype
             if (debug == true)
                 foreach (Rectangle Rect in Canvas)
                     sB.Draw(game1.levelTex, Rect, Scale, Color.Red);
+
+            player.Draw(sB);
         }
     }
 }
