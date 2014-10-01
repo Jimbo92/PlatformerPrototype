@@ -17,6 +17,7 @@ namespace Platformer_Prototype
         public Vector2 Position;
         public Rectangle Bounds;
         public Vector2 Speed;
+        public bool isDead = true;
         public int Width = 32;
         public int Height = 32;
 
@@ -38,6 +39,7 @@ namespace Platformer_Prototype
 
         public void Update(Game1 getGame1, BaseEngine getEngine)
         {
+         
             BEngine = getEngine;
             game1 = getGame1;
            
@@ -51,42 +53,7 @@ namespace Platformer_Prototype
 
             
             //Controls--------------------------------
-            if (Input.KeyboardPress(Keys.OemPlus))
-                BEngine.tileSize += 1;
-
-            if (Input.KeyboardPress(Keys.OemMinus))
-                if (BEngine.tileSize > 1)
-                    BEngine.tileSize -= 1;
-
-            if (Input.KeyboardPress(Keys.W) || Input.KeyboardPress(Keys.Space))
-            {
-                Position.Y += 1;
-                updateBounds(BEngine.camera.Position);
-                BEngine.updateHitboxes(Position, Bounds);
-
-                for (int i = 0; i < BEngine.Canvas.Length; i++)
-                    if (Bounds.Intersects(BEngine.Canvas[i]))
-                        Speed.Y = -7f;
-
-                Position.Y -= 1;
-            }
-            if (Input.KeyboardPress(Keys.A))
-                if (Speed.X > -4)
-                    Speed.X -= 0.25f;
-                else
-                    Speed.X = -4;
-
-            if (Input.KeyboardPress(Keys.D))
-                if (Speed.X < 4)
-                    Speed.X += 0.25f;
-                else
-                    Speed.X = 4;
-
-            if (Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D))
-                if (Math.Abs(Speed.X) > 1)
-                    Speed.X *= 0.92f;
-                else
-                    Speed.X = 0;
+         
 
         }
 
@@ -146,6 +113,7 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
+           
             sB.Draw(game1.levelTex, Bounds, BEngine.Scale, Color.Red);
 
         }

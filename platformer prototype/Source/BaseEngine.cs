@@ -23,7 +23,9 @@ namespace Platformer_Prototype
         public Vector2 Ratio;
         public Background background;
         public Player player;
-        public Enemy enemy;
+
+        public Enemy[] enemies = new Enemy[20];
+        
 
 
         private Game1 game1;
@@ -51,8 +53,14 @@ namespace Platformer_Prototype
         public BaseEngine(ContentManager getContent, Vector2 getScreenSize)
         {
             player = new Player(getContent);
-            enemy = new Enemy(getContent);
-
+       
+             
+        
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i] = new Enemy(getContent);
+            }
+        
             camera = new Camera(player);
             background = new Background(getContent, getScreenSize);
         }
@@ -62,6 +70,12 @@ namespace Platformer_Prototype
             game1 = getGame1;
             camera.Update(game1);
             player.Update(game1, this);
+            foreach (Enemy e in enemies)
+            {
+                 if (!e.isDead)
+                     e.Update(game1, this);
+            }
+            
             background.Update(camera);
 
             // Check for Map boundries-----------------
@@ -91,24 +105,27 @@ namespace Platformer_Prototype
             foreach (Rectangle canvas in Canvas)
                 player.checkCollisionsY(canvas);
 
-            // Check X Collisions-----------------------------
-            //Will Check up to 6 Rectangles
+            foreach (Enemy e in enemies)
+            {
+                // Check X Collisions-----------------------------
+                //Will Check up to 6 Rectangles
 
-            enemy.Position.X += (int)enemy.Speed.X;
-            enemy.updateBounds(camera.Position);
-            updateHitboxes(enemy.Position, enemy.Bounds);
-            foreach (Rectangle canvas in Canvas)
-                enemy.checkCollisionsX(canvas);
+                e.Position.X += (int)e.Speed.X;
+                e.updateBounds(camera.Position);
+                updateHitboxes(e.Position, e.Bounds);
+                foreach (Rectangle canvas in Canvas)
+                    e.checkCollisionsX(canvas);
 
 
-            // Check Y Collisions-----------------------------
-            //Will Check up to 6 Rectangles
+                // Check Y Collisions-----------------------------
+                //Will Check up to 6 Rectangles
 
-            enemy.Position.Y += (int)enemy.Speed.Y;
-            enemy.updateBounds(camera.Position);
-            updateHitboxes(enemy.Position, enemy.Bounds);
-            foreach (Rectangle canvas in Canvas)
-                enemy.checkCollisionsY(canvas);
+                e.Position.Y += (int)e.Speed.Y;
+                e.updateBounds(camera.Position);
+                updateHitboxes(e.Position, e.Bounds);
+                foreach (Rectangle canvas in Canvas)
+                    e.checkCollisionsY(canvas);
+            }
 
         }
 
@@ -212,7 +229,11 @@ namespace Platformer_Prototype
                     sB.Draw(game1.levelTex, Rect, Scale, Color.Red);
 
            player.Draw(sB);
-           enemy.Draw(sB);
+           foreach (Enemy enemy in enemies)
+           {
+               if(!enemy.isDead)
+               enemy.Draw(sB);
+           }
         }
     }
 }
