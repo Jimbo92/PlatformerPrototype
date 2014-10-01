@@ -143,7 +143,7 @@ namespace Platformer_Prototype
             sB.Draw(game1.levelTex, Bounds, BEngine.Scale, Color.BlueViolet);
 
             //Sprites
-            Crosshair.Draw(sB, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 0);
+            Crosshair.Draw(sB, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 0, SpriteEffects.None);
         }
 
     }

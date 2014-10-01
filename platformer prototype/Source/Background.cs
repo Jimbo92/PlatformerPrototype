@@ -14,8 +14,8 @@ namespace Platformer_Prototype
 {
     class Background
     {
-        public Sprite background;
-        public Sprite background2;
+        public Sprite[] background = new Sprite[5];
+        public Sprite[] backgroundNear = new Sprite[5];
 
         private Vector2 ScreenSize;
         private Camera camera;
@@ -23,8 +23,11 @@ namespace Platformer_Prototype
         public Background(ContentManager getContent, Vector2 getScreenSize)
         {
             ScreenSize = getScreenSize;
-
-            background = new Sprite(getContent, "backgroundsky2", (int)ScreenSize.X, (int)ScreenSize.Y);
+            for (int i = 0; i < 5; i++)
+            {
+                background[i] = new Sprite(getContent, "backgroundsky2", i * (int)ScreenSize.X * 2, (int)ScreenSize.Y * 2);
+                backgroundNear[i] = new Sprite(getContent, "backgroundhills", i * 256, 256);
+            }
         }
 
         public void Update(Camera getCamera)
@@ -34,7 +37,11 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
-            background.Draw(sB, camera.Position);
+            for (int i = 0; i < 5; i++)
+            {
+                background[i].Draw(sB, new Vector2(camera.Position.X / 2, camera.Position.Y / 2), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
+                backgroundNear[i].Draw(sB, new Vector2(camera.Position.X / 3, camera.Position.Y / 3), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
+            }
         }
     }
 }
