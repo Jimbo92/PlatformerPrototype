@@ -18,6 +18,10 @@ namespace Platformer_Prototype
         public Vector2 Position;
         public Rectangle Bounds;
         public Vector2 Speed;
+
+        float xFriction = 1;
+        float yFriction = 1;
+
         public Sprite Crosshair;
         public int Width = 16;
         public int Height = 32;
@@ -48,10 +52,35 @@ namespace Platformer_Prototype
             Crosshair.UpdateAnimation(0.3f);
 
             //Gravity--------------
-            if (Speed.Y < 12)
-                Speed.Y += 0.2f;
-            else
-                Speed.Y = 12;
+            Vector2 tile = getEngine.getTile();
+            tile = getEngine.getTile();
+        
+    
+                if (tile.X >= 0 && tile.X < getEngine.map.GetLength(1))
+                {
+                    if (tile.Y >= 0 && tile.Y < getEngine.map.GetLength(0))
+                    {
+                        if (getEngine.map[(int)tile.Y, (int)tile.X] == 2)
+                        {
+
+                            yFriction = 0.92f;
+     
+                        }
+                        else
+                        {
+                            yFriction = 1;
+                        }
+                    }
+                }
+            
+            //this needs to be the last check in gravity
+       
+              
+                if (Speed.Y < 12)
+                    Speed.Y += 0.2f;
+                else
+                    Speed.Y = 12;
+            
             //---------------------
 
             
@@ -65,6 +94,7 @@ namespace Platformer_Prototype
 
             if (Input.KeyboardPress(Keys.W) || Input.KeyboardPress(Keys.Up))
             {
+                //Jump--------------
                 Position.Y += 1;
                 updateBounds(BEngine.camera.Position);
                 BEngine.updateHitboxes(Position, Bounds);
@@ -74,9 +104,14 @@ namespace Platformer_Prototype
                         Speed.Y = -7f;
 
                 Position.Y -= 1;
+                //--------------------
 
-                if (Input.KeyboardPressed(Keys.Up))
+
+                //Wall jumping
+                if (Input.KeyboardPressed(Keys.W))
                 {
+
+                   
                     Position.X += 1;
                     updateBounds(BEngine.camera.Position);
                 
@@ -88,11 +123,10 @@ namespace Platformer_Prototype
                         }
                 
                     Position.X -= 1;
-                }
-                if (Input.KeyboardPressed(Keys.Up))
-                {
+
                     Position.X -= 1;
                     updateBounds(BEngine.camera.Position);
+                    BEngine.updateHitboxes(Position, Bounds);
 
                     for (int i = 0; i < BEngine.Canvas.Length; i++)
                         if (Bounds.Intersects(BEngine.Canvas[i]))
@@ -102,7 +136,27 @@ namespace Platformer_Prototype
                         }
 
                     Position.X += 1;
+                   
                 }
+                //--------------------------
+
+                //Ladder movement
+                if (Input.KeyboardPress(Keys.W))
+                {
+                    tile = getEngine.getTile();
+                    if (tile.X >= 0 && tile.X < getEngine.map.GetLength(1))
+                    {
+                        if (tile.Y >= 0 && tile.Y < getEngine.map.GetLength(0))
+                        {
+                            if (getEngine.map[(int)tile.Y, (int)tile.X] == 2)
+                            {
+
+                                Speed.Y = -4;
+                            }
+                        }
+                    }
+                }
+          
             }
             if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
                 if (Speed.X > -4)
@@ -121,6 +175,9 @@ namespace Platformer_Prototype
                     Speed.X *= 0.92f;
                 else
                     Speed.X = 0;
+
+            Speed.X *= xFriction;
+            Speed.Y *= yFriction;
 
         }
 

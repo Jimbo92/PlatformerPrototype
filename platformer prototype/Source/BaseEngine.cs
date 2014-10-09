@@ -135,6 +135,21 @@ namespace Platformer_Prototype
 
         }
 
+        public Vector2 getTile()
+    {
+        float leftovers = 0;
+            if (game1.GraphicsDevice.Viewport.Height % tileSize != 0)
+          leftovers = tileSize - (game1.GraphicsDevice.Viewport.Height % tileSize);
+    
+
+            int yLength = map.GetLength(0);
+            int difference = yLength - (int)Math.Ceiling((float)game1.GraphicsDevice.Viewport.Height / tileSize);
+
+            TileX = (int)Math.Floor((player.Position.X) / tileSize);
+            TileY = ((int)Math.Floor((player.Position.Y + (difference * (tileSize)) + (leftovers)) / tileSize));
+            return new Vector2(TileX, TileY);
+    }
+
         public void updateHitboxes(Vector2 position, Rectangle bounds)
         {
             float leftovers = 0;
@@ -220,6 +235,7 @@ namespace Platformer_Prototype
 
             for (int i = 0; i < xLength; i++)
                 for (int j = yLength - 1; j > -1; j--)
+                {
                     if (map[j, i] == 1)
                     {
                         tileDraw = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (yLength - j)) + (int)camera.Position.Y, tileSize, tileSize);
@@ -227,6 +243,14 @@ namespace Platformer_Prototype
                             if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
                                 sB.Draw(game1.levelTex, tileDraw, Scale, Color.White);
                     }
+                    if (map[j, i] == 2)
+                    {
+                        tileDraw = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (yLength - j)) + (int)camera.Position.Y, tileSize, tileSize);
+                        if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
+                            if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
+                                sB.Draw(game1.levelTex, tileDraw, Scale, Color.Brown);
+                    }
+                }
 
 
             bool debug = false;
