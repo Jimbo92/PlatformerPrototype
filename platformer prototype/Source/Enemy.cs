@@ -121,8 +121,8 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
-           
-            sB.Draw(game1.levelTex, Bounds, BEngine.Scale, Color.Red);
+
+            sB.Draw(Textures._OBJ_Ladder_Tex, Bounds, Color.Red);
 
         }
 

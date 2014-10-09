@@ -14,10 +14,11 @@ namespace Platformer_Prototype
 {
     class Player
     {
-        //public Sprite player;
+        public Sprite sprite;
         public Vector2 Position;
         public Rectangle Bounds;
         public Vector2 Speed;
+        public float Rotation;
 
         float xFriction = 1;
         float yFriction = 1;
@@ -34,6 +35,8 @@ namespace Platformer_Prototype
         public Player(ContentManager getContent)
         {
             Position = new Vector2(100, 50);
+
+            sprite = new Sprite(getContent, "mario", Width, Height);
 
             Crosshair = new Sprite(getContent, "crosshairss", 98, 98, 1, 3);
         }
@@ -114,10 +117,11 @@ namespace Platformer_Prototype
                    
                     Position.X += 1;
                     updateBounds(BEngine.camera.Position);
-                
+
                     for (int i = 0; i < BEngine.Canvas.Length; i++)
                         if (Bounds.Intersects(BEngine.Canvas[i]))
                         {
+                            Rotation = -8;
                             Speed.X = -7f;
                             Speed.Y = -5f;
                         }
@@ -131,6 +135,7 @@ namespace Platformer_Prototype
                     for (int i = 0; i < BEngine.Canvas.Length; i++)
                         if (Bounds.Intersects(BEngine.Canvas[i]))
                         {
+                            Rotation = 8;
                             Speed.X = 7f;
                             Speed.Y = -5f;
                         }
@@ -217,9 +222,12 @@ namespace Platformer_Prototype
                     for (int i = 20; i > 0; i--)
                     {
                         updateBounds(BEngine.camera.Position);
-                        BEngine.updateHitboxes(Position, Bounds); 
+                        BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
+                        {
+                            Rotation = 0;
                             Position.Y--;
+                        }
                     }
 
                 if (Speed.Y < 0)
@@ -237,7 +245,9 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
-            sB.Draw(game1.levelTex, Bounds, BEngine.Scale, Color.BlueViolet);
+            //sB.Draw(Textures._CHAR_Player_Tex, Bounds, Color.White);
+
+            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0,0), MathHelper.ToRadians(Rotation), SpriteEffects.None);
 
             //Sprites
             Crosshair.Draw(sB, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 0, 0);

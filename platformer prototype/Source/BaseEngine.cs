@@ -227,7 +227,7 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
-            Scale = new Rectangle(0, 0, game1.levelTex.Width, game1.levelTex.Height);
+            Scale = new Rectangle(0, 0, tileSize, tileSize);
             int xLength = map.GetLength(1);
             int yLength = map.GetLength(0);
             Rectangle tileDraw;
@@ -243,13 +243,13 @@ namespace Platformer_Prototype
                     {
                         if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
                             if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(game1.levelTex, tileDraw, Scale, Color.White);
+                                sB.Draw(Textures._DBG_DebugPlain_Tex, tileDraw, Scale, Color.White);
                     }
                     if (map[j, i] == 2)
                     {
                         if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
                             if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(game1.LadderTex, tileDraw, Scale, Color.White);
+                                sB.Draw(Textures._OBJ_Ladder_Tex, tileDraw, Scale, Color.White);
                     }
                 }
 
@@ -258,7 +258,7 @@ namespace Platformer_Prototype
             bool debug = false;
             if (debug == true)
                 foreach (Rectangle Rect in Canvas)
-                    sB.Draw(game1.levelTex, Rect, Scale, Color.Red);
+                    sB.Draw(Textures._DBG_DebugPlain_Tex, Rect, Scale, Color.Red);
 
 
             foreach (Enemy enemy in enemies)
@@ -284,13 +284,13 @@ namespace Platformer_Prototype
                     if (MapTextures[j, i] == 1)
                     if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                         if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                            sB.Draw(game1.GrassTex, RectTextureTile, Color.White);
+                            sB.Draw(Textures._TILE_Grass_Tex, RectTextureTile, Color.White);
 
                     //Draw Dirt
                     if (MapTextures[j, i] == 2)
                         if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                             if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(game1.DirtTex, RectTextureTile, Color.White);
+                                sB.Draw(Textures._TILE_Dirt_Tex, RectTextureTile, Color.White);
 
                 }
         }

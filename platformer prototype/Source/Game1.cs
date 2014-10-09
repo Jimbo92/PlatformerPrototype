@@ -28,13 +28,6 @@ namespace Platformer_Prototype
 
         float frameRate;
 
-        //Textures------------------------------------
-        public Texture2D levelTex; //square for drawing level
-        public Texture2D DirtTex;
-        public Texture2D GrassTex;
-        public Texture2D LadderTex;
-        //Texture2D playerTex; //actual player image
-        //--------------------------------------------
         BaseEngine BEngine;
 
         SpriteFont font;
@@ -61,10 +54,7 @@ namespace Platformer_Prototype
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            levelTex = Content.Load<Texture2D>("level.jpg");
-            DirtTex = Content.Load<Texture2D>("dirt");
-            GrassTex = Content.Load<Texture2D>("grass");
-            LadderTex = Content.Load<Texture2D>("ladder");
+            Textures.LoadContent(Content);
 
             font = Content.Load<SpriteFont>("CopperplateGothicBold");
 
