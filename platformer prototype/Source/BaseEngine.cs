@@ -44,7 +44,8 @@ namespace Platformer_Prototype
         {1,1,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
         };
 
-        public int[,] map = MapLoader.load("testmap");
+        public int[,] map = MapLoader.LoadMapData("testmap");
+        public int[,] MapTextures = MapLoader.LoadMapTextures("testmap_texture");
 
         public int tileSize = 32;
 
@@ -136,11 +137,11 @@ namespace Platformer_Prototype
         }
 
         public Vector2 getTile()
-    {
-        float leftovers = 0;
+        {
+            float leftovers = 0;
             if (game1.GraphicsDevice.Viewport.Height % tileSize != 0)
-          leftovers = tileSize - (game1.GraphicsDevice.Viewport.Height % tileSize);
-    
+                leftovers = tileSize - (game1.GraphicsDevice.Viewport.Height % tileSize);
+
 
             int yLength = map.GetLength(0);
             int difference = yLength - (int)Math.Ceiling((float)game1.GraphicsDevice.Viewport.Height / tileSize);
@@ -148,7 +149,7 @@ namespace Platformer_Prototype
             TileX = (int)Math.Floor((player.Position.X) / tileSize);
             TileY = ((int)Math.Floor((player.Position.Y + (difference * (tileSize)) + (leftovers)) / tileSize));
             return new Vector2(TileX, TileY);
-    }
+        }
 
         public void updateHitboxes(Vector2 position, Rectangle bounds)
         {
@@ -248,10 +249,11 @@ namespace Platformer_Prototype
                         tileDraw = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (yLength - j)) + (int)camera.Position.Y, tileSize, tileSize);
                         if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
                             if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(game1.levelTex, tileDraw, Scale, Color.Brown);
+                                sB.Draw(game1.LadderTex, tileDraw, Scale, Color.White);
                     }
                 }
 
+            DrawMapTextures(sB);
 
             bool debug = false;
             if (debug == true)
@@ -266,6 +268,31 @@ namespace Platformer_Prototype
             }
 
             player.Draw(sB);
+        }
+
+        //Draw Map Textures
+        public void DrawMapTextures(SpriteBatch sB)
+        {
+            Rectangle RectTextureTile;
+
+            for (int i = 0; i < MapTextures.GetLength(1); i++)
+                for (int j = MapTextures.GetLength(0) - 1; j > -1; j--)
+                {
+                    RectTextureTile = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (MapTextures.GetLength(0) - j)) + (int)camera.Position.Y, tileSize, tileSize);
+
+                    //Draw Grass
+                    if (MapTextures[j, i] == 1)
+                    if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
+                        if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
+                            sB.Draw(game1.GrassTex, RectTextureTile, Color.White);
+
+                    //Draw Dirt
+                    if (MapTextures[j, i] == 2)
+                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
+                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
+                                sB.Draw(game1.DirtTex, RectTextureTile, Color.White);
+
+                }
         }
     }
 }
