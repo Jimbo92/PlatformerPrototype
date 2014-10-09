@@ -14,7 +14,7 @@ namespace Platformer_Prototype
 {
     class Background
     {
-        public Sprite[] background = new Sprite[5];
+        public Sprite[] background = new Sprite[2];
         public Sprite[] backgroundNear = new Sprite[5];
 
         private Vector2 ScreenSize;
@@ -25,9 +25,13 @@ namespace Platformer_Prototype
             ScreenSize = getScreenSize;
             for (int i = 0; i < 5; i++)
             {
-                background[i] = new Sprite(getContent, "backgroundsky2", i * (int)ScreenSize.X * 2, (int)ScreenSize.Y * 2);
-                backgroundNear[i] = new Sprite(getContent, "backgroundhills", i * 256, 256);
+                backgroundNear[i] = new Sprite(getContent, "backgroundhills", 256, 256);
             }
+            for (int i = 0; i < 2; i++)
+            {
+                background[i] = new Sprite(getContent, "backgroundsky2", (int)ScreenSize.X * 2, (int)ScreenSize.Y * 2);
+            }
+
         }
 
         public void Update(Camera getCamera)
@@ -37,11 +41,14 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
+            background[0].Draw(sB, new Vector2(camera.Position.X / 3, camera.Position.Y / 3), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
+            background[1].Draw(sB, new Vector2(camera.Position.X / 3, camera.Position.Y / 3), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
+
             for (int i = 0; i < 5; i++)
             {
-                background[i].Draw(sB, new Vector2(camera.Position.X / 2, camera.Position.Y / 2), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
-                backgroundNear[i].Draw(sB, new Vector2(camera.Position.X / 3, camera.Position.Y / 3), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
+                backgroundNear[i].Draw(sB, new Vector2(camera.Position.X / 2, (camera.Position.Y / 2) + ScreenSize.Y - (backgroundNear[0].Texture.Height / 2)), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
             }
+
         }
     }
 }

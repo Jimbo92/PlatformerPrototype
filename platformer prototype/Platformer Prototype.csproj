@@ -38,7 +38,9 @@
     <Compile Include="Source\Background.cs" />
     <Compile Include="Source\BaseEngine.cs" />
     <Compile Include="Source\Camera.cs" />
+    <Compile Include="Source\Enemy.cs" />
     <Compile Include="Source\Game1.cs" />
+    <Compile Include="Source\Ideas.cs" />
     <Compile Include="Source\Input.cs" />
     <Compile Include="Source\MapLoader.cs" />
     <Compile Include="Source\Player.cs" />
