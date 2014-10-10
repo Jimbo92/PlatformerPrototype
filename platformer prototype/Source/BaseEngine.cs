@@ -45,7 +45,8 @@ namespace Platformer_Prototype
         };
 
         public int[,] map = MapLoader.LoadMapData("testmap");
-        public int[,] MapTextures = MapLoader.LoadMapTextures("testmap_texture");
+        public int[,] BackMapTextures = MapLoader.LoadBackgroundMapTextures("testmap_back");
+        public int[,] ForeMapTextures = MapLoader.LoadForegroundMapTextures("testmap_fore");
 
         public int tileSize = 32;
 
@@ -227,12 +228,32 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
+            background.Draw(sB);
+            DrawBackgroundMapTextures(sB);
+            //Always Draw Background First
+
+            DrawTriggerMapData(sB);
+
+
+            foreach (Enemy enemy in enemies)
+            {
+                if (!enemy.isDead)
+                    enemy.Draw(sB);
+            }
+
+            player.Draw(sB);
+
+            //Always Draw Foreground Last
+            DrawForegroundMapTextures(sB);
+        }
+
+        //Draw Trigger Map Data
+        public void DrawTriggerMapData(SpriteBatch sB)
+        {
             Scale = new Rectangle(0, 0, tileSize, tileSize);
             int xLength = map.GetLength(1);
             int yLength = map.GetLength(0);
             Rectangle tileDraw;
-
-            background.Draw(sB);
 
             for (int i = 0; i < xLength; i++)
                 for (int j = yLength - 1; j > -1; j--)
@@ -253,41 +274,55 @@ namespace Platformer_Prototype
                     }
                 }
 
-            DrawMapTextures(sB);
-
             bool debug = false;
             if (debug == true)
                 foreach (Rectangle Rect in Canvas)
                     sB.Draw(Textures._DBG_DebugPlain_Tex, Rect, Scale, Color.Red);
-
-
-            foreach (Enemy enemy in enemies)
-            {
-                if (!enemy.isDead)
-                    enemy.Draw(sB);
-            }
-
-            player.Draw(sB);
         }
 
-        //Draw Map Textures
-        public void DrawMapTextures(SpriteBatch sB)
+        //Draw Background Map Textures
+        public void DrawBackgroundMapTextures(SpriteBatch sB)
         {
             Rectangle RectTextureTile;
 
-            for (int i = 0; i < MapTextures.GetLength(1); i++)
-                for (int j = MapTextures.GetLength(0) - 1; j > -1; j--)
+            for (int i = 0; i < BackMapTextures.GetLength(1); i++)
+                for (int j = BackMapTextures.GetLength(0) - 1; j > -1; j--)
                 {
-                    RectTextureTile = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (MapTextures.GetLength(0) - j)) + (int)camera.Position.Y, tileSize, tileSize);
+                    RectTextureTile = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (BackMapTextures.GetLength(0) - j)) + (int)camera.Position.Y, tileSize, tileSize);
 
                     //Draw Grass
-                    if (MapTextures[j, i] == 1)
+                    if (BackMapTextures[j, i] == 1)
+                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
+                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
+                                sB.Draw(Textures._TILE_Grass_Tex, RectTextureTile, Color.White);
+
+                    //Draw Dirt
+                    if (BackMapTextures[j, i] == 2)
+                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
+                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
+                                sB.Draw(Textures._TILE_Dirt_Tex, RectTextureTile, Color.DimGray);
+
+                }
+        }
+
+        //Draw Foreground Map Textures
+        public void DrawForegroundMapTextures(SpriteBatch sB)
+        {
+            Rectangle RectTextureTile;
+
+            for (int i = 0; i < ForeMapTextures.GetLength(1); i++)
+                for (int j = ForeMapTextures.GetLength(0) - 1; j > -1; j--)
+                {
+                    RectTextureTile = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (ForeMapTextures.GetLength(0) - j)) + (int)camera.Position.Y, tileSize, tileSize);
+
+                    //Draw Grass
+                    if (ForeMapTextures[j, i] == 1)
                     if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                         if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
                             sB.Draw(Textures._TILE_Grass_Tex, RectTextureTile, Color.White);
 
                     //Draw Dirt
-                    if (MapTextures[j, i] == 2)
+                    if (ForeMapTextures[j, i] == 2)
                         if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                             if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
                                 sB.Draw(Textures._TILE_Dirt_Tex, RectTextureTile, Color.White);

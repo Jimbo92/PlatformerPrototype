@@ -29,7 +29,8 @@ namespace Platformer_Prototype
 
         private BaseEngine BEngine;
         private Game1 game1;
-       
+        private int WallJumpTimer;
+
         //--------------------------------------------
 
         public Player(ContentManager getContent)
@@ -50,43 +51,43 @@ namespace Platformer_Prototype
         {
             BEngine = getEngine;
             game1 = getGame1;
-           
+
             //Sprites
             Crosshair.UpdateAnimation(0.3f);
 
             //Gravity--------------
             Vector2 tile = getEngine.getTile();
             tile = getEngine.getTile();
-        
-    
-                if (tile.X >= 0 && tile.X < getEngine.map.GetLength(1))
-                {
-                    if (tile.Y >= 0 && tile.Y < getEngine.map.GetLength(0))
-                    {
-                        if (getEngine.map[(int)tile.Y, (int)tile.X] == 2)
-                        {
 
-                            yFriction = 0.92f;
-     
-                        }
-                        else
-                        {
-                            yFriction = 1;
-                        }
+
+            if (tile.X >= 0 && tile.X < getEngine.map.GetLength(1))
+            {
+                if (tile.Y >= 0 && tile.Y < getEngine.map.GetLength(0))
+                {
+                    if (getEngine.map[(int)tile.Y, (int)tile.X] == 2)
+                    {
+
+                        yFriction = 0.92f;
+
+                    }
+                    else
+                    {
+                        yFriction = 1;
                     }
                 }
-            
+            }
+
             //this needs to be the last check in gravity
-       
-              
-                if (Speed.Y < 12)
-                    Speed.Y += 0.2f;
-                else
-                    Speed.Y = 12;
-            
+
+
+            if (Speed.Y < 12)
+                Speed.Y += 0.2f;
+            else
+                Speed.Y = 12;
+
             //---------------------
 
-            
+
             //Controls--------------------------------
             if (Input.KeyboardPress(Keys.OemPlus))
                 BEngine.tileSize += 1;
@@ -111,58 +112,67 @@ namespace Platformer_Prototype
 
 
                 //Wall jumping
-                if (Input.KeyboardPressed(Keys.W))
+                WallJumpTimer++;
+                if (WallJumpTimer > 8)
                 {
 
-                   
-                    Position.X += 1;
-                    updateBounds(BEngine.camera.Position);
-
-                    for (int i = 0; i < BEngine.Canvas.Length; i++)
-                        if (Bounds.Intersects(BEngine.Canvas[i]))
-                        {
-                            Rotation = -8;
-                            Speed.X = -7f;
-                            Speed.Y = -5f;
-                        }
-                
-                    Position.X -= 1;
-
-                    Position.X -= 1;
-                    updateBounds(BEngine.camera.Position);
-                    BEngine.updateHitboxes(Position, Bounds);
-
-                    for (int i = 0; i < BEngine.Canvas.Length; i++)
-                        if (Bounds.Intersects(BEngine.Canvas[i]))
-                        {
-                            Rotation = 8;
-                            Speed.X = 7f;
-                            Speed.Y = -5f;
-                        }
-
-                    Position.X += 1;
-                   
-                }
-                //--------------------------
-
-                //Ladder movement
-                if (Input.KeyboardPress(Keys.W))
-                {
-                    tile = getEngine.getTile();
-                    if (tile.X >= 0 && tile.X < getEngine.map.GetLength(1))
+                    if (Input.KeyboardPressed(Keys.W))
                     {
-                        if (tile.Y >= 0 && tile.Y < getEngine.map.GetLength(0))
-                        {
-                            if (getEngine.map[(int)tile.Y, (int)tile.X] == 2)
-                            {
 
-                                Speed.Y = -4;
+
+                        Position.X += 1;
+                        updateBounds(BEngine.camera.Position);
+
+                        for (int i = 0; i < BEngine.Canvas.Length; i++)
+                            if (Bounds.Intersects(BEngine.Canvas[i]))
+                            {
+                                Rotation = -8;
+                                Speed.X = -7f;
+                                Speed.Y = -5f;
                             }
+
+                        Position.X -= 1;
+
+                        Position.X -= 1;
+                        updateBounds(BEngine.camera.Position);
+                        BEngine.updateHitboxes(Position, Bounds);
+
+                        for (int i = 0; i < BEngine.Canvas.Length; i++)
+                            if (Bounds.Intersects(BEngine.Canvas[i]))
+                            {
+                                Rotation = 8;
+                                Speed.X = 7f;
+                                Speed.Y = -5f;
+                            }
+
+                        Position.X += 1;
+
+                    }
+                }
+
+            }
+
+            //--------------------------
+
+            //Ladder movement
+
+            tile = getEngine.getTile();
+            if (tile.X >= 0 && tile.X < getEngine.map.GetLength(1))
+            {
+                if (tile.Y >= 0 && tile.Y < getEngine.map.GetLength(0))
+                {
+                    if (getEngine.map[(int)tile.Y, (int)tile.X] == 2)
+                    {
+                        WallJumpTimer = 0;
+
+                        if (Input.KeyboardPress(Keys.W))
+                        {
+                            Speed.Y = -4;
                         }
                     }
                 }
-          
             }
+
             if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
                 if (Speed.X > -4)
                     Speed.X -= 0.25f;
@@ -195,7 +205,7 @@ namespace Platformer_Prototype
                     for (int i = 20; i > 0; i--)
                     {
                         updateBounds(BEngine.camera.Position);
-                        BEngine.updateHitboxes(Position, Bounds); 
+                        BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.X--;
                     }
@@ -225,6 +235,7 @@ namespace Platformer_Prototype
                         BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                         {
+                            WallJumpTimer = 0;
                             Rotation = 0;
                             Position.Y--;
                         }
@@ -234,7 +245,7 @@ namespace Platformer_Prototype
                     for (int i = 20; i > 0; i--)
                     {
                         updateBounds(BEngine.camera.Position);
-                        BEngine.updateHitboxes(Position, Bounds); 
+                        BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.Y++;
                     }
@@ -247,7 +258,7 @@ namespace Platformer_Prototype
         {
             //sB.Draw(Textures._CHAR_Player_Tex, Bounds, Color.White);
 
-            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0,0), MathHelper.ToRadians(Rotation), SpriteEffects.None);
+            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), MathHelper.ToRadians(Rotation), SpriteEffects.None);
 
             //Sprites
             Crosshair.Draw(sB, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 0, 0);
