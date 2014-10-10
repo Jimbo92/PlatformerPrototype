@@ -28,6 +28,7 @@ namespace Platformer_Prototype
         public Player player;
         public Sprite WaterTop;
         public Sprite WaterBase;
+        public Sprite Torch;
 
         public Enemy[] enemies = new Enemy[10];
 
@@ -63,6 +64,7 @@ namespace Platformer_Prototype
 
             WaterTop = new Sprite(getContent, "water1ss", 32, 32, 1, 3);
             WaterBase = new Sprite(getContent, "water2ss", 32, 32, 1, 3);
+            Torch = new Sprite(getContent, "torchss", 32, 32, 1, 8);
 
             for (int i = 0; i < enemies.Length; i++)
             {
@@ -83,8 +85,9 @@ namespace Platformer_Prototype
         {
             game1 = getGame1;
             //Animated Textures
-            WaterTop.UpdateAnimation(0.1f);
-            WaterBase.UpdateAnimation(0.1f);
+            WaterTop.UpdateAnimation(0.08f);
+            WaterBase.UpdateAnimation(0.08f);
+            Torch.UpdateAnimation(0.5f);
 
 
             camera.Update(game1);
@@ -372,6 +375,13 @@ namespace Platformer_Prototype
                             if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
                                 sB.Draw(Textures._OBJ_Ladder_Tex, tileDraw, Scale, Color.White);
                     }
+
+                    //Draw Torch Obj
+                    if (ForeMapTextures[j, i] == 6)
+                        if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
+                            if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
+                                Torch.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+
                 }
 
             bool debug = false;
@@ -415,31 +425,39 @@ namespace Platformer_Prototype
                 {
                     RectTextureTile = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (ForeMapTextures.GetLength(0) - j)) + (int)camera.Position.Y, tileSize, tileSize);
 
-                    //Draw Grass
+                    //Draw Grass Tile
                     if (ForeMapTextures[j, i] == 1)
                         if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                             if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
                                 sB.Draw(Textures._TILE_Grass_Tex, RectTextureTile, Color.White);
 
-                    //Draw Dirt
+                    //Draw Dirt Tile
                     if (ForeMapTextures[j, i] == 2)
                         if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                             if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
                                 sB.Draw(Textures._TILE_Dirt_Tex, RectTextureTile, Color.White);
 
-                    //Draw Water Top
+                    //Draw Water Top Tile
                     if (ForeMapTextures[j, i] == 3)
                         if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                             if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                WaterTop.Draw(sB, new Vector2(RectTextureTile.X, RectTextureTile.Y), new Vector2(0, 0), 0, SpriteEffects.None);
+                                WaterTop.Draw(sB, new Vector2(RectTextureTile.X, RectTextureTile.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
 
-                    //Draw Water Base
+                    //Draw Water Base Tile
                     if (ForeMapTextures[j, i] == 4)
                         if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                             if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                WaterBase.Draw(sB, new Vector2(RectTextureTile.X, RectTextureTile.Y), new Vector2(0, 0), 0, SpriteEffects.None);
+                                WaterBase.Draw(sB, new Vector2(RectTextureTile.X, RectTextureTile.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
 
                 
+
+                    //----------------------------------------------------//Objects//----------------------------------------------------//
+
+                    //Draw Grass Obj
+                    if (ForeMapTextures[j, i] == 5)
+                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
+                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
+                                sB.Draw(Textures._OBJ_Grass_Tex, RectTextureTile, Color.White);
                 }
         }
     }

@@ -94,7 +94,7 @@ namespace Platformer_Prototype
                     0);
             }
         }
-        public void Draw(SpriteBatch sB, Vector2 getPosition, Vector2 getOrigin, float getRotation, SpriteEffects getEffects)
+        public void Draw(SpriteBatch sB, Vector2 getPosition, Vector2 getOrigin, float getRotation, SpriteEffects getEffects, Color getColour)
         {
             if (SpriteType == ESpriteType.Basic)
             {
@@ -102,7 +102,7 @@ namespace Platformer_Prototype
                 sB.Draw(Texture,
                     destinationRectangle,
                     null,
-                    Color.White,
+                    getColour,
                     getRotation,
                     getOrigin,
                     getEffects,
@@ -122,7 +122,7 @@ namespace Platformer_Prototype
                 sB.Draw(Texture,
                     destinationRectangle,
                     sourceRectangle,
-                    Color.White,
+                    getColour,
                     getRotation,
                     getOrigin,
                     getEffects,

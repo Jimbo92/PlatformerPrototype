@@ -16,6 +16,7 @@ namespace Platformer_Prototype
     {
         //Object Textures
         static public Texture2D _OBJ_Ladder_Tex;
+        static public Texture2D _OBJ_Grass_Tex;
 
         //Map Textures
         static public Texture2D _TILE_Dirt_Tex;
@@ -29,6 +30,7 @@ namespace Platformer_Prototype
         {
             //Object Textures
             _OBJ_Ladder_Tex = getContent.Load<Texture2D>("Ladder");
+            _OBJ_Grass_Tex = getContent.Load<Texture2D>("grass4");
 
             //Map Textures
             _TILE_Dirt_Tex = getContent.Load<Texture2D>("Dirt");

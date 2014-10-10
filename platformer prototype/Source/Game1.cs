@@ -25,6 +25,7 @@ namespace Platformer_Prototype
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         string cameraMode;
+        public bool DebugMode = false;
 
         float frameRate;
 
@@ -58,6 +59,7 @@ namespace Platformer_Prototype
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            GUI.LoadContent(Content);
             Textures.LoadContent(Content);
 
             levelTex = Content.Load<Texture2D>("level.jpg");
@@ -76,10 +78,18 @@ namespace Platformer_Prototype
         protected override void Update(GameTime gameTime)
         {
             Input.Begin();
+            GUI.Update();
             //Code Bellow This//
+
 
             if (Input.KeyboardPressed(Keys.Escape))
                 Exit();
+
+            if (Input.KeyboardPressed(Keys.F12))
+                if (!DebugMode)
+                    DebugMode = true;
+                else
+                    DebugMode = false;
 
             BEngine.Update(this);
 
@@ -92,24 +102,27 @@ namespace Platformer_Prototype
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            frameRate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            spriteBatch.Begin();
-
-            string text1 = "Camera :" + cameraMode;
-            string text2 = "Position :" + BEngine.player.Position.X.ToString() + "," + BEngine.player.Position.Y.ToString();
-            string text3 = "FPS:" + frameRate;
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 
             BEngine.Draw(spriteBatch);
 
+            if (DebugMode)
+            {
+                Color FPSColour;
+                //FrameRate draws red if below 30 FPS
+                if (frameRate < 30)
+                    FPSColour = Color.Red;
+                else
+                    FPSColour = Color.Green;
 
-          
-            spriteBatch.DrawString(font, text2, new Vector2(20, 60), Color.White);
-            spriteBatch.DrawString(font, text3, new Vector2(20, 100), Color.White);
-            spriteBatch.DrawString(font, text1, new Vector2(20, 140), Color.White);
-            spriteBatch.DrawString(font, "Platformer Prototype", new Vector2(20, 20), Color.White);
+                frameRate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
+                spriteBatch.DrawString(font, "Player Pos: " + BEngine.player.Position.X.ToString() + "," + BEngine.player.Position.Y.ToString(), new Vector2(10, 50), Color.DodgerBlue);
+                spriteBatch.DrawString(font, "Camera: " + cameraMode, new Vector2(10, 30), Color.DodgerBlue);
+                spriteBatch.DrawString(font, "Platformer Prototype", new Vector2(10, 10), Color.Snow);
+                spriteBatch.DrawString(font, "FPS: " + frameRate.ToString(), new Vector2(ScreenSize.X - 180, 10), FPSColour);
+            }
 
-
+            GUI.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

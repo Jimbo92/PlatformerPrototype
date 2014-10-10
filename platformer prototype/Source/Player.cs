@@ -27,7 +27,6 @@ namespace Platformer_Prototype
 
         public float Rotation = 0;
 
-        public Sprite Crosshair;
         public int Width = 16;
         public int Height = 32;
 
@@ -43,7 +42,6 @@ namespace Platformer_Prototype
 
             sprite = new Sprite(getContent, "player", Width, Height);
 
-            Crosshair = new Sprite(getContent, "crosshairss", 98, 98, 1, 3);
         }
 
         public void updateBounds(Vector2 camera)
@@ -56,8 +54,6 @@ namespace Platformer_Prototype
             BEngine = getEngine;
             game1 = getGame1;
 
-            //Sprites
-            Crosshair.UpdateAnimation(0.3f);
 
             //Gravity--------------
 
@@ -160,6 +156,8 @@ namespace Platformer_Prototype
                     {
                         if (!returner)
                         {
+                            if (Input.KeyboardPressed(Keys.W))
+                            {
                             Position.X += 1;
                             updateBounds(BEngine.camera.Position);
 
@@ -188,6 +186,7 @@ namespace Platformer_Prototype
                                 }
 
                             Position.X += 1;
+                            }
 
                         }
                     }
@@ -199,16 +198,16 @@ namespace Platformer_Prototype
 
                 }
                 if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
-                    if (Speed.X > -4)
+                    if (Speed.X > -3)
                         Speed.X -= 0.25f;
                     else
-                        Speed.X = -4;
+                        Speed.X = -3;
 
                 if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
-                    if (Speed.X < 4)
+                    if (Speed.X < 3)
                         Speed.X += 0.25f;
                     else
-                        Speed.X = 4;
+                        Speed.X = 3;
 
                 if (Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right))
                     if (Math.Abs(Speed.X) > 1)
@@ -317,11 +316,10 @@ namespace Platformer_Prototype
         public void Draw(SpriteBatch sB)
         {
 
-                sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), Vector2.Zero, MathHelper.ToRadians(Rotation), SpriteEffects.None);
+                sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), Vector2.Zero, MathHelper.ToRadians(Rotation), SpriteEffects.None, Color.White);
             
 
             //Sprites
-            Crosshair.Draw(sB, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 0, 0);
         }
 
     }

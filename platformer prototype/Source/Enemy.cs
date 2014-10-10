@@ -124,7 +124,7 @@ namespace Platformer_Prototype
         {
 
             //sB.Draw(Textures._OBJ_Ladder_Tex, Bounds, Color.Red);
-            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SpriteEffects.None);
+            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
 
         }
 
