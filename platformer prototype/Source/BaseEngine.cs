@@ -17,6 +17,9 @@ namespace Platformer_Prototype
     {
         //Collision Targets
         public Rectangle[] Canvas = new Rectangle[6];
+
+        public Rectangle[] NoClip = new Rectangle[6];
+
         public Rectangle Scale;
         public int TileX;
         public int TileY;
@@ -113,6 +116,35 @@ namespace Platformer_Prototype
             foreach (Rectangle canvas in Canvas)
                 player.checkCollisionsY(canvas);
 
+            //Check Non Clipping Collisions====================
+
+            player.checks[0] = false;
+            player.updateBounds(camera.Position);
+            updateNoclips(player.Position,player.Bounds, 2);
+            foreach (Rectangle noclip in NoClip)
+            {
+                if(player.Bounds.Intersects(noclip))
+                {
+                    player.checks[0] = true;
+                }
+                
+            }
+
+            player.checks[1] = false;
+            player.updateBounds(camera.Position);
+            updateNoclips(player.Position, player.Bounds, 3);
+            foreach (Rectangle noclip in NoClip)
+            {
+                if (player.Bounds.Intersects(noclip))
+                {
+                    player.checks[1] = true;
+                }
+
+            }
+
+            //=================================================
+            player.updateBounds(camera.Position);
+
             foreach (Enemy e in enemies)
             {
                 // Check X Collisions-----------------------------
@@ -137,19 +169,84 @@ namespace Platformer_Prototype
 
         }
 
-        public Vector2 getTile()
+
+
+        public void updateNoclips(Vector2 position,Rectangle bounds, int type)
         {
+            int que = 0;
+
             float leftovers = 0;
             if (game1.GraphicsDevice.Viewport.Height % tileSize != 0)
                 leftovers = tileSize - (game1.GraphicsDevice.Viewport.Height % tileSize);
 
-
             int yLength = map.GetLength(0);
             int difference = yLength - (int)Math.Ceiling((float)game1.GraphicsDevice.Viewport.Height / tileSize);
 
-            TileX = (int)Math.Floor((player.Position.X) / tileSize);
-            TileY = ((int)Math.Floor((player.Position.Y + (difference * (tileSize)) + (leftovers)) / tileSize));
-            return new Vector2(TileX, TileY);
+            TileX = (int)Math.Floor((float)position.X / tileSize);
+            TileY = ((int)Math.Floor((position.Y + (difference * (tileSize)) + (leftovers)) / tileSize));
+
+            Ratio.X = (float)Math.Ceiling(bounds.Width / (float)tileSize);
+            Ratio.Y = (float)Math.Ceiling(bounds.Height / (float)tileSize);
+            if (Ratio.X == 0)
+                Ratio.X = 1;
+            if (Ratio.Y == 0)
+                Ratio.Y = 1;
+
+            for (int i = 0; i < NoClip.GetLength(0); i++)
+            {
+                NoClip[i] = Rectangle.Empty;
+            }
+
+            for (int j = -1; j < Ratio.Y; j++)
+            {
+                for (int i = 0; i < Ratio.X; i++)
+                {
+
+                    if (TileY + j>= 0 && TileY + j< map.GetLength(0) && TileX + i >= 0 && TileX + i < map.GetLength(1))
+                        if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i] == type)
+                        {
+                            
+                            
+                                NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)camera.Position.X, ((TileY + j) * tileSize) + (int)camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                                que++;
+                            
+                        }
+                    if (TileY + j >= 0 && TileY + j< map.GetLength(0) && TileX  + 1>= 0 && TileX  + 1< map.GetLength(1))
+                        if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i + 1] == type)
+                        {
+                            
+                            
+                                NoClip[que] = new Rectangle((TileX + i + 1) * tileSize + (int)camera.Position.X, ((TileY + j) * tileSize) + (int)camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                                que++;
+                            
+                        }
+
+                    if (TileY + j + 1>= 0 && TileY + j + 1 < map.GetLength(0) && TileX + i >= 0 && TileX + i < map.GetLength(1))
+                        if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i] == type)
+                        {
+
+
+                            NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)camera.Position.X, ((TileY + j + 1) * tileSize) + (int)camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                            que++;
+
+                        }
+                    if (TileY + j + 1 >= 0 && TileY + j + 1< map.GetLength(0) && TileX + 1 >= 0 && TileX + 1 < map.GetLength(1))
+                        if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i + 1] == type)
+                        {
+
+
+                            NoClip[que] = new Rectangle((TileX + i + 1) * tileSize + (int)camera.Position.X, ((TileY + j + 1) * tileSize) + (int)camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                            que++;
+
+                        }
+                    
+                    
+                    
+                }
+
+            }
+            
+
         }
 
         public void updateHitboxes(Vector2 position, Rectangle bounds)
@@ -163,11 +260,6 @@ namespace Platformer_Prototype
 
             TileX = (int)Math.Floor((position.X) / tileSize);
             TileY = ((int)Math.Floor((position.Y + (difference * (tileSize)) + (leftovers)) / tileSize));
-
-
-            // original statement    Canvas[0] = new Rectangle(TileX * 100 + (int)camera.Position.X, ((TileY + 1) * 100) + (int)camera.Position.Y, 100, 100);
-
-
 
             Ratio.X = (float)Math.Ceiling(bounds.Width / (float)tileSize); //;;;;;;;;;;;;;;;;
             Ratio.Y = (float)Math.Ceiling(bounds.Height / (float)tileSize); //;;;;;;;;;;;;;;;;;
@@ -317,9 +409,9 @@ namespace Platformer_Prototype
 
                     //Draw Grass
                     if (ForeMapTextures[j, i] == 1)
-                    if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
-                        if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                            sB.Draw(Textures._TILE_Grass_Tex, RectTextureTile, Color.White);
+                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
+                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
+                                sB.Draw(Textures._TILE_Grass_Tex, RectTextureTile, Color.White);
 
                     //Draw Dirt
                     if (ForeMapTextures[j, i] == 2)

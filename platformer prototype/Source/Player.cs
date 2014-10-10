@@ -16,12 +16,16 @@ namespace Platformer_Prototype
     {
         public Sprite sprite;
         public Vector2 Position;
+
         public Rectangle Bounds;
         public Vector2 Speed;
-        public float Rotation;
 
-        float xFriction = 1;
-        float yFriction = 1;
+        public bool[] checks = new bool[2];
+
+        public float xFriction = 1;
+        public float yFriction = 1;
+
+        public float Rotation = 0;
 
         public Sprite Crosshair;
         public int Width = 16;
@@ -29,7 +33,7 @@ namespace Platformer_Prototype
 
         private BaseEngine BEngine;
         private Game1 game1;
-        private int WallJumpTimer;
+        private int wallTimer;
 
         //--------------------------------------------
 
@@ -56,34 +60,50 @@ namespace Platformer_Prototype
             Crosshair.UpdateAnimation(0.3f);
 
             //Gravity--------------
-            Vector2 tile = getEngine.getTile();
-            tile = getEngine.getTile();
 
-
-            if (tile.X >= 0 && tile.X < getEngine.map.GetLength(1))
+            bool Checked = false;
+            if (!Checked)
             {
-                if (tile.Y >= 0 && tile.Y < getEngine.map.GetLength(0))
+                if (checks[0] == true)
                 {
-                    if (getEngine.map[(int)tile.Y, (int)tile.X] == 2)
-                    {
-
-                        yFriction = 0.92f;
-
-                    }
-                    else
-                    {
-                        yFriction = 1;
-                    }
+                    yFriction = 0.95f;
+                    Checked = true;
+                }
+                else
+                {
+                    yFriction = 1;
                 }
             }
 
-            //this needs to be the last check in gravity
+            if (!Checked)
+            {
+                if (checks[1] == true)
+                {
+                    xFriction = 0.92f;
+                    yFriction = 0.95f;
+                    Checked = true;
+                }
+                else
+                {
+                    xFriction = 1;
+                    yFriction = 1;
+                }
+            }
 
-
-            if (Speed.Y < 12)
-                Speed.Y += 0.2f;
+            if (checks[1] == false)
+            {
+                if (Speed.Y < 12)
+                    Speed.Y += 0.2f;
+                else
+                    Speed.Y = 12;
+            }
             else
-                Speed.Y = 12;
+            {
+                if (Speed.Y < 2)
+                    Speed.Y += 0.2f;
+                else
+                    Speed.Y = 2;
+            }
 
             //---------------------
 
@@ -96,100 +116,140 @@ namespace Platformer_Prototype
                 if (BEngine.tileSize > 1)
                     BEngine.tileSize -= 1;
 
-            if (Input.KeyboardPress(Keys.W) || Input.KeyboardPress(Keys.Up))
+            //Out of water
+            if (checks[1] == false)
             {
-                //Jump--------------
-                Position.Y += 1;
-                updateBounds(BEngine.camera.Position);
-                BEngine.updateHitboxes(Position, Bounds);
-
-                for (int i = 0; i < BEngine.Canvas.Length; i++)
-                    if (Bounds.Intersects(BEngine.Canvas[i]))
-                        Speed.Y = -7f;
-
-                Position.Y -= 1;
-                //--------------------
-
-
-                //Wall jumping
-                WallJumpTimer++;
-                if (WallJumpTimer > 8)
+                if (Input.KeyboardPress(Keys.W) || Input.KeyboardPress(Keys.Up))
                 {
+                    bool returner = false;
 
-                    if (Input.KeyboardPressed(Keys.W))
+                    //Jump--------------
+
+                    if (!returner)
                     {
-
-
-                        Position.X += 1;
-                        updateBounds(BEngine.camera.Position);
-
-                        for (int i = 0; i < BEngine.Canvas.Length; i++)
-                            if (Bounds.Intersects(BEngine.Canvas[i]))
-                            {
-                                Rotation = -8;
-                                Speed.X = -7f;
-                                Speed.Y = -5f;
-                            }
-
-                        Position.X -= 1;
-
-                        Position.X -= 1;
+                        Position.Y += 1;
                         updateBounds(BEngine.camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
 
                         for (int i = 0; i < BEngine.Canvas.Length; i++)
                             if (Bounds.Intersects(BEngine.Canvas[i]))
                             {
-                                Rotation = 8;
-                                Speed.X = 7f;
-                                Speed.Y = -5f;
+                                Speed.Y = -7f;
+                                returner = true;
                             }
 
-                        Position.X += 1;
+
+                        Position.Y -= 1;
 
                     }
-                }
+                    //--------------------
 
-            }
-
-            //--------------------------
-
-            //Ladder movement
-
-            tile = getEngine.getTile();
-            if (tile.X >= 0 && tile.X < getEngine.map.GetLength(1))
-            {
-                if (tile.Y >= 0 && tile.Y < getEngine.map.GetLength(0))
-                {
-                    if (getEngine.map[(int)tile.Y, (int)tile.X] == 2)
+                    //Ladders----------------------------------------
+                    if (!returner)
                     {
-                        WallJumpTimer = 0;
-
-                        if (Input.KeyboardPress(Keys.W))
+                        if (checks[0] == true)
                         {
+                            wallTimer = 0;
                             Speed.Y = -4;
                         }
                     }
+
+                    //Wall jumping-----------
+                    wallTimer++;
+                    if (wallTimer > 8)
+                    {
+                        if (!returner)
+                        {
+                            Position.X += 1;
+                            updateBounds(BEngine.camera.Position);
+
+                            for (int i = 0; i < BEngine.Canvas.Length; i++)
+                                if (Bounds.Intersects(BEngine.Canvas[i]))
+                                {
+                                    Rotation = -8;
+                                    Speed.X = -7f;
+                                    Speed.Y = -5f;
+                                    returner = true;
+                                }
+
+                            Position.X -= 1;
+
+                            Position.X -= 1;
+                            updateBounds(BEngine.camera.Position);
+                            BEngine.updateHitboxes(Position, Bounds);
+
+                            for (int i = 0; i < BEngine.Canvas.Length; i++)
+                                if (Bounds.Intersects(BEngine.Canvas[i]))
+                                {
+                                    Rotation = 8;
+                                    Speed.X = 7f;
+                                    Speed.Y = -5f;
+                                    returner = true;
+                                }
+
+                            Position.X += 1;
+
+                        }
+                    }
+                    //--------------------------
+
+                  
+
+
+
                 }
+                if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
+                    if (Speed.X > -4)
+                        Speed.X -= 0.25f;
+                    else
+                        Speed.X = -4;
+
+                if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
+                    if (Speed.X < 4)
+                        Speed.X += 0.25f;
+                    else
+                        Speed.X = 4;
+
+                if (Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right))
+                    if (Math.Abs(Speed.X) > 1)
+                        Speed.X *= 0.92f;
+                    else
+                        Speed.X = 0;
             }
+            else
+            {
+                if (Input.KeyboardPress(Keys.W) || Input.KeyboardPress(Keys.Up))
+                {
+                    if (Speed.Y > -4)
+                        Speed.Y -= 0.6f;
+                    else
+                        Speed.Y = -4;
+                }
+                if (Input.KeyboardPress(Keys.S) || Input.KeyboardPress(Keys.Down))
+                {
+                    if (Speed.Y < 4)
+                        Speed.Y += 0.25f;
+                    else
+                        Speed.Y = 4;
+                }
+                if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
+                    if (Speed.X > -4)
+                        Speed.X -= 0.25f;
+                    else
+                        Speed.X = -4;
 
-            if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
-                if (Speed.X > -4)
-                    Speed.X -= 0.25f;
-                else
-                    Speed.X = -4;
+                if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
+                    if (Speed.X < 4)
+                        Speed.X += 0.25f;
+                    else
+                        Speed.X = 4;
 
-            if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
-                if (Speed.X < 4)
-                    Speed.X += 0.25f;
-                else
-                    Speed.X = 4;
-
-            if (Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right))
-                if (Math.Abs(Speed.X) > 1)
-                    Speed.X *= 0.92f;
-                else
-                    Speed.X = 0;
+                if (Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right))
+                    if (Math.Abs(Speed.X) > 1)
+                        Speed.X *= 0.92f;
+                    else
+                        Speed.X = 0;
+            }
 
             Speed.X *= xFriction;
             Speed.Y *= yFriction;
@@ -235,9 +295,9 @@ namespace Platformer_Prototype
                         BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                         {
-                            WallJumpTimer = 0;
-                            Rotation = 0;
                             Position.Y--;
+                            wallTimer = 0;
+                            Rotation = 0;
                         }
                     }
 
@@ -256,9 +316,9 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
-            //sB.Draw(Textures._CHAR_Player_Tex, Bounds, Color.White);
 
-            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), MathHelper.ToRadians(Rotation), SpriteEffects.None);
+                sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), Vector2.Zero, MathHelper.ToRadians(Rotation), SpriteEffects.None);
+            
 
             //Sprites
             Crosshair.Draw(sB, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 0, 0);

@@ -28,6 +28,10 @@ namespace Platformer_Prototype
 
         float frameRate;
 
+        //Textures------------------------------------
+        public Texture2D levelTex; //square for drawing level
+        //Texture2D playerTex; //actual player image
+        //--------------------------------------------
         BaseEngine BEngine;
 
         SpriteFont font;
@@ -55,6 +59,8 @@ namespace Platformer_Prototype
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Textures.LoadContent(Content);
+
+            levelTex = Content.Load<Texture2D>("level.jpg");
 
             font = Content.Load<SpriteFont>("CopperplateGothicBold");
 
