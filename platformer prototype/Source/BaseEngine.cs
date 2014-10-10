@@ -26,6 +26,8 @@ namespace Platformer_Prototype
         public Vector2 Ratio;
         public Background background;
         public Player player;
+        public Sprite WaterTop;
+        public Sprite WaterBase;
 
         public Enemy[] enemies = new Enemy[10];
 
@@ -59,7 +61,8 @@ namespace Platformer_Prototype
         {
             player = new Player(getContent);
 
-
+            WaterTop = new Sprite(getContent, "water1ss", 32, 32, 1, 3);
+            WaterBase = new Sprite(getContent, "water2ss", 32, 32, 1, 3);
 
             for (int i = 0; i < enemies.Length; i++)
             {
@@ -79,6 +82,11 @@ namespace Platformer_Prototype
         public void Update(Game1 getGame1)
         {
             game1 = getGame1;
+            //Animated Textures
+            WaterTop.UpdateAnimation(0.1f);
+            WaterBase.UpdateAnimation(0.1f);
+
+
             camera.Update(game1);
             player.Update(game1, this);
             foreach (Enemy e in enemies)
@@ -386,13 +394,13 @@ namespace Platformer_Prototype
                     if (BackMapTextures[j, i] == 1)
                         if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                             if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(Textures._TILE_Grass_Tex, RectTextureTile, Color.White);
+                                sB.Draw(Textures._TILE_Grass_Tex, RectTextureTile, Color.Gray);
 
                     //Draw Dirt
                     if (BackMapTextures[j, i] == 2)
                         if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                             if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(Textures._TILE_Dirt_Tex, RectTextureTile, Color.DimGray);
+                                sB.Draw(Textures._TILE_Dirt_Tex, RectTextureTile, Color.Gray);
 
                 }
         }
@@ -419,6 +427,19 @@ namespace Platformer_Prototype
                             if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
                                 sB.Draw(Textures._TILE_Dirt_Tex, RectTextureTile, Color.White);
 
+                    //Draw Water Top
+                    if (ForeMapTextures[j, i] == 3)
+                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
+                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
+                                WaterTop.Draw(sB, new Vector2(RectTextureTile.X, RectTextureTile.Y), new Vector2(0, 0), 0, SpriteEffects.None);
+
+                    //Draw Water Base
+                    if (ForeMapTextures[j, i] == 4)
+                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
+                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
+                                WaterBase.Draw(sB, new Vector2(RectTextureTile.X, RectTextureTile.Y), new Vector2(0, 0), 0, SpriteEffects.None);
+
+                
                 }
         }
     }

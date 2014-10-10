@@ -14,6 +14,7 @@ namespace Platformer_Prototype
 {
     class Enemy
     {
+        public Sprite sprite;
         public Vector2 Position;
         public Rectangle Bounds;
         public Vector2 Speed;
@@ -29,7 +30,7 @@ namespace Platformer_Prototype
         public Enemy(ContentManager getContent)
         {
             Position = Vector2.Zero;
-
+            sprite = new Sprite(getContent, "enemy", Width, Height);
         }
 
         public void updateBounds(Vector2 camera)
@@ -122,7 +123,8 @@ namespace Platformer_Prototype
         public void Draw(SpriteBatch sB)
         {
 
-            sB.Draw(Textures._OBJ_Ladder_Tex, Bounds, Color.Red);
+            //sB.Draw(Textures._OBJ_Ladder_Tex, Bounds, Color.Red);
+            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SpriteEffects.None);
 
         }
 

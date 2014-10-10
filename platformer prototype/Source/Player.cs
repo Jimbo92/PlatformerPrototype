@@ -41,7 +41,7 @@ namespace Platformer_Prototype
         {
             Position = new Vector2(100, 50);
 
-            sprite = new Sprite(getContent, "mario", Width, Height);
+            sprite = new Sprite(getContent, "player", Width, Height);
 
             Crosshair = new Sprite(getContent, "crosshairss", 98, 98, 1, 3);
         }
