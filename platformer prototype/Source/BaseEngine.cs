@@ -60,8 +60,8 @@ namespace Platformer_Prototype
         };
 
         public int[,] map = MapLoader.LoadMapData("testmap");
-        public int[,] BackMapTextures = MapLoader.LoadBackgroundMapTextures("testmap_back");
-        public int[,] ForeMapTextures = MapLoader.LoadForegroundMapTextures("testmap_fore");
+        public int[,] BackMapTextures = MapLoader.LoadMapData("testmap_back");
+        public int[,] ForeMapTextures = MapLoader.LoadMapData("testmap_fore");
 
         public int tileSize = 32;
 

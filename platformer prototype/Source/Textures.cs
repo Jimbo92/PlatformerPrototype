@@ -24,7 +24,7 @@ namespace Platformer_Prototype
         static public Texture2D[] _TILE_Dirt_Tex = new Texture2D[7];
 
         //Effects
-        static public Texture2D _TILE_Shade_Effect;
+        static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
 
         //Debug Textures
         static public Texture2D _DBG_DebugPlain_Tex;
@@ -45,7 +45,8 @@ namespace Platformer_Prototype
             }
 
             //Effects
-            _TILE_Shade_Effect = getContent.Load<Texture2D>("tiles/shade");
+            for (int i = 0; i < 3; i++)
+                _TILE_Shade_Effect[i] = getContent.Load<Texture2D>("tiles/effects/shade" + i);
 
 
             //Debug Textures
@@ -182,13 +183,13 @@ namespace Platformer_Prototype
                             //Draw Water Top Tile
                             if (Bengine.ForeMapTextures[j, i] == 15)
                                 Bengine.WaterTop.Draw(sB, new Vector2(RectTextureTile.X, RectTextureTile.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
-                            
+
                             //Draw Water Base Tile
                             if (Bengine.ForeMapTextures[j, i] == 16)
                                 Bengine.WaterBase.Draw(sB, new Vector2(RectTextureTile.X, RectTextureTile.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
-                            
-                            
-                            
+
+
+
                             ////----------------------------------------------------//Objects//----------------------------------------------------//
                             //
                             ////Draw Grass Obj
@@ -198,9 +199,21 @@ namespace Platformer_Prototype
 
                             //----------------------------------------------------//Effects//----------------------------------------------------//
 
-                            //Shade Tile Effect
+                            //Shade Tile Effect Full
                             if (Bengine.ForeMapTextures[j, i] == 17)
-                                sB.Draw(_TILE_Shade_Effect, RectTextureTile, Color.White);
+                                sB.Draw(_TILE_Shade_Effect[0], RectTextureTile, Color.White);
+                            //Shade Tile Effect Down Half Left
+                            if (Bengine.ForeMapTextures[j, i] == 18)
+                                sB.Draw(_TILE_Shade_Effect[1], RectTextureTile, Color.White);
+                            //Shade Tile Effect Down Half Right
+                            if (Bengine.ForeMapTextures[j, i] == 19)
+                                sB.Draw(_TILE_Shade_Effect[1], RectTextureTile, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
+                            //Shade Tile Effect Up Half Left
+                            if (Bengine.ForeMapTextures[j, i] == 20)
+                                sB.Draw(_TILE_Shade_Effect[2], RectTextureTile, Color.White);
+                            //Shade Tile Effect Up Half Right
+                            if (Bengine.ForeMapTextures[j, i] == 21)
+                                sB.Draw(_TILE_Shade_Effect[2], RectTextureTile, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
 
                         }
                 }

@@ -32,8 +32,8 @@ namespace Platformer_Prototype
             //Health Stuff//
             for (int i = 0; i < 5; i++)
             {
-                HPOn[i] = new Sprite(getContent, "objects/healthpoint", 32, 32);
-                HPOff[i] = new Sprite(getContent, "objects/healthpoint", 32, 32);
+                HPOn[i] = new Sprite(getContent, "objects/hud_heartFull", 53, 45);
+                HPOff[i] = new Sprite(getContent, "objects/hud_heartEmpty", 53, 45);
             }
 
             //Crosshair
@@ -61,7 +61,7 @@ namespace Platformer_Prototype
         {
             HealthBarTimer++;
             if (HealthBarTimer < 100)
-                HealthBarYPos = 20;
+                HealthBarYPos = 30;
             else if (HealthBarTimer > 145 && HealthBarTimer < 155)
                 HealthBarYPos += .5f;
             else if (HealthBarTimer > 160 && HealthBarTimer < 175)
@@ -79,9 +79,9 @@ namespace Platformer_Prototype
         {
             //Health Stuff//
             for (int i = 0; i < 5; i++)
-                HPOff[i].Draw(sB, new Vector2((35 * i) + 20, HealthBarYPos), new Vector2(HPOff[i].Width / 2, HPOff[i].Height / 2), 0, SpriteEffects.None, Color.Gray);
+                HPOff[i].Draw(sB, new Vector2((53 * i) + 30, HealthBarYPos), 0, SpriteEffects.None);
             for (int i = 0; i < PlayerHitPoints; i++)
-                HPOn[i].Draw(sB, new Vector2((35 * i) + 20, HealthBarYPos), 0, SpriteEffects.None);
+                HPOn[i].Draw(sB, new Vector2((53 * i) + 30, HealthBarYPos), 0, SpriteEffects.None);
 
             //Draw Crosshair Last//
             Crosshair.Draw(sB, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 0, 0);
