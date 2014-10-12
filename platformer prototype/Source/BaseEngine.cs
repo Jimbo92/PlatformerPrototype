@@ -73,9 +73,9 @@ namespace Platformer_Prototype
         {
             player = new Player(getContent);
 
-            WaterTop = new Sprite(getContent, "water1ss", 32, 32, 1, 3);
-            WaterBase = new Sprite(getContent, "water2ss", 32, 32, 1, 3);
-            Torch = new Sprite(getContent, "torchss", 32, 32, 1, 8);
+            WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 1, 3);
+            WaterBase = new Sprite(getContent, "tiles/water1", 32, 32, 1, 3);
+            Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
 
             for (int i = 0; i < enemies.Length; i++)
             {
@@ -492,15 +492,11 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
-           
-
-
             background.Draw(sB);
-            DrawBackgroundMapTextures(sB);
-            //Always Draw Background First
 
-            DrawTriggerMapData(sB);
+            Textures.DrawBackgroundMapTextures(sB, this, game1);
 
+            Textures.DrawTriggerMapData(sB, this, game1);
 
             foreach (Enemy enemy in enemies)
             {
@@ -509,136 +505,16 @@ namespace Platformer_Prototype
             }
 
             player.Draw(sB);
-            
-            //Always Draw Foreground Last
-            DrawForegroundMapTextures(sB);
 
-
-
-            //TEMP DRAW TRIANGLES AS LINES
- 
-       
+            Textures.DrawForegroundMapTextures(sB, this, game1);
            
         }
 
-        //Draw Trigger Map Data
-        
 
-        public void DrawTriggerMapData(SpriteBatch sB)
-        {
-            Scale = new Rectangle(0, 0, tileSize, tileSize);
-            int xLength = map.GetLength(1);
-            int yLength = map.GetLength(0);
-            Rectangle tileDraw;
-
-            for (int i = 0; i < xLength; i++)
-                for (int j = yLength - 1; j > -1; j--)
-                {
-                    tileDraw = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (yLength - j)) + (int)camera.Position.Y, tileSize, tileSize);
-
-                    if (map[j, i] == 1)
-                    {
-                        if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
-                            if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(Textures._DBG_DebugPlain_Tex, tileDraw, Scale, Color.White);
-                    }
-                    if (map[j, i] == 2)
-                    {
-                        if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
-                            if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(Textures._OBJ_Ladder_Tex, tileDraw, Scale, Color.White);
-                    }
-
-                    //Draw Torch Obj
-                    if (ForeMapTextures[j, i] == 6)
-                        if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
-                            if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
-                                Torch.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
-
-                }
-
-            bool debug = false;
-            if (debug == true)
-                foreach (Rectangle Rect in Canvas)
-                    sB.Draw(Textures._DBG_DebugPlain_Tex, Rect, Scale, Color.Red);
-        }
-
-        //Draw Background Map Textures
-        public void DrawBackgroundMapTextures(SpriteBatch sB)
-        {
-            Rectangle RectTextureTile;
-
-            for (int i = 0; i < BackMapTextures.GetLength(1); i++)
-                for (int j = BackMapTextures.GetLength(0) - 1; j > -1; j--)
-                {
-                    RectTextureTile = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (BackMapTextures.GetLength(0) - j)) + (int)camera.Position.Y, tileSize, tileSize);
-
-                    //Draw Grass
-                    if (BackMapTextures[j, i] == 1)
-                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
-                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(Textures._TILE_Grass_Tex, RectTextureTile, Color.Gray);
-
-                    //Draw Dirt
-                    if (BackMapTextures[j, i] == 2)
-                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
-                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(Textures._TILE_Dirt_Tex, RectTextureTile, Color.Gray);
-
-                }
-        }
-
-        //Draw Foreground Map Textures
-        public void DrawForegroundMapTextures(SpriteBatch sB)
-        {
-            Rectangle RectTextureTile;
-
-            for (int i = 0; i < ForeMapTextures.GetLength(1); i++)
-                for (int j = ForeMapTextures.GetLength(0) - 1; j > -1; j--)
-                {
-                    RectTextureTile = new Rectangle((tileSize * i) + (int)camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (ForeMapTextures.GetLength(0) - j)) + (int)camera.Position.Y, tileSize, tileSize);
-
-                    //Draw Grass Tile
-                    if (ForeMapTextures[j, i] == 1)
-                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
-                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(Textures._TILE_Grass_Tex, RectTextureTile, Color.White);
-
-                    //Draw Dirt Tile
-                    if (ForeMapTextures[j, i] == 2)
-                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
-                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(Textures._TILE_Dirt_Tex, RectTextureTile, Color.White);
-
-                    //Draw Water Top Tile
-                    if (ForeMapTextures[j, i] == 3)
-                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
-                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                WaterTop.Draw(sB, new Vector2(RectTextureTile.X, RectTextureTile.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
-
-                    //Draw Water Base Tile
-                    if (ForeMapTextures[j, i] == 4)
-                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
-                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                WaterBase.Draw(sB, new Vector2(RectTextureTile.X, RectTextureTile.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
-
-                
-
-                    //----------------------------------------------------//Objects//----------------------------------------------------//
-
-                    //Draw Grass Obj
-                    if (ForeMapTextures[j, i] == 5)
-                        if (RectTextureTile.X > 0 - tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
-                            if (RectTextureTile.Y > 0 - tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
-                                sB.Draw(Textures._OBJ_Grass_Tex, RectTextureTile, Color.White);
-                }
-            
-        }
         public void DrawLine(Game1 getGame,SpriteBatch sb, Vector2 firstPos, Vector2 lastPos)
         {
 
-            Texture2D getTexture = getGame.lineTex;
-            Rectangle getDestination = new Rectangle(0, 0, getGame.lineTex.Width, getGame.lineTex.Height);
+            Rectangle getDestination = new Rectangle(0, 0, Textures._DBG_Line_Tex.Width, Textures._DBG_Line_Tex.Height);
             float distancex = Math.Abs(lastPos.X - firstPos.X);
             float distancey = Math.Abs(lastPos.Y - firstPos.Y);
             float distance = (float)Math.Sqrt((distancex * distancex) + (distancey * distancey));
@@ -650,7 +526,7 @@ namespace Platformer_Prototype
 
             float getRotation = MathHelper.ToRadians(angleInDeg - 90);
             Vector2 getOrigin = new Vector2(0, 0);
-            sb.Draw(getTexture, getScale, getDestination, Color.White, getRotation, getOrigin, SpriteEffects.None, 0);
+            sb.Draw(Textures._DBG_Line_Tex, getScale, getDestination, Color.White, getRotation, getOrigin, SpriteEffects.None, 0);
 
         }
        

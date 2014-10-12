@@ -29,13 +29,7 @@ namespace Platformer_Prototype
 
         float frameRate;
 
-        //Textures------------------------------------
-        public Texture2D levelTex; //square for drawing level
-        //Texture2D playerTex; //actual player image
-        //--------------------------------------------
         BaseEngine BEngine;
-
-        public Texture2D lineTex;
 
         SpriteFont font;
 
@@ -64,11 +58,8 @@ namespace Platformer_Prototype
             GUI.LoadContent(Content);
             Textures.LoadContent(Content);
 
-            levelTex = Content.Load<Texture2D>("level.jpg");
+            font = Content.Load<SpriteFont>("fonts/CopperplateGothicBold");
 
-            font = Content.Load<SpriteFont>("CopperplateGothicBold");
-
-            lineTex = Content.Load<Texture2D>("lineTex");
 
             BEngine = new BaseEngine(Content, ScreenSize);
 
@@ -84,7 +75,6 @@ namespace Platformer_Prototype
             Input.Begin();
             GUI.Update();
             //Code Bellow This//
-
 
             if (Input.KeyboardPressed(Keys.Escape))
                 Exit();
@@ -115,7 +105,7 @@ namespace Platformer_Prototype
             if (DebugMode)
             {
                 Color FPSColour;
-                //FrameRate draws red if below 30 FPS # nice :D
+                //FrameRate draws red if below 30 FPS # nice :D # ikr?
                 if (frameRate < 30)
                     FPSColour = Color.Red;
                 else

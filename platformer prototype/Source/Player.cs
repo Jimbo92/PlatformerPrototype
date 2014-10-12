@@ -46,7 +46,7 @@ namespace Platformer_Prototype
         {
             Position = new Vector2(100, 50);
 
-            sprite = new Sprite(getContent, "player", Width, Height);
+            sprite = new Sprite(getContent, "objects/player", Width, Height);
 
         }
 

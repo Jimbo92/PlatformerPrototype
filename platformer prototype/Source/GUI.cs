@@ -32,12 +32,12 @@ namespace Platformer_Prototype
             //Health Stuff//
             for (int i = 0; i < 5; i++)
             {
-                HPOn[i] = new Sprite(getContent, "healthpoint", 32, 32);
-                HPOff[i] = new Sprite(getContent, "healthpoint", 32, 32);
+                HPOn[i] = new Sprite(getContent, "objects/healthpoint", 32, 32);
+                HPOff[i] = new Sprite(getContent, "objects/healthpoint", 32, 32);
             }
 
             //Crosshair
-            Crosshair = new Sprite(getContent, "crosshairss", 98, 98, 1, 3);
+            Crosshair = new Sprite(getContent, "objects/crosshairss", 98, 98, 1, 3);
         }
 
         public static void Update()

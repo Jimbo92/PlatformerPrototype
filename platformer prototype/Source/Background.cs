@@ -27,9 +27,9 @@ namespace Platformer_Prototype
             ScreenSize = getScreenSize;
             for (int i = 0; i < 5; i++)
             {
-                backgroundNear[i] = new Sprite(getContent, "backgroundhills", 828, 358);
-                background[i] = new Sprite(getContent, "backgroundday2", 1300, 600);
-                Clouds[i] = new Sprite(getContent, "cloud1", 256, 128);
+                backgroundNear[i] = new Sprite(getContent, "backgrounds/backgroundhills", 828, 358);
+                background[i] = new Sprite(getContent, "backgrounds/backgroundday2", 1300, 600);
+                Clouds[i] = new Sprite(getContent, "backgrounds/cloud1", 256, 128);
             }
         }
 

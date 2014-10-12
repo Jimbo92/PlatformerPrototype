@@ -30,7 +30,7 @@ namespace Platformer_Prototype
         public Enemy(ContentManager getContent)
         {
             Position = Vector2.Zero;
-            sprite = new Sprite(getContent, "enemy", Width, Height);
+            sprite = new Sprite(getContent, "objects/enemy", Width, Height);
         }
 
         public void updateBounds(Vector2 camera)

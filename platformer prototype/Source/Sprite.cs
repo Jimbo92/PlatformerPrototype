@@ -129,5 +129,43 @@ namespace Platformer_Prototype
                     0);
             }
         }
+        public void Draw(SpriteBatch sB, Vector2 getPosition, Vector2 getOrigin, float getRotation, SpriteEffects getEffects, Color getColour, bool IsAnimating)
+        {
+            if (IsAnimating)
+                UpdateAnimation(0.5f);
+
+            if (SpriteType == ESpriteType.Basic)
+            {
+                destinationRectangle = new Rectangle((int)getPosition.X, (int)getPosition.Y, Width, Height);
+                sB.Draw(Texture,
+                    destinationRectangle,
+                    null,
+                    getColour,
+                    getRotation,
+                    getOrigin,
+                    getEffects,
+                    0);
+            }
+            if (SpriteType == ESpriteType.Anim)
+            {
+                int sourceWidth = Texture.Width / Columns;
+                int sourceHeight = Texture.Height / Rows;
+
+                int row = (int)((float)CurrentFrame / (float)Columns);
+                int column = (int)CurrentFrame % Columns;
+
+                sourceRectangle = new Rectangle(sourceWidth * column, sourceHeight * row, sourceWidth, sourceHeight);
+                destinationRectangle = new Rectangle((int)getPosition.X, (int)getPosition.Y, Width, Height);
+
+                sB.Draw(Texture,
+                    destinationRectangle,
+                    sourceRectangle,
+                    getColour,
+                    getRotation,
+                    getOrigin,
+                    getEffects,
+                    0);
+            }
+        }
     }
 }
