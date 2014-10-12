@@ -43,6 +43,7 @@
     <Compile Include="Source\GUI.cs" />
     <Compile Include="Source\Ideas.cs" />
     <Compile Include="Source\Input.cs" />
+    <Compile Include="Source\Map Editor\Editor.cs" />
     <Compile Include="Source\MapLoader.cs" />
     <Compile Include="Source\Player.cs" />
     <Compile Include="Source\Program.cs" />
@@ -171,6 +172,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -33,9 +33,9 @@ namespace Platformer_Prototype
             sprite = new Sprite(getContent, "objects/enemy", Width, Height);
         }
 
-        public void updateBounds(Vector2 camera)
+        public void updateBounds(Vector2 Camera)
         {
-            Bounds = new Rectangle((int)Position.X + (int)camera.X, (int)Position.Y + (int)camera.Y, Width, Height);
+            Bounds = new Rectangle((int)Position.X + (int)Camera.X, (int)Position.Y + (int)Camera.Y, Width, Height);
         }
 
         public void Update(Game1 getGame1, BaseEngine getEngine)
@@ -54,7 +54,7 @@ namespace Platformer_Prototype
 
 
             Position.Y += 1;
-            updateBounds(BEngine.camera.Position);
+            updateBounds(Camera.Position);
             BEngine.updateHitboxes(Position, Bounds);
 
             for (int i = 0; i < BEngine.Canvas.Length; i++)
@@ -74,7 +74,7 @@ namespace Platformer_Prototype
                 if (Speed.X > 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds); 
                         if (Bounds.Intersects(target))
                             Position.X--;
@@ -83,7 +83,7 @@ namespace Platformer_Prototype
                 if (Speed.X < 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.X++;
@@ -101,7 +101,7 @@ namespace Platformer_Prototype
                 if (Speed.Y > 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds); 
                         if (Bounds.Intersects(target))
                             Position.Y--;
@@ -110,7 +110,7 @@ namespace Platformer_Prototype
                 if (Speed.Y < 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds); 
                         if (Bounds.Intersects(target))
                             Position.Y++;

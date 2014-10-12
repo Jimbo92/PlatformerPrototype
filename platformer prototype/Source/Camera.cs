@@ -12,25 +12,25 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Platformer_Prototype
 {
-    class Camera
+    static class Camera
     {
-       enum cameraState
+       enum CameraState
         {
             FOLLOW = 1,
             FREE = 2,
             WAYPOINTS = 3,
         }
 
-      
-        cameraState cameraMode = cameraState.FOLLOW;
 
-        public Vector2 Position = Vector2.Zero;
-        Vector2 Speed = Vector2.Zero;
+       static CameraState CameraMode = CameraState.FOLLOW;
 
-        private Game1 game1;
-        private Player player;
+        static public Vector2 Position = Vector2.Zero;
+        static Vector2 Speed = Vector2.Zero;
 
-        public Camera(Player getPlayer)
+        static private Game1 game1;
+        static private Player player;
+
+        static public void Initialize(Player getPlayer)
         {
             player = getPlayer;
 
@@ -38,29 +38,29 @@ namespace Platformer_Prototype
             Position.Y = 0;
         }
 
-        public void Update(Game1 getGame1)
+        static public void Update(Game1 getGame1)
         {
             game1 = getGame1;
 
-            game1.giveType(cameraMode.ToString());
+            game1.giveType(CameraMode.ToString());
 
 
             if (Input.KeyboardReleased(Keys.X))
             {
-                if ((int)cameraMode == 3)
+                if ((int)CameraMode == 3)
                 {
-                    cameraMode = cameraState.FOLLOW;
+                    CameraMode = CameraState.FOLLOW;
                 }
                 else
                 {
-                    cameraMode += 1;
+                    CameraMode += 1;
                 }
             }
 
 
 
             //Camera Follow----------------
-            if (cameraMode == cameraState.FOLLOW)
+            if (CameraMode == CameraState.FOLLOW)
             {
                 Position.X -= (player.Position.X - game1.GraphicsDevice.Viewport.Width / 2 + player.Bounds.Width / 2 - -Position.X) / 30;
                 float yChange = (player.Position.Y - game1.GraphicsDevice.Viewport.Height / 2 + player.Bounds.Height / 2 - -Position.Y) / 15;
@@ -75,7 +75,7 @@ namespace Platformer_Prototype
         
             }
             //Camera Free----------------
-            if (cameraMode == cameraState.FREE)
+            if (CameraMode == CameraState.FREE)
             {
                 if (Input.KeyboardPress(Keys.Down))
                 {

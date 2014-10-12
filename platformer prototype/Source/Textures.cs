@@ -61,7 +61,7 @@ namespace Platformer_Prototype
             for (int i = 0; i < Bengine.map.GetLength(1); i++)
                 for (int j = Bengine.map.GetLength(0) - 1; j > -1; j--)
                 {
-                    tileDraw = new Rectangle((Bengine.tileSize * i) + (int)Bengine.camera.Position.X, game1.GraphicsDevice.Viewport.Height - (Bengine.tileSize * (Bengine.map.GetLength(0) - j)) + (int)Bengine.camera.Position.Y, Bengine.tileSize, Bengine.tileSize);
+                    tileDraw = new Rectangle((Bengine.tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (Bengine.tileSize * (Bengine.map.GetLength(0) - j)) + (int)Camera.Position.Y, Bengine.tileSize, Bengine.tileSize);
 
                     if (tileDraw.X > 0 - Bengine.tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
                         if (tileDraw.Y > 0 - Bengine.tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
@@ -139,7 +139,7 @@ namespace Platformer_Prototype
             for (int i = 0; i < Bengine.BackMapTextures.GetLength(1); i++)
                 for (int j = Bengine.BackMapTextures.GetLength(0) - 1; j > -1; j--)
                 {
-                    RectTextureTile = new Rectangle((Bengine.tileSize * i) + (int)Bengine.camera.Position.X, game1.GraphicsDevice.Viewport.Height - (Bengine.tileSize * (Bengine.BackMapTextures.GetLength(0) - j)) + (int)Bengine.camera.Position.Y, Bengine.tileSize, Bengine.tileSize);
+                    RectTextureTile = new Rectangle((Bengine.tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (Bengine.tileSize * (Bengine.BackMapTextures.GetLength(0) - j)) + (int)Camera.Position.Y, Bengine.tileSize, Bengine.tileSize);
 
                     if (RectTextureTile.X > 0 - Bengine.tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                         if (RectTextureTile.Y > 0 - Bengine.tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)
@@ -166,7 +166,7 @@ namespace Platformer_Prototype
             for (int i = 0; i < Bengine.ForeMapTextures.GetLength(1); i++)
                 for (int j = Bengine.ForeMapTextures.GetLength(0) - 1; j > -1; j--)
                 {
-                    RectTextureTile = new Rectangle((Bengine.tileSize * i) + (int)Bengine.camera.Position.X, game1.GraphicsDevice.Viewport.Height - (Bengine.tileSize * (Bengine.ForeMapTextures.GetLength(0) - j)) + (int)Bengine.camera.Position.Y, Bengine.tileSize, Bengine.tileSize);
+                    RectTextureTile = new Rectangle((Bengine.tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (Bengine.tileSize * (Bengine.ForeMapTextures.GetLength(0) - j)) + (int)Camera.Position.Y, Bengine.tileSize, Bengine.tileSize);
 
                     if (RectTextureTile.X > 0 - Bengine.tileSize + 0 && RectTextureTile.X < game1.GraphicsDevice.Viewport.Width)
                         if (RectTextureTile.Y > 0 - Bengine.tileSize + 0 && RectTextureTile.Y < game1.GraphicsDevice.Viewport.Height)

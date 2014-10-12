@@ -50,9 +50,9 @@ namespace Platformer_Prototype
 
         }
 
-        public void updateBounds(Vector2 camera)
+        public void updateBounds(Vector2 Camera)
         {
-            Bounds = new Rectangle((int)Position.X + (int)camera.X, (int)Position.Y + (int)camera.Y, Width, Height);
+            Bounds = new Rectangle((int)Position.X + (int)Camera.X, (int)Position.Y + (int)Camera.Y, Width, Height);
             tl = new Vector2(Bounds.X, Bounds.Y);
             tr = new Vector2(Bounds.X + Bounds.Width, Bounds.Y);
             bl = new Vector2(Bounds.X, Bounds.Y + Bounds.Height);
@@ -135,7 +135,7 @@ namespace Platformer_Prototype
                     {
                        
                         Position.Y += 1;
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
 
                         for (int i = 0; i < BEngine.Canvas.Length; i++)
@@ -200,7 +200,7 @@ namespace Platformer_Prototype
                             if (Input.KeyboardPressed(Keys.W))
                             {
                             Position.X += 1;
-                            updateBounds(BEngine.camera.Position);
+                            updateBounds(Camera.Position);
 
                             for (int i = 0; i < BEngine.Canvas.Length; i++)
                                 if (Bounds.Intersects(BEngine.Canvas[i]))
@@ -214,7 +214,7 @@ namespace Platformer_Prototype
                             Position.X -= 1;
 
                             Position.X -= 1;
-                            updateBounds(BEngine.camera.Position);
+                            updateBounds(Camera.Position);
                             BEngine.updateHitboxes(Position, Bounds);
 
                             for (int i = 0; i < BEngine.Canvas.Length; i++)
@@ -304,7 +304,7 @@ namespace Platformer_Prototype
                 if (Speed.X > 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.X--;
@@ -313,7 +313,7 @@ namespace Platformer_Prototype
                 if (Speed.X < 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.X++;
@@ -333,7 +333,7 @@ namespace Platformer_Prototype
                 if (Speed.Y > 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                         {
@@ -346,7 +346,7 @@ namespace Platformer_Prototype
                 if (Speed.Y < 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.Y++;
@@ -375,7 +375,7 @@ namespace Platformer_Prototype
                 if (Speed.X > 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)
                             Position.X--;
@@ -384,7 +384,7 @@ namespace Platformer_Prototype
                 if (Speed.X < 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)
                             Position.X++;
@@ -403,7 +403,7 @@ namespace Platformer_Prototype
                 if (Speed.Y > 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)
                         {
@@ -417,7 +417,7 @@ namespace Platformer_Prototype
                 if (Speed.Y < 0)
                     for (int i = 20; i > 0; i--)
                     {
-                        updateBounds(BEngine.camera.Position);
+                        updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)
                             Position.Y++;

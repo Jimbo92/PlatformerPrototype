@@ -19,7 +19,6 @@ namespace Platformer_Prototype
         public Sprite[] Clouds = new Sprite[5];
 
         private Vector2 ScreenSize;
-        private Camera camera;
         private float CloudMoveX;
 
         public Background(ContentManager getContent, Vector2 getScreenSize)
@@ -33,10 +32,6 @@ namespace Platformer_Prototype
             }
         }
 
-        public void Update(Camera getCamera)
-        {
-            camera = getCamera;
-        }
 
         public void Draw(SpriteBatch sB)
         {
@@ -46,9 +41,9 @@ namespace Platformer_Prototype
                 if (CloudMoveX < -Clouds[i].Texture.Width)
                     CloudMoveX = 0;
 
-                background[1].Draw(sB, new Vector2((background[i].Texture.Width * i) + camera.Position.X / 4, camera.Position.Y / 4), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
-                backgroundNear[i].Draw(sB, new Vector2( (backgroundNear[i].Texture.Width * i) + camera.Position.X / 3, (camera.Position.Y / 3) + ScreenSize.Y - (backgroundNear[0].Texture.Height / 2)), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
-                Clouds[i].Draw(sB, new Vector2((Clouds[i].Texture.Width * i) + camera.Position.X / 2 + CloudMoveX, camera.Position.Y / 2), 0, SpriteEffects.None);
+                background[1].Draw(sB, new Vector2((background[i].Texture.Width * i) + Camera.Position.X / 4, Camera.Position.Y / 4), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
+                backgroundNear[i].Draw(sB, new Vector2( (backgroundNear[i].Texture.Width * i) + Camera.Position.X / 3, (Camera.Position.Y / 3) + ScreenSize.Y - (backgroundNear[0].Texture.Height / 2)), MathHelper.ToRadians(180), SpriteEffects.FlipVertically);
+                Clouds[i].Draw(sB, new Vector2((Clouds[i].Texture.Width * i) + Camera.Position.X / 2 + CloudMoveX, Camera.Position.Y / 2), 0, SpriteEffects.None);
             }
 
         }

@@ -24,7 +24,7 @@ namespace Platformer_Prototype
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        string cameraMode;
+        string CameraMode;
         public bool DebugMode = false;
 
         float frameRate;
@@ -67,7 +67,7 @@ namespace Platformer_Prototype
 
         public void giveType(string type)
         {
-            cameraMode = type;
+            CameraMode = type;
         }
 
         protected override void Update(GameTime gameTime)
@@ -113,7 +113,7 @@ namespace Platformer_Prototype
 
                 frameRate = 1 / (float)gameTime.ElapsedGameTime.TotalSeconds;
                 spriteBatch.DrawString(font, "Player Pos: " + BEngine.player.Position.X.ToString() + "," + BEngine.player.Position.Y.ToString(), new Vector2(10, 50), Color.DodgerBlue);
-                spriteBatch.DrawString(font, "Camera: " + cameraMode, new Vector2(10, 30), Color.DodgerBlue);
+                spriteBatch.DrawString(font, "Camera: " + CameraMode, new Vector2(10, 30), Color.DodgerBlue);
                 spriteBatch.DrawString(font, "Platformer Prototype", new Vector2(10, 10), Color.Snow);
                 spriteBatch.DrawString(font, "FPS: " + frameRate.ToString(), new Vector2(ScreenSize.X - 180, 10), FPSColour);
             }
