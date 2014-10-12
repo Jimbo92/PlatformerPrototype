@@ -17,6 +17,12 @@ namespace Platformer_Prototype
         public Sprite sprite;
         public Vector2 Position;
 
+        public Vector2 tl = Vector2.Zero;
+        public Vector2 tr = Vector2.Zero;
+        public Vector2 bl = Vector2.Zero;
+        public Vector2 br = Vector2.Zero;
+
+
         public Rectangle Bounds;
         public Vector2 Speed;
 
@@ -47,6 +53,10 @@ namespace Platformer_Prototype
         public void updateBounds(Vector2 camera)
         {
             Bounds = new Rectangle((int)Position.X + (int)camera.X, (int)Position.Y + (int)camera.Y, Width, Height);
+            tl = new Vector2(Bounds.X, Bounds.Y);
+            tr = new Vector2(Bounds.X + Bounds.Width, Bounds.Y);
+            bl = new Vector2(Bounds.X, Bounds.Y + Bounds.Height);
+            br = new Vector2(Bounds.X + Bounds.Width, Bounds.Y + Bounds.Height);
         }
 
         public void Update(Game1 getGame1, BaseEngine getEngine)
@@ -123,6 +133,7 @@ namespace Platformer_Prototype
 
                     if (!returner)
                     {
+                       
                         Position.Y += 1;
                         updateBounds(BEngine.camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
@@ -133,6 +144,36 @@ namespace Platformer_Prototype
                                 Speed.Y = -7f;
                                 returner = true;
                             }
+                        if (checkAllLines(BEngine.tan1) == true)
+                        {
+                            Speed.Y = -7f;
+                            returner = true;
+                        }
+                        if (checkAllLines(BEngine.tan2) == true)
+                        {
+                            Speed.Y = -7f;
+                            returner = true;
+                        }
+                        if (checkAllLines(BEngine.tan3) == true)
+                        {
+                            Speed.Y = -7f;
+                            returner = true;
+                        }
+                        if (checkAllLines(BEngine.tan4) == true)
+                        {
+                            Speed.Y = -7f;
+                            returner = true;
+                        }
+                        if (checkAllLines(BEngine.tan5) == true)
+                        {
+                            Speed.Y = -7f;
+                            returner = true;
+                        }
+                        if (checkAllLines(BEngine.tan6) == true)
+                        {
+                            Speed.Y = -7f;
+                            returner = true;
+                        }
 
 
                         Position.Y -= 1;
@@ -282,6 +323,8 @@ namespace Platformer_Prototype
             }
         }
 
+      
+
         public void checkCollisionsY(Rectangle target)
         {
             if (Bounds.Intersects(target))
@@ -317,9 +360,127 @@ namespace Platformer_Prototype
         {
 
                 sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), Vector2.Zero, MathHelper.ToRadians(Rotation), SpriteEffects.None, Color.White);
-            
+
+
 
             //Sprites
+        }
+
+
+        public void checkTollisionsX(Triangle target)
+        {
+            if (checkAllLines(target) == true)
+            {
+
+                if (Speed.X > 0)
+                    for (int i = 20; i > 0; i--)
+                    {
+                        updateBounds(BEngine.camera.Position);
+                        BEngine.updateHitboxes(Position, Bounds);
+                        if (checkAllLines(target) == true)
+                            Position.X--;
+                    }
+
+                if (Speed.X < 0)
+                    for (int i = 20; i > 0; i--)
+                    {
+                        updateBounds(BEngine.camera.Position);
+                        BEngine.updateHitboxes(Position, Bounds);
+                        if (checkAllLines(target) == true)
+                            Position.X++;
+                    }
+
+                Speed.X = 0;
+            }
+        }
+
+        public void checkTollisionsY(Triangle target)
+        {
+            if (checkAllLines(target) == true)
+            {
+ 
+
+                if (Speed.Y > 0)
+                    for (int i = 20; i > 0; i--)
+                    {
+                        updateBounds(BEngine.camera.Position);
+                        BEngine.updateHitboxes(Position, Bounds);
+                        if (checkAllLines(target) == true)
+                        {
+                            Position.Y--;
+                            wallTimer = 0;
+                            Rotation = 0;
+                            
+                        }
+                    }
+
+                if (Speed.Y < 0)
+                    for (int i = 20; i > 0; i--)
+                    {
+                        updateBounds(BEngine.camera.Position);
+                        BEngine.updateHitboxes(Position, Bounds);
+                        if (checkAllLines(target) == true)
+                            Position.Y++;
+                    }
+
+                Speed.Y = 0;
+            }
+        }
+
+        public bool checkAllLines(Triangle triangle)
+        {
+            if (BEngine.lineTest(tl, tr, triangle.a, triangle.b) == true)
+            {
+                return true;
+            }
+            if (BEngine.lineTest(tl, tr, triangle.b, triangle.c) == true)
+            {
+                return true;
+            }
+            if (BEngine.lineTest(tl, tr, triangle.c, triangle.a) == true)
+            {
+                return true;
+            }
+
+            if (BEngine.lineTest(tl, bl, triangle.a, triangle.b) == true)
+            {
+                return true;
+            }
+            if (BEngine.lineTest(tl, bl, triangle.b, triangle.c) == true)
+            {
+                return true;
+            }
+            if (BEngine.lineTest(tl, bl, triangle.c, triangle.a) == true)
+            {
+                return true;
+            }
+
+            if (BEngine.lineTest(bl, br, triangle.a, triangle.b) == true)
+            {
+                return true;
+            }
+            if (BEngine.lineTest(bl, br, triangle.b, triangle.c) == true)
+            {
+                return true;
+            }
+            if (BEngine.lineTest(bl, br, triangle.c, triangle.a) == true)
+            {
+                return true;
+            }
+
+            if (BEngine.lineTest(tr, br, triangle.a, triangle.b) == true)
+            {
+                return true;
+            }
+            if (BEngine.lineTest(tr, br, triangle.b, triangle.c) == true)
+            {
+                return true;
+            }
+            if (BEngine.lineTest(tr, br, triangle.c, triangle.a) == true)
+            {
+                return true;
+            }
+            return false;
         }
 
     }

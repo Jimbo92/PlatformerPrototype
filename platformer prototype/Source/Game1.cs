@@ -35,6 +35,8 @@ namespace Platformer_Prototype
         //--------------------------------------------
         BaseEngine BEngine;
 
+        public Texture2D lineTex;
+
         SpriteFont font;
 
         public static Vector2 ScreenSize;
@@ -65,6 +67,8 @@ namespace Platformer_Prototype
             levelTex = Content.Load<Texture2D>("level.jpg");
 
             font = Content.Load<SpriteFont>("CopperplateGothicBold");
+
+            lineTex = Content.Load<Texture2D>("lineTex");
 
             BEngine = new BaseEngine(Content, ScreenSize);
 
@@ -98,6 +102,8 @@ namespace Platformer_Prototype
             Input.End();
             base.Update(gameTime);
         }
+       
+
 
         protected override void Draw(GameTime gameTime)
         {
@@ -109,7 +115,7 @@ namespace Platformer_Prototype
             if (DebugMode)
             {
                 Color FPSColour;
-                //FrameRate draws red if below 30 FPS
+                //FrameRate draws red if below 30 FPS # nice :D
                 if (frameRate < 30)
                     FPSColour = Color.Red;
                 else
