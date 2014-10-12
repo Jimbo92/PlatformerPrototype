@@ -72,7 +72,7 @@ namespace Platformer_Prototype
             player = new Player(getContent);
             Camera.Initialize(player);
 
-            WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 5, 8);
+            WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 5, 7);
             WaterBase = new Sprite(getContent, "tiles/water1", 32, 32, 1, 3);
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
 
@@ -104,7 +104,7 @@ namespace Platformer_Prototype
             game1 = getGame1;
             Camera.Update(game1);
             //Animated Textures
-            WaterTop.UpdateAnimation(0.3f);
+            WaterTop.UpdateAnimation(1f);
             WaterBase.UpdateAnimation(0.3f);
             Torch.UpdateAnimation(0.5f);
 

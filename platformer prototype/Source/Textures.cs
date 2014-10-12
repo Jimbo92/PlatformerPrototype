@@ -23,6 +23,9 @@ namespace Platformer_Prototype
         //Dirt
         static public Texture2D[] _TILE_Dirt_Tex = new Texture2D[7];
 
+        //Effects
+        static public Texture2D _TILE_Shade_Effect;
+
         //Debug Textures
         static public Texture2D _DBG_DebugPlain_Tex;
         static public Texture2D _DBG_Line_Tex;
@@ -40,6 +43,9 @@ namespace Platformer_Prototype
                 _TILE_Grass_Tex[i] = getContent.Load<Texture2D>("tiles/grass" + i);
                 _TILE_Dirt_Tex[i] = getContent.Load<Texture2D>("tiles/dirt" + i);
             }
+
+            //Effects
+            _TILE_Shade_Effect = getContent.Load<Texture2D>("tiles/shade");
 
 
             //Debug Textures
@@ -188,6 +194,14 @@ namespace Platformer_Prototype
                             ////Draw Grass Obj
                             //if (Bengine.ForeMapTextures[j, i] == 5)
                             //    sB.Draw(Textures._OBJ_Grass_Tex, RectTextureTile, Color.White);
+
+
+                            //----------------------------------------------------//Effects//----------------------------------------------------//
+
+                            //Shade Tile Effect
+                            if (Bengine.ForeMapTextures[j, i] == 17)
+                                sB.Draw(_TILE_Shade_Effect, RectTextureTile, Color.White);
+
                         }
                 }
 
