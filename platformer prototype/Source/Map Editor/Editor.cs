@@ -172,6 +172,22 @@ namespace Platformer_Prototype
             }
         }
 
+        private int[,] LoadMap(string MapFile)
+        {
+            string[] strData = File.ReadAllLines("maps/" + MapFile + ".txt");
+            var width = strData[0].Length;
+            var height = strData.Length;
+            var TileData = new int[width, height];
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    TileData[x, y] = (strData[y][x]);
+                }
+            }
+            return TileData;
+        }
+
         private void SaveMap(int[,] getGrid, string MapFile)
         {
             StreamWriter sw = new StreamWriter("maps/" + MapFile + ".txt");
@@ -256,7 +272,7 @@ namespace Platformer_Prototype
                             }
             //Editor Fonts
             //Layer Detail
-            sB.DrawString(Font,"Map Editor v1 \n" + "LAYER: " + MapLayers.ToString(), new Vector2(20, 20), Color.Snow);
+            sB.DrawString(Font,"Map Editor v1.5 \n" + "LAYER: " + MapLayers.ToString(), new Vector2(20, 20), Color.Snow);
             //Show Grid Detail
             FontTimers[0]++;
             if (FontTimers[0] <= 100)
