@@ -203,6 +203,17 @@ namespace Platformer_Prototype
                 foreach (Rectangle canvas in Canvas)
                     e.checkCollisionsX(canvas);
 
+                //Will Check up to 6 Triangles
+
+                e.updateBounds(Camera.Position);
+                updateHitboxes(e.Position, e.Bounds);
+                e.checkTollisionsX(tan1);
+                e.checkTollisionsX(tan2);
+                e.checkTollisionsX(tan3);
+                e.checkTollisionsX(tan4);
+                e.checkTollisionsX(tan5);
+                e.checkTollisionsX(tan6);
+
 
                 // Check Y Collisions-----------------------------
                 //Will Check up to 6 Rectangles
@@ -212,6 +223,41 @@ namespace Platformer_Prototype
                 updateHitboxes(e.Position, e.Bounds);
                 foreach (Rectangle canvas in Canvas)
                     e.checkCollisionsY(canvas);
+
+                //Will Check up to 6 Triangles
+
+                e.updateBounds(Camera.Position);
+                updateHitboxes(e.Position, e.Bounds);
+                e.checkTollisionsY(tan1);
+                e.checkTollisionsY(tan2);
+                e.checkTollisionsY(tan3);
+                e.checkTollisionsY(tan4);
+                e.checkTollisionsY(tan5);
+                e.checkTollisionsY(tan6);
+
+                e.checks[0] = false;
+                e.updateBounds(Camera.Position);
+                updateNoclips(e.Position, e.Bounds, 2);
+                foreach (Rectangle noclip in NoClip)
+                {
+                    if (e.Bounds.Intersects(noclip))
+                    {
+                        e.checks[0] = true;
+                    }
+
+                }
+
+                e.checks[1] = false;
+                e.updateBounds(Camera.Position);
+                updateNoclips(e.Position, e.Bounds, 3);
+                foreach (Rectangle noclip in NoClip)
+                {
+                    if (e.Bounds.Intersects(noclip))
+                    {
+                        e.checks[1] = true;
+                    }
+
+                }
             }
 
         }
