@@ -47,8 +47,9 @@ namespace Platformer_Prototype
         private int[] FontTimers = new int[5];
         private Game1 game1;
 
-        private int[,] SelectorGrid = new int[2,5];
+        private int[,] SelectorGrid = MapLoader.LoadMapData("editor/selector1");
         private Rectangle SelectorGridTile;
+        private int TileChooser;
 
 
         public Editor(ContentManager getContent, Vector2 getScreenSize)
@@ -61,6 +62,7 @@ namespace Platformer_Prototype
             PlacerTexture = getContent.Load<Texture2D>("editor/placer");
             Crosshair = new Sprite(getContent, "objects/crosshairss", 98, 98, 1, 3);
             Font = getContent.Load<SpriteFont>("fonts/CopperplateGothicBold");
+                
 
             for (int i = 0; i < FontTimers.Length; i++)
                 FontTimers[i] = 101;
@@ -123,7 +125,7 @@ namespace Platformer_Prototype
                 TileSize = 15;
 
             //Switch Layers
-            if (Input.KeyboardPressed(Microsoft.Xna.Framework.Input.Keys.Tab))
+            if (Input.KeyboardPressed(Keys.Tab))
             {
                 Layers++;
                 if (Layers >= 4)
@@ -139,7 +141,7 @@ namespace Platformer_Prototype
             }
 
             //Hide Grid
-            if (Input.KeyboardPressed(Microsoft.Xna.Framework.Input.Keys.OemTilde))
+            if (Input.KeyboardPressed(Keys.OemTilde))
             {
                 FontTimers[0] = 0;
                 if (!ShowGrid)
@@ -150,7 +152,7 @@ namespace Platformer_Prototype
 
                
             //Save Map
-            if (Input.KeyboardPressed(Microsoft.Xna.Framework.Input.Keys.S))
+            if (Input.KeyboardPressed(Keys.S))
             {
                 FontTimers[1] = 0;
                 SaveMap(GridDataL1, "File");
@@ -160,7 +162,7 @@ namespace Platformer_Prototype
             }
              
             //Load Map
-            if (Input.KeyboardPressed(Microsoft.Xna.Framework.Input.Keys.L))
+            if (Input.KeyboardPressed(Keys.L))
             {
                 FontTimers[2] = 0;
                 GridDataL1 = MapLoader.LoadMapData("File");
@@ -197,16 +199,18 @@ namespace Platformer_Prototype
                 case EMapLayers.TRIGGER: TriggerMapDrawCodes(sB); break;
                 case EMapLayers.BACKGROUND: BackgroundMapDrawCodes(sB); break;
                 case EMapLayers.FOREGROUND: ForegroundMapDrawCodes(sB); break;
-                case EMapLayers.EFFECT: ; break;
+                case EMapLayers.EFFECT: EffectMapDrawCodes(sB); break;
             }
 
-            Textures.DrawBackgroundMapTextures(sB, GridDataL2, TileSize, game1);
+            Textures.TextureType = Textures.ETextureType.EDITOR;
 
-            Textures.DrawTriggerMapData(sB, GridDataL1, TileSize, game1);
+            Textures.DrawBackgroundMapTextures(sB, GridDataL2, TileSize, Camera.Position, game1);
 
-            Textures.DrawForegroundMapTextures(sB, GridDataL3, TileSize, game1);
+            Textures.DrawTriggerMapData(sB, GridDataL1, TileSize, Camera.Position, game1);
 
-            Textures.DrawMapEffects(sB, GridDataL4, TileSize, game1);
+            Textures.DrawForegroundMapTextures(sB, GridDataL3, TileSize, Camera.Position, game1);
+
+            Textures.DrawMapEffects(sB, GridDataL4, TileSize, Camera.Position, game1);
 
             for (int i = 0; i < GridDataL1.GetLength(1); i++)
                 for (int j = 0; j < GridDataL1.GetLength(0); j++)
@@ -228,20 +232,28 @@ namespace Platformer_Prototype
                         for (int i = 0; i < SelectorGrid.GetLength(1); i++)
                             for (int j = 0; j < SelectorGrid.GetLength(0); j++)
                             {
-                                SelectorGridTile = new Rectangle(SelectorRectangle.X + 32 * i + 32, SelectorRectangle.Y + 32 * j + 32, 32, 32);
+                                SelectorGridTile = new Rectangle(SelectorRectangle.X + 40 * i + 32, SelectorRectangle.Y + 40 * j + 32, 32, 32);
+
+                                //sB.Draw(GridTexture, SelectorGridTile, Color.White);
+                                Textures.TextureType = Textures.ETextureType.SELECTOR;
+                                switch (MapLayers)
+                                {
+                                    case EMapLayers.TRIGGER: Textures.DrawTriggerMapData(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 32, SelectorRectangle.Y + 32), game1); break;
+                                    case EMapLayers.BACKGROUND: Textures.DrawBackgroundMapTextures(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 32, SelectorRectangle.Y + 32), game1); break;
+                                    case EMapLayers.FOREGROUND: Textures.DrawForegroundMapTextures(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 32, SelectorRectangle.Y + 32), game1); break;
+                                    case EMapLayers.EFFECT: Textures.DrawMapEffects(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 32, SelectorRectangle.Y + 32), game1); break;
+                                } 
 
                                 if (SelectorGridTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                                 {
                                     if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-
-                                    SelectorGrid[j, i] = 1;
-                                }
-
-                                sB.Draw(GridTexture, SelectorGridTile, Color.White);
-
-                                //Textures.DrawBackgroundMapTextures(sB, SelectorGrid, TileSize, SelectorGridTile, game1);
+                                    {
+                                        TileChooser = SelectorGrid[j, i];
+                                    }
+                                    else
+                                        sB.Draw(PlacerTexture, SelectorGridTile, Color.White);
+                                }                       
                             }
-
             //Editor Fonts
             //Layer Detail
             sB.DrawString(Font,"Map Editor v1 \n" + "LAYER: " + MapLayers.ToString(), new Vector2(20, 20), Color.Snow);
@@ -279,7 +291,7 @@ namespace Platformer_Prototype
                     {
                         if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                         {
-                            GridDataL1[j, i] = 1;
+                            GridDataL1[j, i] = TileChooser;
                         }
 
                         if (Mouse.GetState().RightButton == ButtonState.Pressed)
@@ -298,19 +310,16 @@ namespace Platformer_Prototype
 
                     if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                     {
-                        if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                         {
-                            GridDataL2[j, i] = 1;
+                            GridDataL2[j, i] = TileChooser;
                         }
 
-                        if (Mouse.GetState().RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                        if (Mouse.GetState().RightButton == ButtonState.Pressed)
                         {
                             GridDataL2[j, i] = 0;
                         }
                     }
-
-                    //if (GridDataL2[j, i] == 1)
-                    //    sB.Draw(Textures._TILE_Grass_Tex[4], DrawTile, Color.Gray);
                 }
         }
         private void ForegroundMapDrawCodes(SpriteBatch sB)
@@ -322,19 +331,37 @@ namespace Platformer_Prototype
 
                     if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                     {
-                        if (Mouse.GetState().LeftButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                         {
-                            GridDataL3[j, i] = 2;
+                            GridDataL3[j, i] = TileChooser;
                         }
 
-                        if (Mouse.GetState().RightButton == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
+                        if (Mouse.GetState().RightButton == ButtonState.Pressed)
                         {
                             GridDataL3[j, i] = 0;
                         }
                     }
+                }
+        }
+        private void EffectMapDrawCodes(SpriteBatch sB)
+        {
+            for (int i = 0; i < GridDataL4.GetLength(1); i++)
+                for (int j = 0; j < GridDataL4.GetLength(0); j++)
+                {
+                    DrawTile = new Rectangle((int)Camera.Position.X + TileSize * i, (int)Camera.Position.Y + TileSize * j, TileSize, TileSize);
 
-                    //if (GridDataL3[j, i] == 2)
-                    //    sB.Draw(Textures._TILE_Grass_Tex[2], DrawTile, Color.White);
+                    if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    {
+                        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                        {
+                            GridDataL4[j, i] = TileChooser;
+                        }
+
+                        if (Mouse.GetState().RightButton == ButtonState.Pressed)
+                        {
+                            GridDataL4[j, i] = 0;
+                        }
+                    }
                 }
         }
     }

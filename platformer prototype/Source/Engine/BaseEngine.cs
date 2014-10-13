@@ -494,9 +494,11 @@ namespace Platformer_Prototype
             Rectangle tileDraw;
             background.Draw(sB);
 
-            Textures.DrawBackgroundMapTextures(sB, BackMapTextures, tileSize, game1);
+            Textures.TextureType = Textures.ETextureType.INGAME;
 
-            Textures.DrawTriggerMapData(sB, map, tileSize, game1);
+            Textures.DrawBackgroundMapTextures(sB, BackMapTextures, tileSize, Vector2.Zero, game1);
+
+            Textures.DrawTriggerMapData(sB, map, tileSize, Vector2.Zero, game1);
 
             foreach (Enemy enemy in enemies)
             {
@@ -524,9 +526,9 @@ namespace Platformer_Prototype
                         }
                 }
 
-            Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, game1);
+            Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
 
-            Textures.DrawMapEffects(sB, MapEffectTextures, tileSize, game1);
+            Textures.DrawMapEffects(sB, MapEffectTextures, tileSize, Vector2.Zero, game1);
 
         }
 

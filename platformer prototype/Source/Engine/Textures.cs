@@ -14,6 +14,15 @@ namespace Platformer_Prototype
 {
     static class Textures
     {
+        public enum ETextureType
+        {
+            INGAME,
+            EDITOR,
+            SELECTOR,
+        };
+
+        static public ETextureType TextureType = ETextureType.EDITOR;
+
         //Object Textures
         static public Texture2D _OBJ_Ladder_Tex;
 
@@ -27,10 +36,12 @@ namespace Platformer_Prototype
         static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
 
         //Debug Textures
-        static public Texture2D _DBG_DebugPlain_Tex;
+        static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[3];
         static public Texture2D _DBG_Line_Tex;
 
         static private BaseEngine Bengine;
+        static private int SelectorOffset = 40;
+        static private Rectangle tileDraw = new Rectangle();
 
         static public void LoadContent(ContentManager getContent)
         {
@@ -46,13 +57,16 @@ namespace Platformer_Prototype
                 _TILE_Dirt_Tex[i] = getContent.Load<Texture2D>("tiles/dirt" + i);
             }
 
-            //Effects
+            //Effects & Editor
             for (int i = 0; i < 3; i++)
+            {
                 _TILE_Shade_Effect[i] = getContent.Load<Texture2D>("tiles/effects/shade" + i);
+                _DBG_Trigger_Tex[i] = getContent.Load<Texture2D>("editor/trigger" + i);
+            }
 
 
             //Debug Textures
-            _DBG_DebugPlain_Tex = getContent.Load<Texture2D>("editor/triggerblock");
+
             _DBG_Line_Tex = getContent.Load<Texture2D>("debug/lineTex");
         }
 
@@ -63,25 +77,36 @@ namespace Platformer_Prototype
 
 
         //Draw Trigger Map Data
-        public static void DrawTriggerMapData(SpriteBatch sB, int[,] MapData, int tileSize, Game1 game1)
+        public static void DrawTriggerMapData(SpriteBatch sB, int[,] MapData, int tileSize, Vector2 Offset, Game1 game1)
         {
-            Rectangle tileDraw;
-
             for (int i = 0; i < MapData.GetLength(1); i++)
                 for (int j = MapData.GetLength(0) - 1; j > -1; j--)
                 {
-                    if (Global_GameState.GameState == Global_GameState.EGameState.PLAY)
-                        tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (MapData.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
-                    else
-                        tileDraw = new Rectangle((int)Camera.Position.X + tileSize * i, (int)Camera.Position.Y + tileSize * j, tileSize, tileSize);
-
+                    switch (TextureType)
+                    {
+                        case ETextureType.INGAME: tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (MapData.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize); break;
+                        case ETextureType.EDITOR: tileDraw = new Rectangle((int)Camera.Position.X + tileSize * i, (int)Camera.Position.Y + tileSize * j, tileSize, tileSize); break;
+                        case ETextureType.SELECTOR: tileDraw = new Rectangle((int)Offset.X + SelectorOffset * i, (int)Offset.Y + SelectorOffset * j, tileSize, tileSize); break;
+                    }
                     if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
                         if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
                         {
                             //----------------------------------------------------//Triggers//----------------------------------------------------//
                             if (Global_GameState.GameState == Global_GameState.EGameState.EDITOR)
+                            {
+                                //Trigger Full Block Texture
                                 if (MapData[j, i] == 1)
-                                sB.Draw(_DBG_DebugPlain_Tex, tileDraw, Color.White);
+                                    sB.Draw(_DBG_Trigger_Tex[0], tileDraw, Color.White);
+                                //Trigger Half Block Left Texture
+                                if (MapData[j, i] == 4)
+                                    sB.Draw(_DBG_Trigger_Tex[1], tileDraw, Color.White);
+                                //Trigger Half Block Right Texture
+                                if (MapData[j, i] == 5)
+                                    sB.Draw(_DBG_Trigger_Tex[1], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                                //Trigger Water Block Texture
+                                if (MapData[j, i] == 3)
+                                    sB.Draw(_DBG_Trigger_Tex[2], tileDraw, Color.White);
+                            }
 
                             if (MapData[j, i] == 2)
                                 sB.Draw(_OBJ_Ladder_Tex, tileDraw, Color.White);
@@ -98,18 +123,17 @@ namespace Platformer_Prototype
         }
 
         //Draw Background Map Textures
-        public static void DrawBackgroundMapTextures(SpriteBatch sB, int[,] MapData, int tileSize, Game1 game1)
+        public static void DrawBackgroundMapTextures(SpriteBatch sB, int[,] MapData, int tileSize, Vector2 Offset, Game1 game1)
         {
-            Rectangle tileDraw;
-
             for (int i = 0; i < MapData.GetLength(1); i++)
                 for (int j = MapData.GetLength(0) - 1; j > -1; j--)
                 {
-                    if (Global_GameState.GameState == Global_GameState.EGameState.PLAY)
-                        tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (MapData.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
-                    else
-                        tileDraw = new Rectangle((int)Camera.Position.X + tileSize * i, (int)Camera.Position.Y + tileSize * j, tileSize, tileSize);
-
+                    switch (TextureType)
+                    {
+                        case ETextureType.INGAME: tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (MapData.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize); break;
+                        case ETextureType.EDITOR: tileDraw = new Rectangle((int)Camera.Position.X + tileSize * i, (int)Camera.Position.Y + tileSize * j, tileSize, tileSize); break;
+                        case ETextureType.SELECTOR: tileDraw = new Rectangle((int)Offset.X + SelectorOffset * i, (int)Offset.Y + SelectorOffset * j, tileSize, tileSize); break;
+                    }
                     if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
                         if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
                         {
@@ -174,17 +198,17 @@ namespace Platformer_Prototype
         }
 
         //Draw Foreground Map Textures
-        public static void DrawForegroundMapTextures(SpriteBatch sB, int[,] MapData, int tileSize, Game1 game1)
-        {
-            Rectangle tileDraw;
-
+        public static void DrawForegroundMapTextures(SpriteBatch sB, int[,] MapData, int tileSize, Vector2 Offset, Game1 game1)
+        {         
             for (int i = 0; i < MapData.GetLength(1); i++)
                 for (int j = MapData.GetLength(0) - 1; j > -1; j--)
                 {
-                    if (Global_GameState.GameState == Global_GameState.EGameState.PLAY)
-                        tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (MapData.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
-                    else
-                        tileDraw = new Rectangle((int)Camera.Position.X + tileSize * i, (int)Camera.Position.Y + tileSize * j, tileSize, tileSize);
+                    switch (TextureType)
+                    {
+                        case ETextureType.INGAME: tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (MapData.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize); break;
+                        case ETextureType.EDITOR: tileDraw = new Rectangle((int)Camera.Position.X + tileSize * i, (int)Camera.Position.Y + tileSize * j, tileSize, tileSize); break;
+                        case ETextureType.SELECTOR: tileDraw = new Rectangle((int)Offset.X + SelectorOffset * i, (int)Offset.Y + SelectorOffset * j, tileSize, tileSize); break;
+                    }
 
                     if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
                         if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
@@ -205,17 +229,17 @@ namespace Platformer_Prototype
         }
 
         //Draw Map Effects
-        public static void DrawMapEffects(SpriteBatch sB, int[,] MapData, int tileSize, Game1 game1)
+        public static void DrawMapEffects(SpriteBatch sB, int[,] MapData, int tileSize, Vector2 Offset, Game1 game1)
         {
-            Rectangle tileDraw;
-
             for (int i = 0; i < MapData.GetLength(1); i++)
                 for (int j = MapData.GetLength(0) - 1; j > -1; j--)
                 {
-                    if (Global_GameState.GameState == Global_GameState.EGameState.PLAY)
-                        tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (MapData.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
-                    else
-                        tileDraw = new Rectangle((int)Camera.Position.X + tileSize * i, (int)Camera.Position.Y + tileSize * j, tileSize, tileSize);
+                    switch (TextureType)
+                    {
+                        case ETextureType.INGAME: tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (MapData.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize); break;
+                        case ETextureType.EDITOR: tileDraw = new Rectangle((int)Camera.Position.X + tileSize * i, (int)Camera.Position.Y + tileSize * j, tileSize, tileSize); break;
+                        case ETextureType.SELECTOR: tileDraw = new Rectangle((int)Offset.X + SelectorOffset * i, (int)Offset.Y + SelectorOffset * j, tileSize, tileSize); break;
+                    }
 
                     if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
                         if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
@@ -230,19 +254,19 @@ namespace Platformer_Prototype
                             //----------------------------------------------------//Effects//----------------------------------------------------//
 
                             //Shade Tile Effect Full
-                            if (MapData[j, i] == 17)
+                            if (MapData[j, i] == 1)
                                 sB.Draw(_TILE_Shade_Effect[0], tileDraw, Color.White);
                             //Shade Tile Effect Down Half Left
-                            if (MapData[j, i] == 18)
+                            if (MapData[j, i] == 2)
                                 sB.Draw(_TILE_Shade_Effect[1], tileDraw, Color.White);
                             //Shade Tile Effect Down Half Right
-                            if (MapData[j, i] == 19)
+                            if (MapData[j, i] == 3)
                                 sB.Draw(_TILE_Shade_Effect[1], tileDraw, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
                             //Shade Tile Effect Up Half Left
-                            if (MapData[j, i] == 20)
+                            if (MapData[j, i] == 4)
                                 sB.Draw(_TILE_Shade_Effect[2], tileDraw, Color.White);
                             //Shade Tile Effect Up Half Right
-                            if (MapData[j, i] == 21)
+                            if (MapData[j, i] == 5)
                                 sB.Draw(_TILE_Shade_Effect[2], tileDraw, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
 
                         }
