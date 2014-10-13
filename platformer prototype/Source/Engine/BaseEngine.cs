@@ -25,8 +25,8 @@ namespace Platformer_Prototype
         public Triangle tan5 = new Triangle();
         public Triangle tan6 = new Triangle();
 
- 
-  
+
+
         public Rectangle[] NoClip = new Rectangle[6];
 
         public int TileX;
@@ -40,28 +40,15 @@ namespace Platformer_Prototype
 
         public Enemy[] enemies = new Enemy[10];
 
-        
-
         Random random = new Random();
 
         private Game1 game1;
 
-        public int[,] mapFake = new int[,]
-        {
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1},
-        {1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,1,1,1,1},
-        {1,0,0,1,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,1,1,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-        };
-
-        public int[,] map = MapLoader.LoadMapData("testmap");
-        public int[,] BackMapTextures = MapLoader.LoadMapData("testmap_back");
-        public int[,] ForeMapTextures = MapLoader.LoadMapData("testmap_fore");
+        public int LoadMapTimer;
+        public int[,] map = MapLoader.LoadMapData("file");
+        public int[,] BackMapTextures = MapLoader.LoadMapData("file_back");
+        public int[,] ForeMapTextures = MapLoader.LoadMapData("file_fore");
+        public int[,] MapEffectTextures = MapLoader.LoadMapData("file_eff");
 
         public int tileSize = 32;
 
@@ -91,9 +78,9 @@ namespace Platformer_Prototype
             background = new Background(getContent, getScreenSize);
         }
 
-        public void drawTriangle(SpriteBatch sB,Triangle target)
+        public void drawTriangle(SpriteBatch sB, Triangle target)
         {
-            DrawLine(game1,sB,target.a,target.b);
+            DrawLine(game1, sB, target.a, target.b);
             DrawLine(game1, sB, target.b, target.c);
             DrawLine(game1, sB, target.c, target.a);
 
@@ -101,8 +88,21 @@ namespace Platformer_Prototype
 
         public void Update(Game1 getGame1)
         {
+            Textures.Update(this);
+            LoadMapTimer++;
+            if (LoadMapTimer <= 1)
+            {
+                map = MapLoader.LoadMapData("file");
+                BackMapTextures = MapLoader.LoadMapData("file_Back");
+                ForeMapTextures = MapLoader.LoadMapData("file_fore");
+                MapEffectTextures = MapLoader.LoadMapData("file_eff");
+            }
+            else
+                LoadMapTimer = 2;
+
             game1 = getGame1;
             Camera.Update(game1);
+            Camera.CameraMode = Camera.CameraState.FOLLOW;
             //Animated Textures
             WaterTop.UpdateAnimation(1f);
             WaterBase.UpdateAnimation(0.3f);
@@ -167,14 +167,14 @@ namespace Platformer_Prototype
 
             player.checks[0] = false;
             player.updateBounds(Camera.Position);
-            updateNoclips(player.Position,player.Bounds, 2);
+            updateNoclips(player.Position, player.Bounds, 2);
             foreach (Rectangle noclip in NoClip)
             {
-                if(player.Bounds.Intersects(noclip))
+                if (player.Bounds.Intersects(noclip))
                 {
                     player.checks[0] = true;
                 }
-                
+
             }
 
             player.checks[1] = false;
@@ -236,7 +236,7 @@ namespace Platformer_Prototype
             }
         }
 
-        public void updateNoclips(Vector2 position,Rectangle bounds, int type)
+        public void updateNoclips(Vector2 position, Rectangle bounds, int type)
         {
             int que = 0;
 
@@ -267,26 +267,26 @@ namespace Platformer_Prototype
                 for (int i = 0; i < Ratio.X; i++)
                 {
 
-                    if (TileY + j>= 0 && TileY + j< map.GetLength(0) && TileX + i >= 0 && TileX + i < map.GetLength(1))
+                    if (TileY + j >= 0 && TileY + j < map.GetLength(0) && TileX + i >= 0 && TileX + i < map.GetLength(1))
                         if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i] == type)
                         {
-                            
-                            
-                                NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                                que++;
-                            
+
+
+                            NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                            que++;
+
                         }
-                    if (TileY + j >= 0 && TileY + j< map.GetLength(0) && TileX  + 1>= 0 && TileX  + 1< map.GetLength(1))
+                    if (TileY + j >= 0 && TileY + j < map.GetLength(0) && TileX + 1 >= 0 && TileX + 1 < map.GetLength(1))
                         if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i + 1] == type)
                         {
-                            
-                            
-                                NoClip[que] = new Rectangle((TileX + i + 1) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                                que++;
-                            
+
+
+                            NoClip[que] = new Rectangle((TileX + i + 1) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                            que++;
+
                         }
 
-                    if (TileY + j + 1>= 0 && TileY + j + 1 < map.GetLength(0) && TileX + i >= 0 && TileX + i < map.GetLength(1))
+                    if (TileY + j + 1 >= 0 && TileY + j + 1 < map.GetLength(0) && TileX + i >= 0 && TileX + i < map.GetLength(1))
                         if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i] == type)
                         {
 
@@ -295,7 +295,7 @@ namespace Platformer_Prototype
                             que++;
 
                         }
-                    if (TileY + j + 1 >= 0 && TileY + j + 1< map.GetLength(0) && TileX + 1 >= 0 && TileX + 1 < map.GetLength(1))
+                    if (TileY + j + 1 >= 0 && TileY + j + 1 < map.GetLength(0) && TileX + 1 >= 0 && TileX + 1 < map.GetLength(1))
                         if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i + 1] == type)
                         {
 
@@ -304,13 +304,13 @@ namespace Platformer_Prototype
                             que++;
 
                         }
-                    
-                    
-                    
+
+
+
                 }
 
             }
-            
+
 
         }
 
@@ -357,7 +357,7 @@ namespace Platformer_Prototype
                         Rectangle Corner = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                         tan1.a = new Vector2(Corner.X + tileSize, Corner.Y);
                         tan1.b = new Vector2(Corner.X, Corner.Y + tileSize);
-                        tan1.c = new Vector2(Corner.X + tileSize,Corner.Y + tileSize);
+                        tan1.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                     }
                 }
 
@@ -386,7 +386,7 @@ namespace Platformer_Prototype
                     tan2.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                 }
             }
-         
+
 
             Canvas[2] = Rectangle.Empty;
             tan3.a = Vector2.Zero;
@@ -491,11 +491,12 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
+            Rectangle tileDraw;
             background.Draw(sB);
 
-            Textures.DrawBackgroundMapTextures(sB, this, game1);
+            Textures.DrawBackgroundMapTextures(sB, BackMapTextures, tileSize, game1);
 
-            Textures.DrawTriggerMapData(sB, this, game1);
+            Textures.DrawTriggerMapData(sB, map, tileSize, game1);
 
             foreach (Enemy enemy in enemies)
             {
@@ -505,12 +506,32 @@ namespace Platformer_Prototype
 
             player.Draw(sB);
 
-            Textures.DrawForegroundMapTextures(sB, this, game1);
-           
+            //Hard Coded Texture Tiles// Water, Lava, Rain, Weather Effects
+            for (int i = 0; i < map.GetLength(1); i++)
+                for (int j = map.GetLength(0) - 1; j > -1; j--)
+                {
+                    tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
+
+                    if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
+                        if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
+                        {
+                            //Draw Water Top Tile
+                            if (map[j, i] == 3)
+                                WaterTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+                            //Draw Water Base Tile
+                            if (map[j, i] == 3)
+                                WaterBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+                        }
+                }
+
+            Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, game1);
+
+            Textures.DrawMapEffects(sB, MapEffectTextures, tileSize, game1);
+
         }
 
 
-        public void DrawLine(Game1 getGame,SpriteBatch sb, Vector2 firstPos, Vector2 lastPos)
+        public void DrawLine(Game1 getGame, SpriteBatch sb, Vector2 firstPos, Vector2 lastPos)
         {
 
             Rectangle getDestination = new Rectangle(0, 0, Textures._DBG_Line_Tex.Width, Textures._DBG_Line_Tex.Height);
@@ -528,8 +549,8 @@ namespace Platformer_Prototype
             sb.Draw(Textures._DBG_Line_Tex, getScale, getDestination, Color.White, getRotation, getOrigin, SpriteEffects.None, 0);
 
         }
-       
+
     }
 
-    
+
 }

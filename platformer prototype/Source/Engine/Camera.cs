@@ -14,21 +14,23 @@ namespace Platformer_Prototype
 {
     static class Camera
     {
-       enum CameraState
+        public enum CameraState
         {
             FOLLOW = 1,
             FREE = 2,
             WAYPOINTS = 3,
+            MOUSE = 4,
         }
 
 
-       static CameraState CameraMode = CameraState.FOLLOW;
+        static public CameraState CameraMode = CameraState.FOLLOW;
 
         static public Vector2 Position = Vector2.Zero;
         static Vector2 Speed = Vector2.Zero;
 
         static private Game1 game1;
         static private Player player;
+        static public Rectangle MouseRect;
 
         static public void Initialize(Player getPlayer)
         {
@@ -43,6 +45,8 @@ namespace Platformer_Prototype
             game1 = getGame1;
 
             game1.giveType(CameraMode.ToString());
+
+            MouseRect = new Rectangle(Mouse.GetState().X, Mouse.GetState().Y, 32, 32);
 
 
             if (Input.KeyboardReleased(Keys.X))
@@ -70,81 +74,84 @@ namespace Platformer_Prototype
                     Position.Y = 0;
                 if (Position.X > 0)
                     Position.X = 0;
-                
-                    
-        
+
+
+
             }
             //Camera Free----------------
             if (CameraMode == CameraState.FREE)
             {
+
                 if (Input.KeyboardPress(Keys.Down))
-                {
                     if (Speed.Y > -12)
-                    {
                         Speed.Y -= 0.34f;
-                    }
                     else
-                    {
                         Speed.Y = -12;
-                    }
-                }
                 if (Input.KeyboardPress(Keys.Up))
-                {
                     if (Speed.Y < 12)
-                    {
                         Speed.Y += 0.34f;
-                    }
                     else
-                    {
                         Speed.Y = 12;
-                    }
-                }
                 if (Input.KeyboardPress(Keys.Right))
-                {
                     if (Speed.X > -12)
-                    {
                         Speed.X -= 0.34f;
-                    }
                     else
-                    {
                         Speed.X = -12;
-                    }
-                }
                 if (Input.KeyboardPress(Keys.Left))
-                {
                     if (Speed.X < 12)
-                    {
                         Speed.X += 0.34f;
-                    }
                     else
-                    {
                         Speed.X = 12;
-                    }
-                }
                 if (Input.KeyboardRelease(Keys.Right) && Input.KeyboardRelease(Keys.Left))
-                {
                     if (Math.Abs(Speed.X) > 1)
-                    {
                         Speed.X *= 0.92f;
-                    }
                     else
-                    {
                         Speed.X = 0;
-                    }
-                }
                 if (Input.KeyboardRelease(Keys.Up) && Input.KeyboardRelease(Keys.Down))
-                {
                     if (Math.Abs(Speed.Y) > 1)
-                    {
                         Speed.Y *= 0.92f;
-                    }
                     else
-                    {
                         Speed.Y = 0;
-                    }
-                }
-                Position.X += Speed.X; 
+                Position.X += Speed.X;
                 Position.Y += Speed.Y;
+            }
+            //Camera Mouse----------------
+            if (CameraMode == CameraState.MOUSE)
+            {
+                    if (Mouse.GetState().Y >= 590)
+                        if (Speed.Y > -12)
+                            Speed.Y -= 0.34f;
+                        else
+                            Speed.Y = -12;
+                    if (Mouse.GetState().Y <= 10)
+                        if (Speed.Y < 12)
+                            Speed.Y += 0.34f;
+                        else
+                            Speed.Y = 12;
+                    if (Mouse.GetState().X >= 790)
+                        if (Speed.X > -12)
+                            Speed.X -= 0.34f;
+                        else
+                            Speed.X = -12;
+                    if (Mouse.GetState().X <= 10)
+                        if (Speed.X < 12)
+                            Speed.X += 0.34f;
+                        else
+                            Speed.X = 12;
+
+                    if (Mouse.GetState().X <= 790 && Mouse.GetState().X >= 10)
+                        if (Math.Abs(Speed.X) > 1)
+                            Speed.X *= 0.92f;
+                        else
+                            Speed.X = 0;
+                    if (Mouse.GetState().Y <= 590 && Mouse.GetState().Y >= 10)
+                        if (Math.Abs(Speed.Y) > 1)
+                            Speed.Y *= 0.92f;
+                        else
+                            Speed.Y = 0;
+
+                    Position.X += Speed.X;
+                    Position.Y += Speed.Y;              
             }
         }
     }
