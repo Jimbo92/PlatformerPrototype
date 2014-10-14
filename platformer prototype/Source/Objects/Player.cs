@@ -317,6 +317,7 @@ namespace Platformer_Prototype
                         BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.X++;
+
                     }
 
                 Speed.X = 0;

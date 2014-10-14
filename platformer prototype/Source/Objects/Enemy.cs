@@ -107,7 +107,7 @@ namespace Platformer_Prototype
             }
 
 
-            bool returner;
+
             Position.Y += 1;
             updateBounds(Camera.Position);
             BEngine.updateHitboxes(Position, Bounds);
@@ -118,35 +118,30 @@ namespace Platformer_Prototype
                     Speed.Y = -7f;
                
             }
+
             if (checkAllLines(BEngine.tan1) == true)
             {
                 Speed.Y = -7f;
-                returner = true;
             }
             if (checkAllLines(BEngine.tan2) == true)
             {
                 Speed.Y = -7f;
-                returner = true;
             }
             if (checkAllLines(BEngine.tan3) == true)
             {
                 Speed.Y = -7f;
-                returner = true;
             }
             if (checkAllLines(BEngine.tan4) == true)
             {
                 Speed.Y = -7f;
-                returner = true;
             }
             if (checkAllLines(BEngine.tan5) == true)
             {
                 Speed.Y = -7f;
-                returner = true;
             }
             if (checkAllLines(BEngine.tan6) == true)
             {
                 Speed.Y = -7f;
-                returner = true;
             }
 
             Position.Y -= 1;

@@ -25,8 +25,6 @@ namespace Platformer_Prototype
         public Triangle tan5 = new Triangle();
         public Triangle tan6 = new Triangle();
 
-
-
         public Rectangle[] NoClip = new Rectangle[6];
 
         public int TileX;
@@ -52,6 +50,7 @@ namespace Platformer_Prototype
 
         public int tileSize = 32;
 
+
         //-----------------------------------------------------
 
         public BaseEngine(ContentManager getContent, Vector2 getScreenSize)
@@ -59,8 +58,8 @@ namespace Platformer_Prototype
             player = new Player(getContent);
             Camera.Initialize(player);
 
-            WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 5, 7);
-            WaterBase = new Sprite(getContent, "tiles/water1", 32, 32, 1, 3);
+            WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 10, 1);
+            WaterBase = new Sprite(getContent, "tiles/water1", 32, 32, 10, 1);
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
 
             for (int i = 0; i < enemies.Length; i++)
@@ -104,8 +103,8 @@ namespace Platformer_Prototype
             Camera.Update(game1);
             Camera.CameraMode = Camera.CameraState.FOLLOW;
             //Animated Textures
-            WaterTop.UpdateAnimation(1f);
-            WaterBase.UpdateAnimation(0.3f);
+            WaterTop.UpdateAnimation(0.15f);
+            WaterBase.UpdateAnimation(0.15f);
             Torch.UpdateAnimation(0.5f);
 
 
@@ -390,7 +389,9 @@ namespace Platformer_Prototype
                 {
 
                     if (map[TileY + (int)Ratio.Y, TileX + i] == 1)
+                    {
                         Canvas[0] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                    }
                     if (map[TileY + (int)Ratio.Y, TileX + i] == 4) //left triangle
                     {
                         Rectangle Corner = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
@@ -564,11 +565,11 @@ namespace Platformer_Prototype
                         if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
                         {
                             //Draw Water Top Tile
-                            if (map[j, i] == 3)
-                                WaterTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+                            if (MapEffectTextures[j, i] == 6)
+                                WaterTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue);
                             //Draw Water Base Tile
-                            if (map[j, i] == 3)
-                                WaterBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+                            if (MapEffectTextures[j, i] == 7)
+                                WaterBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue);
                         }
                 }
 

@@ -15,12 +15,9 @@ namespace Platformer_Prototype
 {
     class Triangle
     {
-        public Vector2 a;
-        public Vector2 b;
-        public Vector2 c;
-
-
-
+        public Vector2 a = new Vector2();
+        public Vector2 b = new Vector2();
+        public Vector2 c = new Vector2();
     }
   
 }
