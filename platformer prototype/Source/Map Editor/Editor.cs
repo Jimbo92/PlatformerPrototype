@@ -26,10 +26,10 @@ namespace Platformer_Prototype
         private int Layers = 0;
 
         public Rectangle CursorPlacer = new Rectangle(0, 0, 32, 32);
-        public int[,] GridDataL1;
-        public int[,] GridDataL2;
-        public int[,] GridDataL3;
-        public int[,] GridDataL4;
+        public char[,] GridDataL1;
+        public char[,] GridDataL2;
+        public char[,] GridDataL3;
+        public char[,] GridDataL4;
         public Vector2 MapSize = new Vector2(100, 20);
 
         private Rectangle DrawTile;
@@ -50,9 +50,9 @@ namespace Platformer_Prototype
         private int[] FontTimers = new int[5];
         private Game1 game1;
 
-        private int[,] SelectorGrid = MapLoader.LoadMapData("editor/selector1");
+        private char[,] SelectorGrid = MapLoader.LoadMapData("editor/selector1");
         private Rectangle SelectorGridTile;
-        private int TileChooser;
+        private char TileChooser;
 
 
         public Editor(ContentManager getContent, Vector2 getScreenSize)
@@ -76,10 +76,10 @@ namespace Platformer_Prototype
             for (int i = 0; i < (int)MapSize.X; i++)
                 for (int j = 0; j < (int)MapSize.Y; j++)
                 {
-                    GridDataL1 = new int[j, i];
-                    GridDataL2 = new int[j, i];
-                    GridDataL3 = new int[j, i];
-                    GridDataL4 = new int[j, i];
+                    GridDataL1 = new char[j, i];
+                    GridDataL2 = new char[j, i];
+                    GridDataL3 = new char[j, i];
+                    GridDataL4 = new char[j, i];
                 }
         }
 
@@ -136,7 +136,7 @@ namespace Platformer_Prototype
             //Switch Layers
             if (Input.KeyboardPressed(Keys.Tab))
             {
-                TileChooser = 0;
+                TileChooser = '0';
                 Layers++;
                 if (Layers >= 4)
                     Layers = 0;
@@ -189,36 +189,36 @@ namespace Platformer_Prototype
 
             //Keyboard Tile Chooser
             if (Input.KeyboardPressed(Keys.NumPad1) || Input.KeyboardPressed(Keys.D1))
-                TileChooser = 1;
+                TileChooser = '1';
             else if (Input.KeyboardPressed(Keys.NumPad2) || Input.KeyboardPressed(Keys.D2))
-                TileChooser = 2;
+                TileChooser = '2';
             else if (Input.KeyboardPressed(Keys.NumPad3) || Input.KeyboardPressed(Keys.D3))
-                TileChooser = 3;
+                TileChooser = '3';
             else if (Input.KeyboardPressed(Keys.NumPad4) || Input.KeyboardPressed(Keys.D4))
-                TileChooser = 4;
+                TileChooser = '4';
             else if (Input.KeyboardPressed(Keys.NumPad5) || Input.KeyboardPressed(Keys.D5))
-                TileChooser = 5;
+                TileChooser = '5';
             else if (Input.KeyboardPressed(Keys.NumPad6) || Input.KeyboardPressed(Keys.D6))
-                TileChooser = 6;
+                TileChooser = '6';
             else if (Input.KeyboardPressed(Keys.NumPad7) || Input.KeyboardPressed(Keys.D7))
-                TileChooser = 7;
+                TileChooser = '7';
             else if (Input.KeyboardPressed(Keys.NumPad8) || Input.KeyboardPressed(Keys.D8))
-                TileChooser = 8;
+                TileChooser = '8';
             else if (Input.KeyboardPressed(Keys.NumPad9) || Input.KeyboardPressed(Keys.D9))
-                TileChooser = 9;
+                TileChooser = '9';
 
         }
 
-        private void SaveMap(int[,] getGrid, string MapFile)
+        private void SaveMap(char[,] getGrid, string MapFile)
         {
             StreamWriter sw = new StreamWriter("maps/" + MapFile + ".txt");
             for (int i = 0; i < getGrid.GetLength(0); i++)
             {
-                int[] linelist = new int[getGrid.GetLength(1)];
+                char[] linelist = new char[getGrid.GetLength(1)];
                 for (int j = 0; j < linelist.GetLength(0); j++)
                 {
                     linelist[j] = getGrid[i, j];
-                    int line = linelist[j];
+                    char line = linelist[j];
                     sw.Write(line);
                     if (j != linelist.GetLength(0) - 1)
                         sw.Write(",");
@@ -240,13 +240,13 @@ namespace Platformer_Prototype
             }
 
             Textures.TextureType = Textures.ETextureType.EDITOR;
-
+            
             Textures.DrawBackgroundMapTextures(sB, GridDataL2, TileSize, Camera.Position, game1);
-
+            
             Textures.DrawForegroundMapTextures(sB, GridDataL3, TileSize, Camera.Position, game1);
-
+            
             Textures.DrawMapEffects(sB, GridDataL4, TileSize, Camera.Position, game1);
-
+            
             Textures.DrawTriggerMapData(sB, GridDataL1, TileSize, Camera.Position, game1);
 
             for (int i = 0; i < GridDataL1.GetLength(1); i++)
@@ -307,7 +307,7 @@ namespace Platformer_Prototype
             //Layer Detail
             sB.DrawString(Font,"Map Editor v2.0 \n" + "LAYER: " + MapLayers.ToString(), new Vector2(20, 20), Color.Snow);
             //Selected Tile Detail
-            sB.DrawString(Font, "Selected Tile: " + TileChooser.ToString(), new Vector2(20, 60), Color.Red, 0, new Vector2(0, 0), 0.7f, SpriteEffects.None, 0);
+            sB.DrawString(Font, "Selected Tile: ", new Vector2(20, 60), Color.Red, 0, new Vector2(0, 0), 0.7f, SpriteEffects.None, 0);
             //Show Grid Detail
             FontTimers[0]++;
             if (FontTimers[0] <= 100)
@@ -347,7 +347,7 @@ namespace Platformer_Prototype
 
                         if (Mouse.GetState().RightButton == ButtonState.Pressed)
                         {
-                            GridDataL1[j, i] = 0;
+                            GridDataL1[j, i] = '0';
                         }
                     }
                 }
@@ -368,7 +368,7 @@ namespace Platformer_Prototype
 
                         if (Mouse.GetState().RightButton == ButtonState.Pressed)
                         {
-                            GridDataL2[j, i] = 0;
+                            GridDataL2[j, i] = '0';
                         }
                     }
                 }
@@ -389,7 +389,7 @@ namespace Platformer_Prototype
 
                         if (Mouse.GetState().RightButton == ButtonState.Pressed)
                         {
-                            GridDataL3[j, i] = 0;
+                            GridDataL3[j, i] = '0';
                         }
                     }
                 }
@@ -410,7 +410,7 @@ namespace Platformer_Prototype
 
                         if (Mouse.GetState().RightButton == ButtonState.Pressed)
                         {
-                            GridDataL4[j, i] = 0;
+                            GridDataL4[j, i] = '0';
                         }
                     }
                 }
