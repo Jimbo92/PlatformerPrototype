@@ -30,6 +30,7 @@ namespace Platformer_Prototype
 
         public float xFriction = 1;
         public float yFriction = 1;
+        int jump = 7;
 
         public float Rotation = 0;
 
@@ -141,37 +142,37 @@ namespace Platformer_Prototype
                         for (int i = 0; i < BEngine.Canvas.Length; i++)
                             if (Bounds.Intersects(BEngine.Canvas[i]))
                             {
-                                Speed.Y = -7f;
+                                Speed.Y = -jump;
                                 returner = true;
                             }
                         if (checkAllLines(BEngine.tan1) == true)
                         {
-                            Speed.Y = -7f;
+                            Speed.Y = -jump;
                             returner = true;
                         }
                         if (checkAllLines(BEngine.tan2) == true)
                         {
-                            Speed.Y = -7f;
+                            Speed.Y = -jump;
                             returner = true;
                         }
                         if (checkAllLines(BEngine.tan3) == true)
                         {
-                            Speed.Y = -7f;
+                            Speed.Y = -jump;
                             returner = true;
                         }
                         if (checkAllLines(BEngine.tan4) == true)
                         {
-                            Speed.Y = -7f;
+                            Speed.Y = -jump;
                             returner = true;
                         }
                         if (checkAllLines(BEngine.tan5) == true)
                         {
-                            Speed.Y = -7f;
+                            Speed.Y = -jump;
                             returner = true;
                         }
                         if (checkAllLines(BEngine.tan6) == true)
                         {
-                            Speed.Y = -7f;
+                            Speed.Y = -jump;
                             returner = true;
                         }
 
@@ -301,24 +302,27 @@ namespace Platformer_Prototype
             if (Bounds.Intersects(target))
             {
 
-                if (Speed.X > 0)
-                    for (int i = 20; i > 0; i--)
-                    {
+                if (Speed.X > 0) {
+                    for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.X--;
                     }
+                  
+                   
+                }
 
-                if (Speed.X < 0)
-                    for (int i = 20; i > 0; i--)
-                    {
+                if (Speed.X < 0) {
+                    for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.X++;
 
                     }
+                   
+                }
 
                 Speed.X = 0;
             }
@@ -370,28 +374,44 @@ namespace Platformer_Prototype
 
         public void checkTollisionsX(Triangle target)
         {
+            jump = 7;
             if (checkAllLines(target) == true)
-            {
-
-                if (Speed.X > 0)
-                    for (int i = 20; i > 0; i--)
-                    {
+            {        
+           
+                if (Speed.X > 0) {
+                    for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)
                             Position.X--;
                     }
 
-                if (Speed.X < 0)
-                    for (int i = 20; i > 0; i--)
-                    {
+                    Position.X += Math.Abs(Speed.X);
+                    Position.Y -= Math.Abs(Speed.X);
+                 
+                  
+                   
+                    
+                }
+
+                if (Speed.X < 0) {
+                    for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)
                             Position.X++;
                     }
 
-                Speed.X = 0;
+                    Position.X -= Math.Abs(Speed.X);
+                    Position.Y -= Math.Abs(Speed.X);
+                  
+                }
+
+              
+
+               
+               
+            
             }
         }
 

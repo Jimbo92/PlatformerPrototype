@@ -30,6 +30,9 @@ namespace Platformer_Prototype
         public Vector2 bl = Vector2.Zero;
         public Vector2 br = Vector2.Zero;
 
+        //Controls
+        bool jump = false;
+
 
         public bool[] checks = new bool[2];
 
@@ -107,44 +110,39 @@ namespace Platformer_Prototype
             }
 
 
+            //jump
+            if (jump == true) {
+                Position.Y += 1;
+                updateBounds(Camera.Position);
+                BEngine.updateHitboxes(Position, Bounds);
 
-            Position.Y += 1;
-            updateBounds(Camera.Position);
-            BEngine.updateHitboxes(Position, Bounds);
+                for (int i = 0; i < BEngine.Canvas.Length; i++) {
+                    if (Bounds.Intersects(BEngine.Canvas[i]))
+                        Speed.Y = -7f;
 
-            for (int i = 0; i < BEngine.Canvas.Length; i++)
-            {
-                if (Bounds.Intersects(BEngine.Canvas[i]))
+                }
+
+                if (checkAllLines(BEngine.tan1) == true) {
                     Speed.Y = -7f;
-               
-            }
+                }
+                if (checkAllLines(BEngine.tan2) == true) {
+                    Speed.Y = -7f;
+                }
+                if (checkAllLines(BEngine.tan3) == true) {
+                    Speed.Y = -7f;
+                }
+                if (checkAllLines(BEngine.tan4) == true) {
+                    Speed.Y = -7f;
+                }
+                if (checkAllLines(BEngine.tan5) == true) {
+                    Speed.Y = -7f;
+                }
+                if (checkAllLines(BEngine.tan6) == true) {
+                    Speed.Y = -7f;
+                }
 
-            if (checkAllLines(BEngine.tan1) == true)
-            {
-                Speed.Y = -7f;
+                Position.Y -= 1;
             }
-            if (checkAllLines(BEngine.tan2) == true)
-            {
-                Speed.Y = -7f;
-            }
-            if (checkAllLines(BEngine.tan3) == true)
-            {
-                Speed.Y = -7f;
-            }
-            if (checkAllLines(BEngine.tan4) == true)
-            {
-                Speed.Y = -7f;
-            }
-            if (checkAllLines(BEngine.tan5) == true)
-            {
-                Speed.Y = -7f;
-            }
-            if (checkAllLines(BEngine.tan6) == true)
-            {
-                Speed.Y = -7f;
-            }
-
-            Position.Y -= 1;
          
 
         }

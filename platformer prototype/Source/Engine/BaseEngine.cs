@@ -399,15 +399,15 @@ namespace Platformer_Prototype
                     if (map[TileY + (int)Ratio.Y, TileX + i] == 4) //left triangle
                     {
                         Rectangle Corner = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                        tan1.a = new Vector2(Corner.X, Corner.Y);
+                        tan1.a = new Vector2(Corner.X, Corner.Y + 1);
                         tan1.b = new Vector2(Corner.X, Corner.Y + tileSize);
-                        tan1.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
+                        tan1.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize + 1);
                     }
                     if (map[TileY + (int)Ratio.Y, TileX + i] == 5) //right triangle
                     {
                         Rectangle Corner = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                        tan1.a = new Vector2(Corner.X + tileSize, Corner.Y);
-                        tan1.b = new Vector2(Corner.X, Corner.Y + tileSize);
+                        tan1.a = new Vector2(Corner.X + tileSize, Corner.Y + 1);
+                        tan1.b = new Vector2(Corner.X, Corner.Y + tileSize );
                         tan1.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                     }
                 }
@@ -428,14 +428,14 @@ namespace Platformer_Prototype
                 if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == 4) //left triangle
                 {
                     Rectangle Corner = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + (int)Ratio.Y) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                    tan2.a = new Vector2(Corner.X, Corner.Y);
+                    tan2.a = new Vector2(Corner.X, Corner.Y + 1);
                     tan2.b = new Vector2(Corner.X, Corner.Y + tileSize);
                     tan2.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                 }
                 if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == 5) //right triangle
                 {
                     Rectangle Corner = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + (int)Ratio.Y) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                    tan2.a = new Vector2(Corner.X + tileSize, Corner.Y);
+                    tan2.a = new Vector2(Corner.X + tileSize, Corner.Y + 1);
                     tan2.b = new Vector2(Corner.X, Corner.Y + tileSize);
                     tan2.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                 }
@@ -456,14 +456,14 @@ namespace Platformer_Prototype
                     if (map[TileY, TileX + i] == 4) //left triangle
                     {
                         Rectangle Corner = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                        tan3.a = new Vector2(Corner.X, Corner.Y);
+                        tan3.a = new Vector2(Corner.X, Corner.Y + 1);
                         tan3.b = new Vector2(Corner.X, Corner.Y + tileSize);
                         tan3.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                     }
                     if (map[TileY, TileX + i] == 5) //right triangle
                     {
                         Rectangle Corner = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                        tan3.a = new Vector2(Corner.X + tileSize, Corner.Y);
+                        tan3.a = new Vector2(Corner.X + tileSize, Corner.Y + 1);
                         tan3.b = new Vector2(Corner.X, Corner.Y + tileSize);
                         tan3.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                     }
@@ -482,14 +482,14 @@ namespace Platformer_Prototype
                 if (map[TileY, TileX + (int)Ratio.X] == 4) //left triangle
                 {
                     Rectangle Corner = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                    tan4.a = new Vector2(Corner.X, Corner.Y);
+                    tan4.a = new Vector2(Corner.X, Corner.Y + 1);
                     tan4.b = new Vector2(Corner.X, Corner.Y + tileSize);
                     tan4.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                 }
                 if (map[TileY, TileX + (int)Ratio.X] == 5) //right triangle
                 {
                     Rectangle Corner = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                    tan4.a = new Vector2(Corner.X + tileSize, Corner.Y);
+                    tan4.a = new Vector2(Corner.X + tileSize, Corner.Y + 1);
                     tan4.b = new Vector2(Corner.X, Corner.Y + tileSize);
                     tan4.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                 }
@@ -510,14 +510,14 @@ namespace Platformer_Prototype
                     if (map[TileY + i, TileX] == 4) //left triangle
                     {
                         Rectangle Corner = new Rectangle(TileX * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                        tan5.a = new Vector2(Corner.X, Corner.Y);
+                        tan5.a = new Vector2(Corner.X, Corner.Y + 1);
                         tan5.b = new Vector2(Corner.X, Corner.Y + tileSize);
                         tan5.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                     }
                     if (map[TileY + i, TileX] == 5) //right triangle
                     {
                         Rectangle Corner = new Rectangle(TileX * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                        tan5.a = new Vector2(Corner.X + tileSize, Corner.Y);
+                        tan5.a = new Vector2(Corner.X + tileSize, Corner.Y + 1);
                         tan5.b = new Vector2(Corner.X, Corner.Y + tileSize);
                         tan5.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                     }
@@ -538,15 +538,15 @@ namespace Platformer_Prototype
                     if (map[TileY + i, TileX + (int)Ratio.X] == 4) //left triangle
                     {
                         Rectangle Corner = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                        tan6.a = new Vector2(Corner.X, Corner.Y);
+                        tan6.a = new Vector2(Corner.X, Corner.Y + 1);
                         tan6.b = new Vector2(Corner.X, Corner.Y + tileSize);
                         tan6.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                     }
                     if (map[TileY + i, TileX + (int)Ratio.X] == 5) //right triangle
                     {
                         Rectangle Corner = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                        tan6.a = new Vector2(Corner.X + tileSize, Corner.Y);
-                        tan6.b = new Vector2(Corner.X, Corner.Y + tileSize);
+                        tan6.a = new Vector2(Corner.X + tileSize, Corner.Y + 1);
+                        tan6.b = new Vector2(Corner.X, Corner.Y + tileSize );
                         tan6.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                     }
                 }
@@ -558,6 +558,7 @@ namespace Platformer_Prototype
             Rectangle tileDraw;
             background.Draw(sB);
 
+          
             Textures.TextureType = Textures.ETextureType.INGAME;
 
             Textures.DrawBackgroundMapTextures(sB, BackMapTextures, tileSize, Vector2.Zero, game1);
@@ -611,7 +612,7 @@ namespace Platformer_Prototype
             float angleInDeg = (float)Math.Atan2(deltaY, deltaX) * (180 / (float)Math.PI);
 
             float getRotation = MathHelper.ToRadians(angleInDeg - 90);
-            Vector2 getOrigin = new Vector2(0, 0);
+            Vector2 getOrigin = Vector2.Zero;
             sb.Draw(Textures._DBG_Line_Tex, getScale, getDestination, Color.White, getRotation, getOrigin, SpriteEffects.None, 0);
 
         }
