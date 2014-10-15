@@ -35,7 +35,7 @@ namespace Platformer_Prototype
         static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
 
         //Debug Textures
-        static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[3];
+        static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[4];
         static public Texture2D _DBG_WaterTop_Tex;
         static public Texture2D _DBG_WaterBot_Tex;
         static public Texture2D _DBG_Line_Tex;
@@ -63,15 +63,18 @@ namespace Platformer_Prototype
                 _TILE_Dirt_Tex[i] = getContent.Load<Texture2D>("tiles/dirt" + i);
             }
 
-            //Effects & Editor
+            //Effects
             for (int i = 0; i < 3; i++)
             {
                 _TILE_Shade_Effect[i] = getContent.Load<Texture2D>("tiles/effects/shade" + i);
-                _DBG_Trigger_Tex[i] = getContent.Load<Texture2D>("editor/trigger" + i);
             }
 
 
-            //Debug Textures
+            //Debug Textures & Editor
+            for (int i = 0; i < 4; i++)
+            {
+                _DBG_Trigger_Tex[i] = getContent.Load<Texture2D>("editor/trigger" + i);
+            }
             _DBG_Line_Tex = getContent.Load<Texture2D>("debug/lineTex");
             _DBG_WaterTop_Tex = getContent.Load<Texture2D>("editor/watertopeditor");
             _DBG_WaterBot_Tex = getContent.Load<Texture2D>("editor/waterbottomeditor");
@@ -104,15 +107,18 @@ namespace Platformer_Prototype
                                 //Trigger Full Block Texture
                                 if (MapData[j, i] == 1)
                                     sB.Draw(_DBG_Trigger_Tex[0], tileDraw, Color.White);
-                                //Trigger Half Block Left Texture
+                                //Trigger Side Block Left Texture
                                 if (MapData[j, i] == 4)
                                     sB.Draw(_DBG_Trigger_Tex[1], tileDraw, Color.White);
-                                //Trigger Half Block Right Texture
+                                //Trigger Side Block Right Texture
                                 if (MapData[j, i] == 5)
                                     sB.Draw(_DBG_Trigger_Tex[1], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
                                 //Trigger Water Block Texture
                                 if (MapData[j, i] == 3)
                                     sB.Draw(_DBG_Trigger_Tex[2], tileDraw, Color.White);
+                                //Trigger Half Block Texture
+                                if (MapData[j, i] == 6)
+                                    sB.Draw(_DBG_Trigger_Tex[3], tileDraw, Color.White);
                             }
 
                             if (MapData[j, i] == 2)

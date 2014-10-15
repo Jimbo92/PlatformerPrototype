@@ -20,15 +20,13 @@ namespace Platformer_Prototype
             int[,] loadMap;
             string path = AppDomain.CurrentDomain.BaseDirectory + "maps/" + MapDataFile + ".txt";
             var data = File.ReadAllLines(@path);
-            loadMap = new int[data.Length, data[0].Length];
+            loadMap = new int[data.Length, (data[0].Length+1)/2];
             for (int i = 0; i < data.Length; i++)
             {
                 string line = data[i];
-                for (int j = 0; j < (data[0].Length / 2) + 1; j++)
-                {
-                    string[] charr = line.Split(',');
+                string[] charr = line.Split(',');
+                for (int j = 0; j < charr.Length; j++)
                     loadMap[i, j] = Convert.ToInt32(charr[j]);
-                }
             }
             return loadMap;
         }

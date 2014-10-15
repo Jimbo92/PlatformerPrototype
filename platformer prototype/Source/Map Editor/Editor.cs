@@ -209,22 +209,6 @@ namespace Platformer_Prototype
 
         }
 
-        private int[,] LoadMap(string MapFile)
-        {
-            string[] strData = File.ReadAllLines("maps/" + MapFile + ".txt");
-            var width = strData[0].Length;
-            var height = strData.Length;
-            var TileData = new int[width, height];
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    TileData[x, y] = strData[y][x];
-                }
-            }
-            return TileData;
-        }
-
         private void SaveMap(int[,] getGrid, string MapFile)
         {
             StreamWriter sw = new StreamWriter("maps/" + MapFile + ".txt");
