@@ -285,6 +285,15 @@ namespace Platformer_Prototype
             //Selector Grid
             if (SelectorUp)
             {
+                Textures.TextureType = Textures.ETextureType.SELECTOR;
+                switch (MapLayers)
+                {
+                    case EMapLayers.TRIGGER: Textures.DrawTriggerMapData(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 10, SelectorRectangle.Y + 10), game1); break;
+                    case EMapLayers.BACKGROUND: Textures.DrawBackgroundMapTextures(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 10, SelectorRectangle.Y + 10), game1); break;
+                    case EMapLayers.FOREGROUND: Textures.DrawForegroundMapTextures(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 10, SelectorRectangle.Y + 10), game1); break;
+                    case EMapLayers.EFFECT: Textures.DrawMapEffects(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 10, SelectorRectangle.Y + 10), game1); break;
+                }
+
                 for (int i = 0; i < SelectorGrid.GetLength(1); i++)
                     for (int j = 0; j < SelectorGrid.GetLength(0); j++)
                     {
@@ -293,14 +302,6 @@ namespace Platformer_Prototype
                         if (SelectorGrid[j, i] != 0)
                         sB.Draw(GridTexture, new Rectangle(SelectorGridTile.X - 2, SelectorGridTile.Y - 2, 36, 36), Color.Gray);
                        
-                        Textures.TextureType = Textures.ETextureType.SELECTOR;
-                        switch (MapLayers)
-                        {
-                            case EMapLayers.TRIGGER: Textures.DrawTriggerMapData(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 10, SelectorRectangle.Y + 10), game1); break;
-                            case EMapLayers.BACKGROUND: Textures.DrawBackgroundMapTextures(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 10, SelectorRectangle.Y + 10), game1); break;
-                            case EMapLayers.FOREGROUND: Textures.DrawForegroundMapTextures(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 10, SelectorRectangle.Y + 10), game1); break;
-                            case EMapLayers.EFFECT: Textures.DrawMapEffects(sB, SelectorGrid, 32, new Vector2(SelectorRectangle.X + 10, SelectorRectangle.Y + 10), game1); break;
-                        }
 
                         if (SelectorGridTile.Contains(Mouse.GetState().X, Mouse.GetState().Y) && SelectorRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                         {
