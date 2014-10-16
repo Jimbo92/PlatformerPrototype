@@ -15,14 +15,14 @@ namespace Platformer_Prototype
 {
     class Editor
     {
-        enum EMapLayers
+        public enum EMapLayers
         {
             TRIGGER,
             BACKGROUND,
             FOREGROUND,
             EFFECT,
         };
-        EMapLayers MapLayers = EMapLayers.TRIGGER;
+        public EMapLayers MapLayers = EMapLayers.TRIGGER;
         private int Layers = 0;
 
         public Rectangle CursorPlacer = new Rectangle(0, 0, 32, 32);
@@ -53,12 +53,19 @@ namespace Platformer_Prototype
         private char[,] SelectorGrid = MapLoader.LoadMapData("editor/selector1");
         private Rectangle SelectorGridTile;
         private char TileChooser;
+        private char TileHover;
+
+        private Texture2D ToolBarTexture;
+        private Rectangle BottomBarRectangle;
+
+        private Rectangle BrushSize;
+        private int BrushSizeValue = 32;
 
 
         public Editor(ContentManager getContent, Vector2 getScreenSize)
         {
             ScreenSize = getScreenSize;
-            Camera.CameraMode = Camera.CameraState.MOUSE;
+            Camera.CameraMode = Camera.CameraState.FREE;
 
             //Textures
             SelectorBackgroundTexture = getContent.Load<Texture2D>("editor/sidebar");
@@ -68,6 +75,8 @@ namespace Platformer_Prototype
             PlacerTexture = getContent.Load<Texture2D>("editor/placer");
             Crosshair = new Sprite(getContent, "objects/crosshairss", 98, 98, 1, 3);
             Font = getContent.Load<SpriteFont>("fonts/CopperplateGothicBold");
+            ToolBarTexture = getContent.Load<Texture2D>("editor/toolbar");
+            BottomBarRectangle = new Rectangle(300, (int)ScreenSize.Y - 64, 500, 64);
                 
 
             for (int i = 0; i < FontTimers.Length; i++)
@@ -126,17 +135,50 @@ namespace Platformer_Prototype
 
             //Scroll in & out with mouse wheel
             if (Mouse.GetState().ScrollWheelValue < PrevScrollValue)
-                TileSize -= 3;
+                TileSize -= 7;
             if (Mouse.GetState().ScrollWheelValue > PrevScrollValue)
-                TileSize += 3;
+                TileSize += 7;
             PrevScrollValue = Mouse.GetState().ScrollWheelValue;
-            if (TileSize <= 15)
-                TileSize = 15;
+            if (TileSize >= 32)
+                TileSize = 32;
+            else if (TileSize <= 18)
+                TileSize = 18;
+
+            //Brush Size
+            if (Input.KeyboardPressed(Keys.OemPlus))
+                if (BrushSizeValue == 32)
+                    BrushSizeValue = 64;
+                else if (BrushSizeValue == 64)
+                    BrushSizeValue = 128;
+            if (Input.KeyboardPressed(Keys.OemMinus))
+                if (BrushSizeValue == 128)
+                    BrushSizeValue = 64;
+                else if (BrushSizeValue == 64)
+                    BrushSizeValue = 32;
+
+            if (BrushSizeValue == 64)
+            {
+                if (TileSize == 32)
+                    BrushSize = new Rectangle(Mouse.GetState().X - 48, Mouse.GetState().Y - 48, 95, 95);
+                else if (TileSize == 25)
+                    BrushSize = new Rectangle(Mouse.GetState().X - 36, Mouse.GetState().Y - 36, 74, 74);
+                else if (TileSize == 18)
+                    BrushSize = new Rectangle(Mouse.GetState().X - 25, Mouse.GetState().Y - 25, 53, 53);
+            }
+            else if (BrushSizeValue == 128)
+            {
+                if (TileSize == 32)
+                    BrushSize = new Rectangle(Mouse.GetState().X - 65, Mouse.GetState().Y - 65, 127, 127);
+                else if (TileSize == 25)
+                    BrushSize = new Rectangle(Mouse.GetState().X - 50, Mouse.GetState().Y - 50, 99, 99);
+                else if (TileSize == 18)
+                    BrushSize = new Rectangle(Mouse.GetState().X - 36, Mouse.GetState().Y - 36, 71, 71);
+            }
 
             //Switch Layers
-            if (Input.KeyboardPressed(Keys.Tab))
+            if (Input.KeyboardPressed(Keys.Tab) || Input.KeyboardPressed(Keys.RightShift))
             {
-                TileChooser = '0';
+                TileChooser = ' ';
                 Layers++;
                 if (Layers >= 4)
                     Layers = 0;
@@ -255,11 +297,17 @@ namespace Platformer_Prototype
                     DrawTile = new Rectangle((int)Camera.Position.X + TileSize * i, (int)Camera.Position.Y + TileSize * j, TileSize, TileSize);
 
                     if (ShowGrid)
-                        sB.Draw(GridTexture, DrawTile, Color.White);
+                        sB.Draw(GridTexture, DrawTile, Color.SaddleBrown);
 
-                    if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    if (BrushSizeValue == 32)
                     {
-                        sB.Draw(PlacerTexture, DrawTile, Color.White);
+                        if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                            sB.Draw(PlacerTexture, DrawTile, Color.White);
+                    }
+                    else if (BrushSizeValue > 32)
+                    {
+                        if (BrushSize.Contains(DrawTile))
+                            sB.Draw(PlacerTexture, DrawTile, Color.White);
                     }
                 }
 
@@ -282,32 +330,40 @@ namespace Platformer_Prototype
                     for (int j = 0; j < SelectorGrid.GetLength(0); j++)
                     {
                         SelectorGridTile = new Rectangle(SelectorRectangle.X + 40 * i + 10, SelectorRectangle.Y + 40 * j + 10, 32, 32);
-                       
-                        if (SelectorGrid[j, i] != 0)
-                        sB.Draw(GridTexture, new Rectangle(SelectorGridTile.X - 2, SelectorGridTile.Y - 2, 36, 36), Color.Gray);
-                       
+
 
                         if (SelectorGridTile.Contains(Mouse.GetState().X, Mouse.GetState().Y) && SelectorRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                         {
+                            TileHover = SelectorGrid[j, i];
+
                             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                             {
                                 TileChooser = SelectorGrid[j, i];
                             }
                             else
                                 sB.Draw(PlacerTexture, SelectorGridTile, Color.Red);
+
+                            if (SelectorGrid[j, i] == TileHover)
+                                sB.DrawString(Font, TileIndex.Index(TileHover, this), new Vector2(Mouse.GetState().X + 10, Mouse.GetState().Y - 25), Color.Snow, 0, Vector2.Zero, 0.8f, SpriteEffects.None, 0f);
                         }
 
-                        if (SelectorGrid[j, i] == TileChooser && SelectorGrid[j, i] != 0)
+                        if (SelectorGrid[j, i] == TileChooser && SelectorGrid[j, i] != ' ')
                         {
                             sB.Draw(SelectedTexture, new Rectangle(SelectorGridTile.X - 3, SelectorGridTile.Y - 3, 38, 38), Color.White);
                         }
+
+                        //sB.Draw(GridTexture, new Rectangle(SelectorGridTile.X - 2, SelectorGridTile.Y - 2, 36, 36), Color.Gray);
                     }
             }
+            //Bottom ToolBar
+            sB.Draw(ToolBarTexture, BottomBarRectangle, Color.White);
             //Editor Fonts
             //Layer Detail
-            sB.DrawString(Font,"Map Editor v2.0 \n" + "LAYER: " + MapLayers.ToString(), new Vector2(20, 20), Color.Snow);
+            sB.DrawString(Font,"Map Editor \n" + "LAYER: " + MapLayers.ToString(), new Vector2(20, 20), Color.Snow);
             //Selected Tile Detail
-            sB.DrawString(Font, "Selected Tile: ", new Vector2(20, 60), Color.Red, 0, new Vector2(0, 0), 0.7f, SpriteEffects.None, 0);
+            sB.DrawString(Font, "Selected Tile: \n" + TileIndex.Index(TileChooser, this), new Vector2(ScreenSize.X / 3 + 25, 20), Color.Cyan);
+            //Brush Size Detail
+            sB.DrawString(Font, "Brush Size: " + BrushSizeValue.ToString(), new Vector2(ScreenSize.X - 137, ScreenSize.Y - 25), Color.Cyan, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0);
             //Show Grid Detail
             FontTimers[0]++;
             if (FontTimers[0] <= 100)
@@ -338,17 +394,21 @@ namespace Platformer_Prototype
                 {
                     DrawTile = new Rectangle((int)Camera.Position.X + TileSize * i, (int)Camera.Position.Y + TileSize * j, TileSize, TileSize);
 
-                    if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    if (BrushSizeValue == 32)
                     {
-                        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                        {
-                            GridDataL1[j, i] = TileChooser;
-                        }
-
-                        if (Mouse.GetState().RightButton == ButtonState.Pressed)
-                        {
-                            GridDataL1[j, i] = '0';
-                        }
+                        if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                                GridDataL1[j, i] = TileChooser;
+                            else if (Mouse.GetState().RightButton == ButtonState.Pressed)
+                                GridDataL1[j, i] = ' ';
+                    }
+                    else if (BrushSizeValue > 32)
+                    {
+                        if (BrushSize.Contains(DrawTile))
+                            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                                GridDataL1[j, i] = TileChooser;
+                            else if (Mouse.GetState().RightButton == ButtonState.Pressed)
+                                GridDataL1[j, i] = ' ';
                     }
                 }
         }
@@ -359,17 +419,21 @@ namespace Platformer_Prototype
                 {
                     DrawTile = new Rectangle((int)Camera.Position.X + TileSize * i, (int)Camera.Position.Y + TileSize * j, TileSize, TileSize);
 
-                    if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    if (BrushSizeValue == 32)
                     {
-                        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                        {
-                            GridDataL2[j, i] = TileChooser;
-                        }
-
-                        if (Mouse.GetState().RightButton == ButtonState.Pressed)
-                        {
-                            GridDataL2[j, i] = '0';
-                        }
+                        if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                                GridDataL2[j, i] = TileChooser;
+                            else if (Mouse.GetState().RightButton == ButtonState.Pressed)
+                                GridDataL2[j, i] = ' ';
+                    }
+                    else if (BrushSizeValue > 32)
+                    {
+                        if (BrushSize.Contains(DrawTile))
+                            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                                GridDataL2[j, i] = TileChooser;
+                            else if (Mouse.GetState().RightButton == ButtonState.Pressed)
+                                GridDataL2[j, i] = ' ';
                     }
                 }
         }
@@ -380,18 +444,23 @@ namespace Platformer_Prototype
                 {
                     DrawTile = new Rectangle((int)Camera.Position.X + TileSize * i, (int)Camera.Position.Y + TileSize * j, TileSize, TileSize);
 
-                    if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    if (BrushSizeValue == 32)
                     {
-                        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                        {
-                            GridDataL3[j, i] = TileChooser;
-                        }
-
-                        if (Mouse.GetState().RightButton == ButtonState.Pressed)
-                        {
-                            GridDataL3[j, i] = '0';
-                        }
+                        if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                                GridDataL3[j, i] = TileChooser;
+                            else if (Mouse.GetState().RightButton == ButtonState.Pressed)
+                                GridDataL3[j, i] = ' ';
                     }
+                    else if (BrushSizeValue > 32)
+                    {
+                        if (BrushSize.Contains(DrawTile))
+                            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                                GridDataL3[j, i] = TileChooser;
+                            else if (Mouse.GetState().RightButton == ButtonState.Pressed)
+                                GridDataL3[j, i] = ' ';
+                    }
+                        
                 }
         }
         private void EffectMapDrawCodes(SpriteBatch sB)
@@ -401,17 +470,21 @@ namespace Platformer_Prototype
                 {
                     DrawTile = new Rectangle((int)Camera.Position.X + TileSize * i, (int)Camera.Position.Y + TileSize * j, TileSize, TileSize);
 
-                    if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                    if (BrushSizeValue == 32)
                     {
-                        if (Mouse.GetState().LeftButton == ButtonState.Pressed)
-                        {
-                            GridDataL4[j, i] = TileChooser;
-                        }
-
-                        if (Mouse.GetState().RightButton == ButtonState.Pressed)
-                        {
-                            GridDataL4[j, i] = '0';
-                        }
+                        if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                                GridDataL4[j, i] = TileChooser;
+                            else if (Mouse.GetState().RightButton == ButtonState.Pressed)
+                                GridDataL4[j, i] = ' ';
+                    }
+                    else if (BrushSizeValue > 32)
+                    {
+                        if (BrushSize.Contains(DrawTile))
+                            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                                GridDataL4[j, i] = TileChooser;
+                            else if (Mouse.GetState().RightButton == ButtonState.Pressed)
+                                GridDataL4[j, i] = ' ';
                     }
                 }
         }

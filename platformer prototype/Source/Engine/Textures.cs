@@ -114,13 +114,14 @@ namespace Platformer_Prototype
                                 if (MapData[j, i] == '1')
                                     sB.Draw(_DBG_Trigger_Tex[1], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
                                 //Trigger Water Block Texture
-                                if (MapData[j, i] == '2')
+                                if (MapData[j, i] == '3')
                                     sB.Draw(_DBG_Trigger_Tex[2], tileDraw, Color.White);
                                 //Trigger Half Block Texture
-                                if (MapData[j, i] == '3')
+                                if (MapData[j, i] == '2')
                                     sB.Draw(_DBG_Trigger_Tex[3], tileDraw, Color.White);
                             }
 
+                            //Trigger Ladder Block
                             if (MapData[j, i] == '4')
                                 sB.Draw(_OBJ_Ladder_Tex, tileDraw, Color.White);
 
@@ -153,43 +154,31 @@ namespace Platformer_Prototype
                             //----------------------------------------------------//Textures Back//----------------------------------------------------//
 
                             //Draw Grass
-                            if (MapData[j, i] == '%')
+                            if (MapData[j, i] == '#')
                                 sB.Draw(Textures._TILE_Grass_Tex[10], tileDraw, Color.Gray);
 
                             //Draw Dirt
-                            if (MapData[j, i] == '^')
+                            if (MapData[j, i] == '$')
                                 sB.Draw(Textures._TILE_Dirt_Tex[4], tileDraw, Color.Gray);
 
                             //----------------------------------------------------//Textures Infront//----------------------------------------------------//
                             
                             //------------//Grass Background//---------//
-                            //Grass Tile Single
-                            if (MapData[j, i] == '`')
-                                sB.Draw(_TILE_Grass_Tex[0], tileDraw, Color.White);
-                            //Grass Tile Mid Left
-                            if (MapData[j, i] == '0')
-                                sB.Draw(_TILE_Grass_Tex[2], tileDraw, Color.White);
                             //Grass Tile Mid
-                            if (MapData[j, i] == '1')
+                            if (MapData[j, i] == '`')
                                 sB.Draw(_TILE_Grass_Tex[1], tileDraw, Color.White);
-                            //Grass Tile Mid Right
-                            if (MapData[j, i] == '2')
-                                sB.Draw(_TILE_Grass_Tex[2], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-                            //------------//Grass No Top Background//---------//
-                            //Grass Tile Single NoTop
+                            //Grass Tile Right Hill Bottom
                             if (MapData[j, i] == '3')
-                                sB.Draw(_TILE_Grass_Tex[11], tileDraw, Color.White);
-                            //Grass Tile Mid Left NoTop
-                            if (MapData[j, i] == '4')
-                                sB.Draw(_TILE_Grass_Tex[12], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                                sB.Draw(_TILE_Grass_Tex[5], tileDraw, Color.White);
+                            //Grass Tile Left Hill Bottom
+                            if (MapData[j, i] == '2')
+                                sB.Draw(_TILE_Grass_Tex[5], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                            //------------//Grass No Top Background//---------//
                             //Grass Tile Mid NoTop
-                            if (MapData[j, i] == '5')
+                            if (MapData[j, i] == '0')
                                 sB.Draw(_TILE_Grass_Tex[10], tileDraw, Color.White);
-                            //Grass Tile Mid Right NoTop
-                            if (MapData[j, i] == '6')
-                                sB.Draw(_TILE_Grass_Tex[12], tileDraw, Color.White);
                             //Grass Tile Mid To Dirt Tile Mid
-                            if (MapData[j, i] == '7')
+                            if (MapData[j, i] == '1')
                                 sB.Draw(_TILE_Grass_Tex[13], tileDraw, Color.White);
 
 
@@ -201,19 +190,19 @@ namespace Platformer_Prototype
                             if (MapData[j, i] == '9')
                                 sB.Draw(_TILE_Dirt_Tex[1], tileDraw, Color.White);
                             //Dirt Tile Right
-                            if (MapData[j, i] == '~')
+                            if (MapData[j, i] == '-')
                                 sB.Draw(_TILE_Dirt_Tex[2], tileDraw, Color.White);
                             //Dirt Tile Single
-                            if (MapData[j, i] == '!')
+                            if (MapData[j, i] == '=')
                                 sB.Draw(_TILE_Dirt_Tex[3], tileDraw, Color.White);
                             //Dirt Tile NoTop
-                            if (MapData[j, i] == '@')
+                            if (MapData[j, i] == '~')
                                 sB.Draw(_TILE_Dirt_Tex[4], tileDraw, Color.White);
                             //Dirt Tile Hill Left
-                            if (MapData[j, i] == '#')
+                            if (MapData[j, i] == '!')
                                 sB.Draw(_TILE_Dirt_Tex[5], tileDraw, Color.White);
                             //Dirt Tile Hill Right
-                            if (MapData[j, i] == '$')
+                            if (MapData[j, i] == '@')
                                 sB.Draw(_TILE_Dirt_Tex[6], tileDraw, Color.White);
 
                         }
@@ -257,30 +246,43 @@ namespace Platformer_Prototype
                             //Grass Tile Right Hill Top
                             if (MapData[j, i] == '4')
                                 sB.Draw(_TILE_Grass_Tex[6], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-                            //Grass Tile Left Hill Bottom
-                            if (MapData[j, i] == '5')
-                                sB.Draw(_TILE_Grass_Tex[5], tileDraw, Color.White);
-                            //Grass Tile Right Hill Bottom
-                            if (MapData[j, i] == '6')
-                                sB.Draw(_TILE_Grass_Tex[5], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
                             //Grass Tile Half Single
-                            if (MapData[j, i] == '7')
+                            if (MapData[j, i] == '5')
                                 sB.Draw(_TILE_Grass_Tex[7], tileDraw, Color.White);
                             //Grass Tile Half Mid Left
-                            if (MapData[j, i] == '8')
+                            if (MapData[j, i] == '6')
                                 sB.Draw(_TILE_Grass_Tex[8], tileDraw, Color.White);
                             //Grass Tile Half Mid
-                            if (MapData[j, i] == '9')
+                            if (MapData[j, i] == '7')
                                 sB.Draw(_TILE_Grass_Tex[9], tileDraw, Color.White);
                             //Grass Tile Half Mid Right
-                            if (MapData[j, i] == '~')
+                            if (MapData[j, i] == '8')
                                 sB.Draw(_TILE_Grass_Tex[8], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
                             //Grass Tile Edge Left
-                            if (MapData[j, i] == '!')
+                            if (MapData[j, i] == '9')
                                 sB.Draw(_TILE_Grass_Tex[14], tileDraw, Color.White);
                             //Grass Tile Edge Right
-                            if (MapData[j, i] == '@')
+                            if (MapData[j, i] == '-')
                                 sB.Draw(_TILE_Grass_Tex[14], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                            //Grass Tile Single
+                            if (MapData[j, i] == '=')
+                                sB.Draw(_TILE_Grass_Tex[0], tileDraw, Color.White);
+                            //Grass Tile Mid Left
+                            if (MapData[j, i] == '~')
+                                sB.Draw(_TILE_Grass_Tex[2], tileDraw, Color.White);
+                            //Grass Tile Mid Right
+                            if (MapData[j, i] == '!')
+                                sB.Draw(_TILE_Grass_Tex[2], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                            //------------//Grass No Top Foreground//---------//
+                            //Grass Tile Single NoTop
+                            if (MapData[j, i] == '@')
+                                sB.Draw(_TILE_Grass_Tex[11], tileDraw, Color.White);
+                            //Grass Tile Mid Left NoTop
+                            if (MapData[j, i] == '#')
+                                sB.Draw(_TILE_Grass_Tex[12], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                            //Grass Tile Mid Right NoTop
+                            if (MapData[j, i] == '$')
+                                sB.Draw(_TILE_Grass_Tex[12], tileDraw, Color.White);
 
                             ////----------------------------------------------------//Objects//----------------------------------------------------//
                             //

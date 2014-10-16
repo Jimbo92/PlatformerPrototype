@@ -166,7 +166,7 @@ namespace Platformer_Prototype
 
             player.checks[0] = false;
             player.updateBounds(Camera.Position);
-            updateNoclips(player.Position, player.Bounds, '2');
+            updateNoclips(player.Position, player.Bounds, '3');
             foreach (Rectangle noclip in NoClip)
             {
                 if (player.Bounds.Intersects(noclip))
@@ -236,7 +236,7 @@ namespace Platformer_Prototype
 
                 e.checks[0] = false;
                 e.updateBounds(Camera.Position);
-                updateNoclips(e.Position, e.Bounds, '2');
+                updateNoclips(e.Position, e.Bounds, '3');
                 foreach (Rectangle noclip in NoClip)
                 {
                     if (e.Bounds.Intersects(noclip))
@@ -393,7 +393,7 @@ namespace Platformer_Prototype
                         Canvas[0] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                     }
 
-                    if (map[TileY + (int)Ratio.Y, TileX + i] == '3') {
+                    if (map[TileY + (int)Ratio.Y, TileX + i] == '2') {
                         Canvas[0] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize / 2);
                     }
                     if (map[TileY + (int)Ratio.Y, TileX + i] == '0') //left triangle
@@ -423,7 +423,7 @@ namespace Platformer_Prototype
                 if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == '`')
                     Canvas[1] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + (int)Ratio.Y) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
 
-                if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == '3')
+                if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == '2')
                     Canvas[1] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + (int)Ratio.Y) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize/2);
                 if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == '0') //left triangle
                 {
@@ -451,7 +451,7 @@ namespace Platformer_Prototype
                 {
                     if (map[TileY, TileX + i] == '`')
                         Canvas[2] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                    if (map[TileY, TileX + i] == '3')
+                    if (map[TileY, TileX + i] == '2')
                         Canvas[2] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize/2);
                     if (map[TileY, TileX + i] == '0') //left triangle
                     {
@@ -477,7 +477,7 @@ namespace Platformer_Prototype
             {
                 if (map[TileY, TileX + (int)Ratio.X] == '`')
                     Canvas[3] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
-                if (map[TileY, TileX + (int)Ratio.X] == '3')
+                if (map[TileY, TileX + (int)Ratio.X] == '2')
                     Canvas[3] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize/2);
                 if (map[TileY, TileX + (int)Ratio.X] == '0') //left triangle
                 {
@@ -505,7 +505,7 @@ namespace Platformer_Prototype
                     if (map[TileY + i, TileX] == '`')
                         Canvas[4] = new Rectangle(TileX * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
 
-                    if (map[TileY + i, TileX] == '3')
+                    if (map[TileY + i, TileX] == '2')
                         Canvas[4] = new Rectangle(TileX * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize/2);
                     if (map[TileY + i, TileX] == '0') //left triangle
                     {
@@ -533,7 +533,7 @@ namespace Platformer_Prototype
                     if (map[TileY + i, TileX + (int)Ratio.X] == '`')
                         Canvas[5] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
 
-                    if (map[TileY + i, TileX + (int)Ratio.X] == '3')
+                    if (map[TileY + i, TileX + (int)Ratio.X] == '2')
                         Canvas[5] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize/2);
                     if (map[TileY + i, TileX + (int)Ratio.X] == '0') //left triangle
                     {

@@ -39,6 +39,7 @@
     <Compile Include="Source\Engine\BaseEngine.cs" />
     <Compile Include="Source\Engine\Camera.cs" />
     <Compile Include="Source\Engine\Global_GameState.cs" />
+    <Compile Include="Source\Map Editor\TileIndex.cs" />
     <Compile Include="Source\Objects\Enemy.cs" />
     <Compile Include="Source\Engine\Game1.cs" />
     <Compile Include="Source\Engine\GUI.cs" />
@@ -97,6 +98,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Editor\TextureSelectorBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Editor\ToolBar.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Editor\Trigger0.png">
