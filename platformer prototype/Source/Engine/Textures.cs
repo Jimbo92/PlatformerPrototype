@@ -27,9 +27,9 @@ namespace Platformer_Prototype
 
         //Map Textures
         //Grass
-        static public Texture2D[] _TILE_Grass_Tex = new Texture2D[15];
+        static public Texture2D _TILE_GrassSS_Tex;
         //Dirt
-        static public Texture2D[] _TILE_Dirt_Tex = new Texture2D[7];
+        static public Texture2D _TILE_DirtSS_Tex;
 
         //Effects
         static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
@@ -53,15 +53,10 @@ namespace Platformer_Prototype
             //_OBJ_Grass_Tex = getContent.Load<Texture2D>("objects/grass4");
 
             //Map Textures
-            //Grass & Dirt
-            for (int i = 0; i < 15; i++)
-            {
-                _TILE_Grass_Tex[i] = getContent.Load<Texture2D>("tiles/grass/grass" + i);
-            }
-            for (int i = 0; i < 7; i++)
-            {
-                _TILE_Dirt_Tex[i] = getContent.Load<Texture2D>("tiles/dirt" + i);
-            }
+            //Grass
+            _TILE_GrassSS_Tex = getContent.Load<Texture2D>("tiles/grass");
+            //Dirt
+            _TILE_DirtSS_Tex = getContent.Load<Texture2D>("tiles/dirt");
 
             //Effects
             for (int i = 0; i < 3; i++)
@@ -85,6 +80,23 @@ namespace Platformer_Prototype
             Bengine = getBengine;
         }
 
+        static private void SpriteSheetDraw(SpriteBatch sB, Texture2D getTexture, Rectangle getRectangle, Color getColour, int getColumns, int getRows, int getFrame)
+        {
+            Rectangle sourceRectangle;
+
+            int Columns = getColumns;
+            int Rows = getRows;
+
+            int sourceWidth = getTexture.Width / Columns;
+            int sourceHeight = getTexture.Height / Rows;
+
+            int row = getFrame / Columns;
+            int column = getFrame % Columns;
+
+            sourceRectangle = new Rectangle(sourceWidth * column, sourceHeight * row, sourceWidth, sourceHeight);
+
+            sB.Draw(getTexture, getRectangle, sourceRectangle, getColour);
+        }
 
         //Draw Trigger Map Data
         public static void DrawTriggerMapData(SpriteBatch sB, char[,] MapData, int tileSize, Vector2 Offset, Game1 game1)
@@ -105,24 +117,24 @@ namespace Platformer_Prototype
                             if (Global_GameState.GameState == Global_GameState.EGameState.EDITOR)
                             {
                                 //Trigger Full Block Texture
-                                if (MapData[j, i] == '`')
+                                if (MapData[j, i] == '☺')
                                     sB.Draw(_DBG_Trigger_Tex[0], tileDraw, Color.White);
                                 //Trigger Side Block Left Texture
-                                if (MapData[j, i] == '0')
+                                if (MapData[j, i] == '☻')
                                     sB.Draw(_DBG_Trigger_Tex[1], tileDraw, Color.White);
                                 //Trigger Side Block Right Texture
-                                if (MapData[j, i] == '1')
+                                if (MapData[j, i] == '♥')
                                     sB.Draw(_DBG_Trigger_Tex[1], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-                                //Trigger Water Block Texture
-                                if (MapData[j, i] == '3')
-                                    sB.Draw(_DBG_Trigger_Tex[2], tileDraw, Color.White);
                                 //Trigger Half Block Texture
-                                if (MapData[j, i] == '2')
+                                if (MapData[j, i] == '♦')
                                     sB.Draw(_DBG_Trigger_Tex[3], tileDraw, Color.White);
+                                //Trigger Water Block Texture
+                                if (MapData[j, i] == '♣')
+                                    sB.Draw(_DBG_Trigger_Tex[2], tileDraw, Color.White);
                             }
 
                             //Trigger Ladder Block
-                            if (MapData[j, i] == '4')
+                            if (MapData[j, i] == '♠')
                                 sB.Draw(_OBJ_Ladder_Tex, tileDraw, Color.White);
 
 
@@ -151,59 +163,78 @@ namespace Platformer_Prototype
                     if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
                         if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
                         {
-                            //----------------------------------------------------//Textures Back//----------------------------------------------------//
-
-                            //Draw Grass
-                            if (MapData[j, i] == '#')
-                                sB.Draw(Textures._TILE_Grass_Tex[10], tileDraw, Color.Gray);
-
-                            //Draw Dirt
-                            if (MapData[j, i] == '$')
-                                sB.Draw(Textures._TILE_Dirt_Tex[4], tileDraw, Color.Gray);
 
                             //----------------------------------------------------//Textures Infront//----------------------------------------------------//
                             
+                            //------------//Grass ForeBack//---------//
+                            //Grass Solid Up
+                            if (MapData[j, i] == '☺') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 22);
+                            //Grass Solid Left
+                            if (MapData[j, i] == '☻') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 8);
+                            //Grass Solid Right
+                            if (MapData[j, i] == '♥') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 2);
+                            //Grass Solid Down
+                            if (MapData[j, i] == '♦') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 36);
+                            //Grass Solid Corner Up Left
+                            if (MapData[j, i] == '♣') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 32);
+                            //Grass Solid Corner Up Right
+                            if (MapData[j, i] == '♠') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 26);
+                            //Grass Solid Corner Down Left
+                            if (MapData[j, i] == '•') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 19);
+                            //Grass Solid Corner Down Right
+                            if (MapData[j, i] == '◘') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 13);
+                            //-----//Solid Hill//----//
+                            //Grass Solid Hill Up Right
+                            if (MapData[j, i] == '○') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 5);
+                            //Grass Solid Hill Up Left
+                            if (MapData[j, i] == '◙') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 3);
+                            //Grass Solid Hill Down Right
+                            if (MapData[j, i] == '♂') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 1);
+                            //Grass Solid Hill Down Left
+                            if (MapData[j, i] == '♀') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 7);
+                            //------//Grass No Top ForeBack//------//
+                            //Grass Solid Mid NoTop
+                            if (MapData[j, i] == '♪') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 30);
                             //------------//Grass Background//---------//
-                            //Grass Tile Mid
-                            if (MapData[j, i] == '`')
-                                sB.Draw(_TILE_Grass_Tex[1], tileDraw, Color.White);
-                            //Grass Tile Right Hill Bottom
-                            if (MapData[j, i] == '3')
-                                sB.Draw(_TILE_Grass_Tex[5], tileDraw, Color.White);
-                            //Grass Tile Left Hill Bottom
-                            if (MapData[j, i] == '2')
-                                sB.Draw(_TILE_Grass_Tex[5], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-                            //------------//Grass No Top Background//---------//
-                            //Grass Tile Mid NoTop
-                            if (MapData[j, i] == '0')
-                                sB.Draw(_TILE_Grass_Tex[10], tileDraw, Color.White);
-                            //Grass Tile Mid To Dirt Tile Mid
-                            if (MapData[j, i] == '1')
-                                sB.Draw(_TILE_Grass_Tex[13], tileDraw, Color.White);
+                            //Grass Solid Mid NoTop Behind
+                            if (MapData[j, i] == '♫') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.Gray, 6, 7, 30);
+                            //Grass Mid No Top Bottomless Behind
+                            if (MapData[j, i] == '☼') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.Gray, 6, 7, 12);
 
-
+                            //------------//Dirt Foreback//---------//
+                            //Dirt Solid Up
+                            if (MapData[j, i] == '►') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 22);
+                            //Dirt Solid Left
+                            if (MapData[j, i] == '◄') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 8);
+                            //Dirt Solid Right
+                            if (MapData[j, i] == '↕') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 2);
+                            //Dirt Solid Down
+                            if (MapData[j, i] == '‼') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 36);
+                            //Dirt Solid Corner Up Left
+                            if (MapData[j, i] == '¶') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 32);
+                            //Dirt Solid Corner Up Right
+                            if (MapData[j, i] == '§') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 26);
+                            //Dirt Solid Corner Down Left
+                            if (MapData[j, i] == '▬') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 19);
+                            //Dirt Solid Corner Down Right
+                            if (MapData[j, i] == '↨') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 13);
+                            //-----//Solid Hill//----//
+                            //Dirt Solid Hill Up Right
+                            if (MapData[j, i] == '↑') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 5);
+                            //Dirt Solid Hill Up Left
+                            if (MapData[j, i] == '↓') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 3);
+                            //Dirt Solid Hill Down Right
+                            if (MapData[j, i] == '→') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 1);
+                            //Dirt Solid Hill Down Left
+                            if (MapData[j, i] == '←') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 7);
+                            //------//Dirt No Top Foreback//------//
+                            //Dirt Solid Mid NoTop
+                            if (MapData[j, i] == '∟') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 30);                            
                             //------------//Dirt Background//---------//
-                            //Dirt Tile Left
-                            if (MapData[j, i] == '8')
-                                sB.Draw(_TILE_Dirt_Tex[0], tileDraw, Color.White);
-                            //Dirt Tile Mid
-                            if (MapData[j, i] == '9')
-                                sB.Draw(_TILE_Dirt_Tex[1], tileDraw, Color.White);
-                            //Dirt Tile Right
-                            if (MapData[j, i] == '-')
-                                sB.Draw(_TILE_Dirt_Tex[2], tileDraw, Color.White);
-                            //Dirt Tile Single
-                            if (MapData[j, i] == '=')
-                                sB.Draw(_TILE_Dirt_Tex[3], tileDraw, Color.White);
-                            //Dirt Tile NoTop
-                            if (MapData[j, i] == '~')
-                                sB.Draw(_TILE_Dirt_Tex[4], tileDraw, Color.White);
-                            //Dirt Tile Hill Left
-                            if (MapData[j, i] == '!')
-                                sB.Draw(_TILE_Dirt_Tex[5], tileDraw, Color.White);
-                            //Dirt Tile Hill Right
-                            if (MapData[j, i] == '@')
-                                sB.Draw(_TILE_Dirt_Tex[6], tileDraw, Color.White);
+                            //Dirt Solid Mid NoTop Behind
+                            if (MapData[j, i] == '↔') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.Gray, 6, 7, 30);
+                            //Dirt Mid No Top Bottomless Behind
+                            if (MapData[j, i] == '▲') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.Gray, 6, 7, 12);
 
                         }
                 }
@@ -228,61 +259,98 @@ namespace Platformer_Prototype
                             //----------------------------------------------------//Textures//----------------------------------------------------//
 
                             //------------//Grass Foreground//---------//
-                            //Grass Tile Left Cliff Style 1
-                            if (MapData[j, i] == '`')
-                                sB.Draw(_TILE_Grass_Tex[3], tileDraw, Color.White);
-                            //Grass Tile Right Cliff Style 1
-                            if (MapData[j, i] == '0')
-                                sB.Draw(_TILE_Grass_Tex[3], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-                            //Grass Tile Left Cliff Style 2
-                            if (MapData[j, i] == '1')
-                                sB.Draw(_TILE_Grass_Tex[4], tileDraw, Color.White);
-                            //Grass Tile Right Cliff Style 2
-                            if (MapData[j, i] == '2')
-                                sB.Draw(_TILE_Grass_Tex[4], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-                            //Grass Tile Left Hill Top
-                            if (MapData[j, i] == '3')
-                                sB.Draw(_TILE_Grass_Tex[6], tileDraw, Color.White);
-                            //Grass Tile Right Hill Top
-                            if (MapData[j, i] == '4')
-                                sB.Draw(_TILE_Grass_Tex[6], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-                            //Grass Tile Half Single
-                            if (MapData[j, i] == '5')
-                                sB.Draw(_TILE_Grass_Tex[7], tileDraw, Color.White);
-                            //Grass Tile Half Mid Left
-                            if (MapData[j, i] == '6')
-                                sB.Draw(_TILE_Grass_Tex[8], tileDraw, Color.White);
-                            //Grass Tile Half Mid
-                            if (MapData[j, i] == '7')
-                                sB.Draw(_TILE_Grass_Tex[9], tileDraw, Color.White);
-                            //Grass Tile Half Mid Right
-                            if (MapData[j, i] == '8')
-                                sB.Draw(_TILE_Grass_Tex[8], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-                            //Grass Tile Edge Left
-                            if (MapData[j, i] == '9')
-                                sB.Draw(_TILE_Grass_Tex[14], tileDraw, Color.White);
-                            //Grass Tile Edge Right
-                            if (MapData[j, i] == '-')
-                                sB.Draw(_TILE_Grass_Tex[14], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-                            //Grass Tile Single
-                            if (MapData[j, i] == '=')
-                                sB.Draw(_TILE_Grass_Tex[0], tileDraw, Color.White);
-                            //Grass Tile Mid Left
-                            if (MapData[j, i] == '~')
-                                sB.Draw(_TILE_Grass_Tex[2], tileDraw, Color.White);
-                            //Grass Tile Mid Right
-                            if (MapData[j, i] == '!')
-                                sB.Draw(_TILE_Grass_Tex[2], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                            //Grass Left Cliff Style 1
+                            if (MapData[j, i] == '☺') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 15);
+                            //Grass Right Cliff Style 1
+                            if (MapData[j, i] == '☻') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 21);
+                            //Grass Left Cliff Style 2
+                            if (MapData[j, i] == '♥') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 27);
+                            //Grass Right Cliff Style 2
+                            if (MapData[j, i] == '♦') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 33);
+                            //Grass Left Hill Top
+                            if (MapData[j, i] == '♣') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 39);
+                            //Grass Right Hill Top
+                            if (MapData[j, i] == '♠') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 4);
+                            //Grass Half Single
+                            if (MapData[j, i] == '•') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 6);
+                            //Grass Half Mid Left
+                            if (MapData[j, i] == '◘') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 0);
+                            //Grass Half Mid
+                            if (MapData[j, i] == '○') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 20);
+                            //Grass Half Mid Right
+                            if (MapData[j, i] == '◙') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 40);
+                            //Grass Edge Left
+                            if (MapData[j, i] == '♂') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 17);
+                            //Grass Edge Right
+                            if (MapData[j, i] == '♀') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 11);
+                            //Grass Single
+                            if (MapData[j, i] == '♪') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 34);
+                            //Grass Mid Left
+                            if (MapData[j, i] == '♫') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 28);
+                            //Grass Mid Right
+                            if (MapData[j, i] == '☼') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 16);
+                            //Grass Mid Top
+                            if (MapData[j, i] == '►') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 10);
                             //------------//Grass No Top Foreground//---------//
-                            //Grass Tile Single NoTop
-                            if (MapData[j, i] == '@')
-                                sB.Draw(_TILE_Grass_Tex[11], tileDraw, Color.White);
-                            //Grass Tile Mid Left NoTop
-                            if (MapData[j, i] == '#')
-                                sB.Draw(_TILE_Grass_Tex[12], tileDraw, null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
-                            //Grass Tile Mid Right NoTop
-                            if (MapData[j, i] == '$')
-                                sB.Draw(_TILE_Grass_Tex[12], tileDraw, Color.White);
+                            //Grass Single NoTop
+                            if (MapData[j, i] == '◄') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 9);
+                            //Grass Mid NoTop Bottomless
+                            if (MapData[j, i] == '↕') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 12);
+                            //Grass Half Up NoTop Left
+                            if (MapData[j, i] == '‼') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 24);
+                            //Grass Half Up NoTop Right
+                            if (MapData[j, i] == '¶') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 18);
+                            //Grass Half Down NoTop Left
+                            if (MapData[j, i] == '§') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 31);
+                            //Grass Half Down NoTop Right
+                            if (MapData[j, i] == '▬') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 37);
+
+                            //------------//Dirt Foreground//---------//
+                            //Dirt Left Cliff Style 1
+                            if (MapData[j, i] == '↨') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 15);
+                            //Dirt Right Cliff Style 1
+                            if (MapData[j, i] == '↑') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 21);
+                            //Dirt Left Cliff Style 2
+                            if (MapData[j, i] == '↓') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 27);
+                            //Dirt Right Cliff Style 2
+                            if (MapData[j, i] == '→') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 33);
+                            //Dirt Left Hill Top
+                            if (MapData[j, i] == '←') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 39);
+                            //Dirt Right Hill Top
+                            if (MapData[j, i] == '∟') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 4);
+                            //Dirt Half Single
+                            if (MapData[j, i] == '↔') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 6);
+                            //Dirt Half Mid Left
+                            if (MapData[j, i] == '▲') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 0);
+                            //Dirt Half Mid
+                            if (MapData[j, i] == '▼') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 20);
+                            //Dirt Half Mid Right
+                            if (MapData[j, i] == '!') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 40);
+                            //Dirt Edge Left
+                            if (MapData[j, i] == '"') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 17);
+                            //Dirt Edge Right
+                            if (MapData[j, i] == '#') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 11);
+                            //Dirt Single
+                            if (MapData[j, i] == '$') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 34);
+                            //Dirt Mid Left
+                            if (MapData[j, i] == '%') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 28);
+                            //Dirt Mid Right
+                            if (MapData[j, i] == '&') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 16);
+                            //Dirt Mid Top
+                            if (MapData[j, i] == '■') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 10);
+                            //------------//Dirt No Top Foreground//---------//
+                            //Dirt Single NoTop
+                            if (MapData[j, i] == '(') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 9);
+                            //Dirt Mid NoTop Bottomless
+                            if (MapData[j, i] == ')') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 12);
+                            //Dirt Half Up NoTop Left
+                            if (MapData[j, i] == '*') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 24);
+                            //Dirt Half Up NoTop Right
+                            if (MapData[j, i] == '+') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 18);
+                            //Dirt Half Down NoTop Left
+                            if (MapData[j, i] == '-') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 31);
+                            //Dirt Half Down NoTop Right
+                            if (MapData[j, i] == '.') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 37);
 
                             ////----------------------------------------------------//Objects//----------------------------------------------------//
                             //
@@ -320,26 +388,26 @@ namespace Platformer_Prototype
                             //----------------------------------------------------//Effects//----------------------------------------------------//
 
                             //Shade Tile Effect Full
-                            if (MapData[j, i] == '`')
+                            if (MapData[j, i] == '☺')
                                 sB.Draw(_TILE_Shade_Effect[0], tileDraw, Color.White);
                             //Shade Tile Effect Down Half Left
-                            if (MapData[j, i] == '0')
+                            if (MapData[j, i] == '☻')
                                 sB.Draw(_TILE_Shade_Effect[1], tileDraw, Color.White);
                             //Shade Tile Effect Down Half Right
-                            if (MapData[j, i] == '1')
+                            if (MapData[j, i] == '♥')
                                 sB.Draw(_TILE_Shade_Effect[1], tileDraw, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
                             //Shade Tile Effect Up Half Left
-                            if (MapData[j, i] == '2')
+                            if (MapData[j, i] == '♦')
                                 sB.Draw(_TILE_Shade_Effect[2], tileDraw, Color.White);
                             //Shade Tile Effect Up Half Right
-                            if (MapData[j, i] == '3')
+                            if (MapData[j, i] == '♣')
                                 sB.Draw(_TILE_Shade_Effect[2], tileDraw, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.FlipHorizontally, 0);
                             //Water Tile Top And Bottom for Editor
                             if (Global_GameState.GameState == Global_GameState.EGameState.EDITOR)
                             {
-                                if (MapData[j, i] == '4')
+                                if (MapData[j, i] == '♠')
                                     sB.Draw(_DBG_WaterTop_Tex, tileDraw, Color.White);
-                                if (MapData[j, i] == '5')
+                                if (MapData[j, i] == '•')
                                     sB.Draw(_DBG_WaterBot_Tex, tileDraw, Color.White);
                             }
                         }

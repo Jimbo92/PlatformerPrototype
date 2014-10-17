@@ -35,11 +35,6 @@ namespace Platformer_Prototype
         private Rectangle DrawTile;
         private Texture2D GridTexture;
         private Texture2D PlacerTexture;
-        private Texture2D SelectorBackgroundTexture;
-        private Rectangle SelectorRectangle;
-        private Rectangle SelectorButton;
-        private Texture2D SelectorButtonTexture;
-        private Texture2D SelectedTexture;
         private bool SelectorUp = false;
         private Sprite Crosshair;
         private int PrevScrollValue = Mouse.GetState().ScrollWheelValue;
@@ -50,10 +45,17 @@ namespace Platformer_Prototype
         private int[] FontTimers = new int[5];
         private Game1 game1;
 
-        private char[,] SelectorGrid = MapLoader.LoadMapData("editor/selector1");
+        private char[,] SelectorGrid;
         private Rectangle SelectorGridTile;
         private char TileChooser;
         private char TileHover;
+
+        private Texture2D SelectorBackgroundTexture;
+        private Rectangle SelectorRectangle;
+        private Rectangle SelectorButton;
+        private Texture2D SelectorButtonTexture;
+        private Texture2D SelectedTexture;
+        private int SelectorPageNumber;
 
         private Texture2D ToolBarTexture;
         private Rectangle BottomBarRectangle;
@@ -61,6 +63,7 @@ namespace Platformer_Prototype
         private Rectangle BrushSize;
         private int BrushSizeValue = 32;
 
+        private Sprite[] Button = new Sprite[6];
 
         public Editor(ContentManager getContent, Vector2 getScreenSize)
         {
@@ -77,7 +80,10 @@ namespace Platformer_Prototype
             Font = getContent.Load<SpriteFont>("fonts/CopperplateGothicBold");
             ToolBarTexture = getContent.Load<Texture2D>("editor/toolbar");
             BottomBarRectangle = new Rectangle(300, (int)ScreenSize.Y - 64, 500, 64);
-                
+            for (int i = 0; i < 4; i++)
+                Button[i] = new Sprite(getContent, "editor/button" + i, 32, 32, 1, 3);
+            Button[4] = new Sprite(getContent, "editor/button2", 32, 32, 1, 3);
+            Button[5] = new Sprite(getContent, "editor/button3", 32, 32, 1, 3);
 
             for (int i = 0; i < FontTimers.Length; i++)
                 FontTimers[i] = 101;
@@ -94,6 +100,14 @@ namespace Platformer_Prototype
 
         private void TextureSelector()
         {
+            switch (SelectorPageNumber)
+            {
+                case 0: SelectorGrid = MapLoader.LoadMapData("editor/selectorpage1"); break;
+                case 1: SelectorGrid = MapLoader.LoadMapData("editor/selectorpage2"); break;
+                case 2: SelectorGrid = MapLoader.LoadMapData("editor/selectorpage3"); break;
+            }
+
+
             SelectorRectangle.Width = 215;
             SelectorRectangle.Height = 500;
             SelectorRectangle.Y = 75;
@@ -118,6 +132,75 @@ namespace Platformer_Prototype
                     else
                         SelectorUp = false;
 
+            //Buttons
+            //Page Select
+            //Next
+            if (Button[4].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if (Input.ClickReleased(Input.EClicks.LEFT))
+                {
+                    SelectorPageNumber++;
+                }
+            //Previous
+            if (Button[5].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if (Input.ClickReleased(Input.EClicks.LEFT))
+                {
+                    SelectorPageNumber--;
+                }
+            if (SelectorPageNumber > 2)
+                SelectorPageNumber = 0;
+            else if (SelectorPageNumber < 0)
+                SelectorPageNumber = 2;
+
+        }
+
+        private void ToolBar()
+        {
+            //BrushSize Plus & Minus
+            //Minus
+            if (Button[0].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if (Input.ClickReleased(Input.EClicks.LEFT))
+                    if (BrushSizeValue == 128)
+                        BrushSizeValue = 64;
+                    else if (BrushSizeValue == 64)
+                        BrushSizeValue = 32;
+            //Plus
+            if (Button[1].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if (Input.ClickReleased(Input.EClicks.LEFT))
+                    if (BrushSizeValue == 32)
+                        BrushSizeValue = 64;
+                    else if (BrushSizeValue == 64)
+                        BrushSizeValue = 128;
+
+            //Layer Next & Previous
+            //Next
+            if (Button[2].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if (Input.ClickReleased(Input.EClicks.LEFT))
+                {
+                    TileChooser = ' ';
+                    Layers++;
+                }
+            //Previous
+            if (Button[3].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if (Input.ClickReleased(Input.EClicks.LEFT))
+                {
+                    TileChooser = ' ';
+                    Layers--;
+                }
+            if (Layers > 3)
+                Layers = 0;
+            else if (Layers < 0)
+                Layers = 3;
+
+            //Button Animations
+            foreach (Sprite button in Button)
+                if (button.CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                {
+                    button.CurrentFrame = 1;
+                    if (Input.ClickPress(Input.EClicks.LEFT))
+                        button.CurrentFrame = 2;
+                }
+                else
+                    button.CurrentFrame = 0;
 
         }
 
@@ -129,6 +212,9 @@ namespace Platformer_Prototype
 
             //Texture Selector
             TextureSelector();
+
+            //ToolBar
+            ToolBar();
 
             //Texture Animations
             Crosshair.UpdateAnimation(0.3f);
@@ -144,7 +230,7 @@ namespace Platformer_Prototype
             else if (TileSize <= 18)
                 TileSize = 18;
 
-            //Brush Size
+            //Brush Size Keybind
             if (Input.KeyboardPressed(Keys.OemPlus))
                 if (BrushSizeValue == 32)
                     BrushSizeValue = 64;
@@ -208,7 +294,7 @@ namespace Platformer_Prototype
                     ShowGrid = false;
             }
 
-               
+
             //Save Map
             if (Input.KeyboardPressed(Keys.S))
             {
@@ -218,7 +304,7 @@ namespace Platformer_Prototype
                 SaveMap(GridDataL3, "File_Fore");
                 SaveMap(GridDataL4, "File_Eff");
             }
-             
+
             //Load Map
             if (Input.KeyboardPressed(Keys.L))
             {
@@ -272,23 +358,23 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
-            if (!SelectorRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
-            switch (MapLayers)
-            {
-                case EMapLayers.TRIGGER: TriggerMapDrawCodes(sB); break;
-                case EMapLayers.BACKGROUND: BackgroundMapDrawCodes(sB); break;
-                case EMapLayers.FOREGROUND: ForegroundMapDrawCodes(sB); break;
-                case EMapLayers.EFFECT: EffectMapDrawCodes(sB); break;
-            }
+            if (!SelectorRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && !BottomBarRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && !SelectorButton.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                switch (MapLayers)
+                {
+                    case EMapLayers.TRIGGER: TriggerMapDrawCodes(sB); break;
+                    case EMapLayers.BACKGROUND: BackgroundMapDrawCodes(sB); break;
+                    case EMapLayers.FOREGROUND: ForegroundMapDrawCodes(sB); break;
+                    case EMapLayers.EFFECT: EffectMapDrawCodes(sB); break;
+                }
 
             Textures.TextureType = Textures.ETextureType.EDITOR;
-            
+
             Textures.DrawBackgroundMapTextures(sB, GridDataL2, TileSize, Camera.Position, game1);
-            
+
             Textures.DrawForegroundMapTextures(sB, GridDataL3, TileSize, Camera.Position, game1);
-            
+
             Textures.DrawMapEffects(sB, GridDataL4, TileSize, Camera.Position, game1);
-            
+
             Textures.DrawTriggerMapData(sB, GridDataL1, TileSize, Camera.Position, game1);
 
             for (int i = 0; i < GridDataL1.GetLength(1); i++)
@@ -299,21 +385,27 @@ namespace Platformer_Prototype
                     if (ShowGrid)
                         sB.Draw(GridTexture, DrawTile, Color.SaddleBrown);
 
-                    if (BrushSizeValue == 32)
+                    if (!SelectorRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y) && !BottomBarRectangle.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                     {
-                        if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
-                            sB.Draw(PlacerTexture, DrawTile, Color.White);
-                    }
-                    else if (BrushSizeValue > 32)
-                    {
-                        if (BrushSize.Contains(DrawTile))
-                            sB.Draw(PlacerTexture, DrawTile, Color.White);
+                        if (BrushSizeValue == 32)
+                        {
+                            if (DrawTile.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                                sB.Draw(PlacerTexture, DrawTile, Color.White);
+                        }
+                        else if (BrushSizeValue > 32)
+                        {
+                            if (BrushSize.Contains(DrawTile))
+                                sB.Draw(PlacerTexture, DrawTile, Color.White);
+                        }
                     }
                 }
 
             //Texture Selector
             sB.Draw(SelectorBackgroundTexture, SelectorRectangle, Color.White);
             sB.Draw(SelectorButtonTexture, SelectorButton, Color.White);
+            //Texture Selector Buttons
+            Button[4].Draw(sB, new Vector2(SelectorRectangle.X + SelectorRectangle.Width - 60, SelectorRectangle.Y + SelectorRectangle.Height - 100), 0, SpriteEffects.None);
+            Button[5].Draw(sB, new Vector2(SelectorRectangle.X + SelectorRectangle.Width - 150, SelectorRectangle.Y + SelectorRectangle.Height - 100), 0, SpriteEffects.None);
             //Selector Grid
             if (SelectorUp)
             {
@@ -355,15 +447,23 @@ namespace Platformer_Prototype
                         //sB.Draw(GridTexture, new Rectangle(SelectorGridTile.X - 2, SelectorGridTile.Y - 2, 36, 36), Color.Gray);
                     }
             }
-            //Bottom ToolBar
+            //-----------------------//Bottom ToolBar//---------------------//
             sB.Draw(ToolBarTexture, BottomBarRectangle, Color.White);
+            //ToolBar Buttons
+            Button[0].Draw(sB, new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 100, BottomBarRectangle.Y + BottomBarRectangle.Height - 42), 0, SpriteEffects.None);
+            Button[1].Draw(sB, new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 50, BottomBarRectangle.Y + BottomBarRectangle.Height - 42), 0, SpriteEffects.None);
+            Button[2].Draw(sB, new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 250, BottomBarRectangle.Y + BottomBarRectangle.Height - 42), 0, SpriteEffects.None);
+            Button[3].Draw(sB, new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 300, BottomBarRectangle.Y + BottomBarRectangle.Height - 42), 0, SpriteEffects.None);
             //Editor Fonts
+            //Title Detail
+            sB.DrawString(Font, "Map Editor", new Vector2(20, 20), Color.Snow);
             //Layer Detail
-            sB.DrawString(Font,"Map Editor \n" + "LAYER: " + MapLayers.ToString(), new Vector2(20, 20), Color.Snow);
+            sB.DrawString(Font,"LAYER: " + MapLayers.ToString(), new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 330, BottomBarRectangle.Y + BottomBarRectangle.Height - 25), Color.Snow, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0);
             //Selected Tile Detail
+            sB.DrawString(Font, "Page: " + SelectorPageNumber.ToString(), new Vector2(SelectorRectangle.X + SelectorRectangle.Width - 150, SelectorRectangle.Y + SelectorRectangle.Height - 75), Color.Snow);
             sB.DrawString(Font, "Selected Tile: \n" + TileIndex.Index(TileChooser, this), new Vector2(ScreenSize.X / 3 + 25, 20), Color.Cyan);
             //Brush Size Detail
-            sB.DrawString(Font, "Brush Size: " + BrushSizeValue.ToString(), new Vector2(ScreenSize.X - 137, ScreenSize.Y - 25), Color.Cyan, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0);
+            sB.DrawString(Font, "Brush Size: " + BrushSizeValue.ToString(), new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 137, BottomBarRectangle.Y + BottomBarRectangle.Height - 25), Color.Cyan, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0);
             //Show Grid Detail
             FontTimers[0]++;
             if (FontTimers[0] <= 100)
@@ -460,7 +560,7 @@ namespace Platformer_Prototype
                             else if (Mouse.GetState().RightButton == ButtonState.Pressed)
                                 GridDataL3[j, i] = ' ';
                     }
-                        
+
                 }
         }
         private void EffectMapDrawCodes(SpriteBatch sB)

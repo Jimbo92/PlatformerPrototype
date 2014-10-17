@@ -30,6 +30,7 @@ namespace Platformer_Prototype
         public Rectangle destinationRectangle;
         public int Width;
         public int Height;
+        public Rectangle CollisionBox = Rectangle.Empty;
 
         public Sprite(ContentManager getContent, string getTexture, int getWidth, int getHeight)
         {
@@ -61,6 +62,8 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB, Vector2 getPosition, float getRotation, SpriteEffects getEffects)
         {
+            CollisionBox = new Rectangle((int)getPosition.X - Width / 2, (int)getPosition.Y - Width / 2, Width, Height);
+
             if (SpriteType == ESpriteType.Basic)
             {
                 destinationRectangle = new Rectangle((int)getPosition.X, (int)getPosition.Y, Width, Height);
@@ -96,43 +99,7 @@ namespace Platformer_Prototype
         }
         public void Draw(SpriteBatch sB, Vector2 getPosition, Vector2 getOrigin, float getRotation, SpriteEffects getEffects, Color getColour)
         {
-            if (SpriteType == ESpriteType.Basic)
-            {
-                destinationRectangle = new Rectangle((int)getPosition.X, (int)getPosition.Y, Width, Height);
-                sB.Draw(Texture,
-                    destinationRectangle,
-                    null,
-                    getColour,
-                    getRotation,
-                    getOrigin,
-                    getEffects,
-                    0);
-            }
-            if (SpriteType == ESpriteType.Anim)
-            {
-                int sourceWidth = Texture.Width / Columns;
-                int sourceHeight = Texture.Height / Rows;
-
-                int row = (int)((float)CurrentFrame / (float)Columns);
-                int column = (int)CurrentFrame % Columns;
-
-                sourceRectangle = new Rectangle(sourceWidth * column, sourceHeight * row, sourceWidth, sourceHeight);
-                destinationRectangle = new Rectangle((int)getPosition.X, (int)getPosition.Y, Width, Height);
-
-                sB.Draw(Texture,
-                    destinationRectangle,
-                    sourceRectangle,
-                    getColour,
-                    getRotation,
-                    getOrigin,
-                    getEffects,
-                    0);
-            }
-        }
-        public void Draw(SpriteBatch sB, Vector2 getPosition, Vector2 getOrigin, float getRotation, SpriteEffects getEffects, Color getColour, bool IsAnimating)
-        {
-            if (IsAnimating)
-                UpdateAnimation(0.5f);
+            CollisionBox = new Rectangle((int)getPosition.X - Width / 2, (int)getPosition.Y - Width / 2, Width, Height);
 
             if (SpriteType == ESpriteType.Basic)
             {

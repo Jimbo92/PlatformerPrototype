@@ -18,52 +18,108 @@ namespace Platformer_Prototype
         {
             if (getEditor.MapLayers == Editor.EMapLayers.TRIGGER)
             {
-                if (CurrentTile == '`') return "Solid CB";
-                if (CurrentTile == '0') return "Left Hill CB";
-                if (CurrentTile == '1') return "Right Hill CB";
-                if (CurrentTile == '2') return "Half CB";
-                if (CurrentTile == '3') return "Water Trigger";
-                if (CurrentTile == '4') return "Ladder Trigger";
+                if (CurrentTile == '☺') return "Solid CB";
+                if (CurrentTile == '☻') return "Left Hill CB";
+                if (CurrentTile == '♥') return "Right Hill CB";
+                if (CurrentTile == '♦') return "Half CB";
+                if (CurrentTile == '♣') return "Water Trigger";
+                if (CurrentTile == '♠') return "Ladder Trigger";
             }
             if (getEditor.MapLayers == Editor.EMapLayers.BACKGROUND)
             {
-                if (CurrentTile == '`') return "Solid Grass";
-                if (CurrentTile == '0') return "Solid Grass No Top";
-                if (CurrentTile == '1') return "Solid Grass To Dirt";
-                if (CurrentTile == '2') return "Solid Grass Left Hill";
-                if (CurrentTile == '3') return "Solid Grass Right Hill";
-                if (CurrentTile == '4') return "Ladder Block";
+                //----------------------------//Grass//----------------------------//
+                if (CurrentTile == '☺') return "Grass Solid Up";
+                if (CurrentTile == '☻') return "Grass Solid Left";
+                if (CurrentTile == '♥') return "Grass Solid Right";
+                if (CurrentTile == '♦') return "Grass Solid Down";
+                if (CurrentTile == '♣') return "Grass Solid Corner Up Left";
+                if (CurrentTile == '♠') return "Grass Solid Corner Up Right";
+                if (CurrentTile == '•') return "Grass Solid Corner Down Left";
+                if (CurrentTile == '◘') return "Grass Solid Corner Down Right";
+                if (CurrentTile == '○') return "Grass Solid Hill Up Right";
+                if (CurrentTile == '◙') return "Grass Solid Hill Up Left";
+                if (CurrentTile == '♂') return "Grass Solid Hill Down Left";
+                if (CurrentTile == '♀') return "Grass Solid Hill Down Right";
+                if (CurrentTile == '♪') return "Grass Solid Mid NoTop";
+                if (CurrentTile == '♫') return "Grass Solid Mid NoTop Behind";
+                if (CurrentTile == '☼') return "Grass Mid No Top Bottomless Behind";
+                //----------------------------//Dirt//----------------------------//
+                if (CurrentTile == '►') return "Dirt Solid Up";
+                if (CurrentTile == '◄') return "Dirt Solid Left";
+                if (CurrentTile == '↕') return "Dirt Solid Right";
+                if (CurrentTile == '‼') return "Dirt Solid Down";
+                if (CurrentTile == '¶') return "Dirt Solid Corner Up Left";
+                if (CurrentTile == '§') return "Dirt Solid Corner Up Right";
+                if (CurrentTile == '▬') return "Dirt Solid Corner Down Left";
+                if (CurrentTile == '↨') return "Dirt Solid Corner Down Right";
+                if (CurrentTile == '↑') return "Dirt Solid Hill Up Right";
+                if (CurrentTile == '↓') return "Dirt Solid Hill Up Left";
+                if (CurrentTile == '→') return "Dirt Solid Hill Down Left";
+                if (CurrentTile == '←') return "Dirt Solid Hill Down Right";
+                if (CurrentTile == '∟') return "Dirt Solid Mid NoTop";
+                if (CurrentTile == '↔') return "Dirt Solid Mid NoTop Behind";
+                if (CurrentTile == '▲') return "Dirt Mid No Top Bottomless Behind";
             }
             if (getEditor.MapLayers == Editor.EMapLayers.FOREGROUND)
             {
-                if (CurrentTile == '`') return "Grass Left Cliff Style 1";
-                if (CurrentTile == '0') return "Grass Right Cliff Style 1";
-                if (CurrentTile == '1') return "Grass Left Cliff Style 2";
-                if (CurrentTile == '2') return "Grass Right Cliff Style 2";
-                if (CurrentTile == '3') return "Grass Right Hill";
-                if (CurrentTile == '4') return "Grass Left Hill";
-                if (CurrentTile == '5') return "Grass Half Single";
-                if (CurrentTile == '6') return "Grass Half Left";
-                if (CurrentTile == '7') return "Grass Half Mid";
-                if (CurrentTile == '8') return "Grass Half Right";
-                if (CurrentTile == '9') return "Grass Edge Left";
-                if (CurrentTile == '-') return "Grass Edge Right";
-                if (CurrentTile == '=') return "Grass Single";
-                if (CurrentTile == '~') return "Grass Left";
-                if (CurrentTile == '!') return "Grass Right";
-                if (CurrentTile == '@') return "Grass Single No Top";
-                if (CurrentTile == '#') return "Grass Left No Top";
-                if (CurrentTile == '$') return "Grass Right No Top";
+                //----------------------------//Grass//----------------------------//
+                if (CurrentTile == '☺') return "Grass Left Cliff Style 1";
+                if (CurrentTile == '☻') return "Grass Right Cliff Style 1";
+                if (CurrentTile == '♥') return "Grass Left Cliff Style 2";
+                if (CurrentTile == '♦') return "Grass Right Cliff Style 2";
+                if (CurrentTile == '♣') return "Grass Right Hill";
+                if (CurrentTile == '♠') return "Grass Left Hill";
+                if (CurrentTile == '•') return "Grass Half Single";
+                if (CurrentTile == '◘') return "Grass Half Left";
+                if (CurrentTile == '○') return "Grass Half Mid";
+                if (CurrentTile == '◙') return "Grass Half Right";
+                if (CurrentTile == '♂') return "Grass Edge Left";
+                if (CurrentTile == '♀') return "Grass Edge Right";
+                if (CurrentTile == '♪') return "Grass Single";
+                if (CurrentTile == '♫') return "Grass Left";
+                if (CurrentTile == '☼') return "Grass Right";
+                if (CurrentTile == '►') return "Grass Mid Top";
+                if (CurrentTile == '◄') return "Grass Single NoTop";
+                if (CurrentTile == '↕') return "Grass Mid NoTop Bottomless";
+                if (CurrentTile == '‼') return "Grass Half Down NoTop Left";
+                if (CurrentTile == '¶') return "Grass Half Down NoTop Right";
+                if (CurrentTile == '§') return "Grass Half Up NoTop Left";
+                if (CurrentTile == '▬') return "Grass Half UP NoTop Right";
+                //----------------------------//Dirt//----------------------------//
+                if (CurrentTile == '↨') return "Dirt Left Cliff Style 1";
+                if (CurrentTile == '↑') return "Dirt Right Cliff Style 1";
+                if (CurrentTile == '↓') return "Dirt Left Cliff Style 2";
+                if (CurrentTile == '→') return "Dirt Right Cliff Style 2";
+                if (CurrentTile == '←') return "Dirt Right Hill";
+                if (CurrentTile == '∟') return "Dirt Left Hill";
+                if (CurrentTile == '↔') return "Dirt Half Single";
+                if (CurrentTile == '▲') return "Dirt Half Left";
+                if (CurrentTile == '▼') return "Dirt Half Mid";
+                if (CurrentTile == '!') return "Dirt Half Right";
+                if (CurrentTile == '"') return "Dirt Edge Left";
+                if (CurrentTile == '#') return "Dirt Edge Right";
+                if (CurrentTile == '$') return "Dirt Single";
+                if (CurrentTile == '%') return "Dirt Left";
+                if (CurrentTile == '&') return "Dirt Right";
+                if (CurrentTile == '■') return "Dirt Mid Top";
+                if (CurrentTile == '(') return "Dirt Single NoTop";
+                if (CurrentTile == ')') return "Dirt Mid NoTop Bottomless";
+                if (CurrentTile == '*') return "Dirt Half Down NoTop Left";
+                if (CurrentTile == '+') return "Dirt Half Down NoTop Right";
+                if (CurrentTile == '-') return "Dirt Half Up NoTop Left";
+                if (CurrentTile == '.') return "Dirt Half Up NoTop Right";
+
+
             }
             if (getEditor.MapLayers == Editor.EMapLayers.EFFECT)
             {
-                if (CurrentTile == '`') return "Shade Solid";
-                if (CurrentTile == '0') return "Shade Top Left";
-                if (CurrentTile == '1') return "Shade Top Right";
-                if (CurrentTile == '2') return "Shade Bottom Left";
-                if (CurrentTile == '3') return "Shade Bottom Right";
-                if (CurrentTile == '4') return "Water Top";
-                if (CurrentTile == '5') return "Water Solid";
+                if (CurrentTile == '☺') return "Shade Solid";
+                if (CurrentTile == '☻') return "Shade Top Left";
+                if (CurrentTile == '♥') return "Shade Top Right";
+                if (CurrentTile == '♦') return "Shade Bottom Left";
+                if (CurrentTile == '♣') return "Shade Bottom Right";
+                if (CurrentTile == '♠') return "Water Top";
+                if (CurrentTile == '•') return "Water Solid";
             }
 
             return "None";
