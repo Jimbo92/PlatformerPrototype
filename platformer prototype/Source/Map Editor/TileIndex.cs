@@ -59,6 +59,22 @@ namespace Platformer_Prototype
                 if (CurrentTile == '∟') return "Dirt Solid Mid NoTop";
                 if (CurrentTile == '↔') return "Dirt Solid Mid NoTop Behind";
                 if (CurrentTile == '▲') return "Dirt Mid No Top Bottomless Behind";
+                //----------------------------//Sand//----------------------------//
+                if (CurrentTile == '▼') return "Sand Solid Up";
+                if (CurrentTile == '!') return "Sand Solid Left";
+                if (CurrentTile == '"') return "Sand Solid Right";
+                if (CurrentTile == '#') return "Sand Solid Down";
+                if (CurrentTile == '$') return "Sand Solid Corner Up Left";
+                if (CurrentTile == '%') return "Sand Solid Corner Up Right";
+                if (CurrentTile == '&') return "Sand Solid Corner Down Left";
+                if (CurrentTile == '■') return "Sand Solid Corner Down Right";
+                if (CurrentTile == '(') return "Sand Solid Hill Up Right";
+                if (CurrentTile == ')') return "Sand Solid Hill Up Left";
+                if (CurrentTile == '*') return "Sand Solid Hill Down Left";
+                if (CurrentTile == '+') return "Sand Solid Hill Down Right";
+                if (CurrentTile == '-') return "Sand Solid Mid NoTop";
+                if (CurrentTile == '.') return "Sand Solid Mid NoTop Behind";
+                if (CurrentTile == '/') return "Sand Mid No Top Bottomless Behind";
             }
             if (getEditor.MapLayers == Editor.EMapLayers.FOREGROUND)
             {
@@ -108,6 +124,29 @@ namespace Platformer_Prototype
                 if (CurrentTile == '+') return "Dirt Half Down NoTop Right";
                 if (CurrentTile == '-') return "Dirt Half Up NoTop Left";
                 if (CurrentTile == '.') return "Dirt Half Up NoTop Right";
+                //----------------------------//Sand//----------------------------//
+                if (CurrentTile == '0') return "Sand Left Cliff Style 1";
+                if (CurrentTile == '1') return "Sand Right Cliff Style 1";
+                if (CurrentTile == '2') return "Sand Left Cliff Style 2";
+                if (CurrentTile == '3') return "Sand Right Cliff Style 2";
+                if (CurrentTile == '4') return "Sand Right Hill";
+                if (CurrentTile == '5') return "Sand Left Hill";
+                if (CurrentTile == '6') return "Sand Half Single";
+                if (CurrentTile == '7') return "Sand Half Left";
+                if (CurrentTile == '8') return "Sand Half Mid";
+                if (CurrentTile == '9') return "Sand Half Right";
+                if (CurrentTile == ':') return "Sand Edge Left";
+                if (CurrentTile == ';') return "Sand Edge Right";
+                if (CurrentTile == '<') return "Sand Single";
+                if (CurrentTile == '=') return "Sand Left";
+                if (CurrentTile == '>') return "Sand Right";
+                if (CurrentTile == '?') return "Sand Mid Top";
+                if (CurrentTile == '@') return "Sand Single NoTop";
+                if (CurrentTile == 'A') return "Sand Mid NoTop Bottomless";
+                if (CurrentTile == 'B') return "Sand Half Down NoTop Left";
+                if (CurrentTile == 'C') return "Sand Half Down NoTop Right";
+                if (CurrentTile == 'D') return "Sand Half Up NoTop Left";
+                if (CurrentTile == 'E') return "Sand Half Up NoTop Right";
 
 
             }

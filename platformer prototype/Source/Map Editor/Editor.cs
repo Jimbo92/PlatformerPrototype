@@ -177,6 +177,7 @@ namespace Platformer_Prototype
                 if (Input.ClickReleased(Input.EClicks.LEFT))
                 {
                     TileChooser = ' ';
+                    SelectorPageNumber = 0;
                     Layers++;
                 }
             //Previous
@@ -184,6 +185,7 @@ namespace Platformer_Prototype
                 if (Input.ClickReleased(Input.EClicks.LEFT))
                 {
                     TileChooser = ' ';
+                    SelectorPageNumber = 0;
                     Layers--;
                 }
             if (Layers > 3)
@@ -264,6 +266,7 @@ namespace Platformer_Prototype
             //Switch Layers
             if (Input.KeyboardPressed(Keys.Tab) || Input.KeyboardPressed(Keys.RightShift))
             {
+                SelectorPageNumber = 0;
                 TileChooser = ' ';
                 Layers++;
                 if (Layers >= 4)
@@ -460,7 +463,7 @@ namespace Platformer_Prototype
             //Layer Detail
             sB.DrawString(Font,"LAYER: " + MapLayers.ToString(), new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 330, BottomBarRectangle.Y + BottomBarRectangle.Height - 25), Color.Snow, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0);
             //Selected Tile Detail
-            sB.DrawString(Font, "Page: " + SelectorPageNumber.ToString(), new Vector2(SelectorRectangle.X + SelectorRectangle.Width - 150, SelectorRectangle.Y + SelectorRectangle.Height - 75), Color.Snow);
+            sB.DrawString(Font, SelectorPageNumber.ToString(), new Vector2(SelectorRectangle.X + SelectorRectangle.Width - 113, SelectorRectangle.Y + SelectorRectangle.Height - 110), Color.Snow);
             sB.DrawString(Font, "Selected Tile: \n" + TileIndex.Index(TileChooser, this), new Vector2(ScreenSize.X / 3 + 25, 20), Color.Cyan);
             //Brush Size Detail
             sB.DrawString(Font, "Brush Size: " + BrushSizeValue.ToString(), new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 137, BottomBarRectangle.Y + BottomBarRectangle.Height - 25), Color.Cyan, 0, Vector2.Zero, 0.7f, SpriteEffects.None, 0);

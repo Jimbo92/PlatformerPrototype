@@ -30,6 +30,8 @@ namespace Platformer_Prototype
         static public Texture2D _TILE_GrassSS_Tex;
         //Dirt
         static public Texture2D _TILE_DirtSS_Tex;
+        //Sand
+        static public Texture2D _TILE_SandSS_Tex;
 
         //Effects
         static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
@@ -57,6 +59,9 @@ namespace Platformer_Prototype
             _TILE_GrassSS_Tex = getContent.Load<Texture2D>("tiles/grass");
             //Dirt
             _TILE_DirtSS_Tex = getContent.Load<Texture2D>("tiles/dirt");
+            //Sand
+            _TILE_SandSS_Tex = getContent.Load<Texture2D>("tiles/sand");
+
 
             //Effects
             for (int i = 0; i < 3; i++)
@@ -236,6 +241,41 @@ namespace Platformer_Prototype
                             //Dirt Mid No Top Bottomless Behind
                             if (MapData[j, i] == '▲') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.Gray, 6, 7, 12);
 
+                            //------------//Sand Foreback//---------//
+                            //Sand Solid Up
+                            if (MapData[j, i] == '▼') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 16);
+                            //Sand Solid Left
+                            if (MapData[j, i] == '!') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 2);
+                            //Sand Solid Right
+                            if (MapData[j, i] == '"') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 37);
+                            //Sand Solid Down
+                            if (MapData[j, i] == '#') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 30);
+                            //Sand Solid Corner Up Left
+                            if (MapData[j, i] == '$') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 26);
+                            //Sand Solid Corner Up Right
+                            if (MapData[j, i] == '%') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 5);
+                            //Sand Solid Corner Down Left
+                            if (MapData[j, i] == '&') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 13);
+                            //Sand Solid Corner Down Right
+                            if (MapData[j, i] == '■') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 7);
+                            //-----//Solid Hill//----//
+                            //Sand Solid Hill Up Right
+                            if (MapData[j, i] == '(') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 8);
+                            //Sand Solid Hill Up Left
+                            if (MapData[j, i] == ')') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 14);
+                            //Sand Solid Hill Down Right
+                            if (MapData[j, i] == '*') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 36);
+                            //Sand Solid Hill Down Left
+                            if (MapData[j, i] == '+') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 1);
+                            //------//Dirt No Top Foreback//------//
+                            //Sand Solid Mid NoTop
+                            if (MapData[j, i] == '-') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 19);
+                            //------------//Dirt Background//---------//
+                            //Sand Solid Mid NoTop Behind
+                            if (MapData[j, i] == '.') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.Gray, 6, 7, 19);
+                            //Sand Mid No Top Bottomless Behind
+                            if (MapData[j, i] == '/') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.Gray, 6, 7, 6);
+
                         }
                 }
         }
@@ -351,7 +391,53 @@ namespace Platformer_Prototype
                             if (MapData[j, i] == '-') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 31);
                             //Dirt Half Down NoTop Right
                             if (MapData[j, i] == '.') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 37);
-
+                            
+                            //------------//Sand Foreground//---------//
+                            //Sand Left Cliff Style 1
+                            if (MapData[j, i] == '0') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 9);
+                            //Sand Right Cliff Style 1
+                            if (MapData[j, i] == '1') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 15);
+                            //Sand Left Cliff Style 2
+                            if (MapData[j, i] == '2') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 21);
+                            //Sand Right Cliff Style 2
+                            if (MapData[j, i] == '3') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 27);
+                            //Sand Left Hill Top
+                            if (MapData[j, i] == '4') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 33);
+                            //Sand Right Hill Top
+                            if (MapData[j, i] == '5') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 39);
+                            //Sand Half Single
+                            if (MapData[j, i] == '6') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 0);
+                            //Sand Half Mid Left
+                            if (MapData[j, i] == '7') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 20);
+                            //Sand Half Mid
+                            if (MapData[j, i] == '8') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 40);
+                            //Sand Half Mid Right
+                            if (MapData[j, i] == '9') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 34);
+                            //Sand Edge Left
+                            if (MapData[j, i] == ':') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 17);
+                            //Sand Edge Right
+                            if (MapData[j, i] == ';') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 11);
+                            //Sand Single
+                            if (MapData[j, i] == '<') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 28);
+                            //Sand Mid Left
+                            if (MapData[j, i] == '=') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 22);
+                            //Sand Mid Right
+                            if (MapData[j, i] == '>') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 10);
+                            //Sand Mid Top
+                            if (MapData[j, i] == '?') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 4);
+                            //------------//Dirt No Top Foreground//---------//
+                            //Sand Single NoTop
+                            if (MapData[j, i] == '@') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 3);
+                            //Sand Mid NoTop Bottomless
+                            if (MapData[j, i] == 'A') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 6);
+                            //Sand Half Down NoTop Left
+                            if (MapData[j, i] == 'B') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 18);
+                            //Sand Half Down NoTop Right
+                            if (MapData[j, i] == 'C') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 12);
+                            //Sand Half Up NoTop Left
+                            if (MapData[j, i] == 'D') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 25);
+                            //Sand Half Up NoTop Right
+                            if (MapData[j, i] == 'E') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 31);
                             ////----------------------------------------------------//Objects//----------------------------------------------------//
                             //
                             ////Draw Grass Obj
