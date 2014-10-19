@@ -34,7 +34,13 @@ namespace Platformer_Prototype
         public Player player;
         public Sprite WaterTop;
         public Sprite WaterBase;
+        public Sprite LavaTop;
+        public Sprite LavaBase;
         public Sprite Torch;
+
+        public Rectangle tileDraw;
+
+        private ContentManager Content;
 
         public Enemy[] enemies = new Enemy[10];
 
@@ -43,24 +49,31 @@ namespace Platformer_Prototype
         private Game1 game1;
 
         public int LoadMapTimer;
-        public char[,] map = MapLoader.LoadMapData("file");
-        public char[,] BackMapTextures = MapLoader.LoadMapData("file_back");
-        public char[,] ForeMapTextures = MapLoader.LoadMapData("file_fore");
-        public char[,] MapEffectTextures = MapLoader.LoadMapData("file_eff");
+        public char[,] map = MapLoader.LoadMapData("grasslands");
+        public char[,] BackMapTextures = MapLoader.LoadMapData("grasslands_back");
+        public char[,] ForeMapTextures = MapLoader.LoadMapData("grasslands_fore");
+        public char[,] MapEffectTextures = MapLoader.LoadMapData("grasslands_eff");
 
         public int tileSize = 32;
+
+        private List<Item> Crystals = new List<Item>();
+        private Item Crystal;
 
 
         //-----------------------------------------------------
 
         public BaseEngine(ContentManager getContent, Vector2 getScreenSize)
         {
+            Content = getContent;
             player = new Player(getContent);
             Camera.Initialize(player);
 
             WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 10, 1);
             WaterBase = new Sprite(getContent, "tiles/water1", 32, 32, 10, 1);
+            LavaTop = new Sprite(getContent, "tiles/lava0", 32, 32, 10, 1);
+            LavaBase = new Sprite(getContent, "tiles/lava1", 32, 32, 10, 1);
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
+            Crystal = new Item(Content, "objects/items/gemblue", 48, 48);
 
             for (int i = 0; i < enemies.Length; i++)
             {
@@ -73,6 +86,13 @@ namespace Platformer_Prototype
 
             }
 
+            //Items
+            for (int i = 0; i < map.GetLength(1); i++)
+                for (int j = map.GetLength(0) - 1; j > -1; j--)
+                {
+                    if (map[j, i] == '◘')
+                        Crystals.Add(Crystal);
+                }
 
             background = new Background(getContent, getScreenSize);
         }
@@ -87,14 +107,15 @@ namespace Platformer_Prototype
 
         public void Update(Game1 getGame1)
         {
+
             Textures.Update(this);
             LoadMapTimer++;
             if (LoadMapTimer <= 1)
             {
-                map = MapLoader.LoadMapData("file");
-                BackMapTextures = MapLoader.LoadMapData("file_Back");
-                ForeMapTextures = MapLoader.LoadMapData("file_fore");
-                MapEffectTextures = MapLoader.LoadMapData("file_eff");
+                map = MapLoader.LoadMapData("grasslands");
+                BackMapTextures = MapLoader.LoadMapData("grasslands_Back");
+                ForeMapTextures = MapLoader.LoadMapData("grasslands_fore");
+                MapEffectTextures = MapLoader.LoadMapData("grasslands_eff");
             }
             else
                 LoadMapTimer = 2;
@@ -105,6 +126,8 @@ namespace Platformer_Prototype
             //Animated Textures
             WaterTop.UpdateAnimation(0.15f);
             WaterBase.UpdateAnimation(0.15f);
+            LavaTop.UpdateAnimation(0.15f);
+            LavaBase.UpdateAnimation(0.15f);
             Torch.UpdateAnimation(0.5f);
 
 
@@ -393,7 +416,8 @@ namespace Platformer_Prototype
                         Canvas[0] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                     }
 
-                    if (map[TileY + (int)Ratio.Y, TileX + i] == '♦') {
+                    if (map[TileY + (int)Ratio.Y, TileX + i] == '♦')
+                    {
                         Canvas[0] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize / 2);
                     }
                     if (map[TileY + (int)Ratio.Y, TileX + i] == '☻') //left triangle
@@ -407,7 +431,7 @@ namespace Platformer_Prototype
                     {
                         Rectangle Corner = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                         tan1.a = new Vector2(Corner.X + tileSize, Corner.Y + 1);
-                        tan1.b = new Vector2(Corner.X, Corner.Y + tileSize );
+                        tan1.b = new Vector2(Corner.X, Corner.Y + tileSize);
                         tan1.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                     }
                 }
@@ -424,7 +448,7 @@ namespace Platformer_Prototype
                     Canvas[1] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + (int)Ratio.Y) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
 
                 if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == '♦')
-                    Canvas[1] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + (int)Ratio.Y) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize/2);
+                    Canvas[1] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + (int)Ratio.Y) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize / 2);
                 if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == '☻') //left triangle
                 {
                     Rectangle Corner = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + (int)Ratio.Y) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
@@ -452,7 +476,7 @@ namespace Platformer_Prototype
                     if (map[TileY, TileX + i] == '☺')
                         Canvas[2] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                     if (map[TileY, TileX + i] == '♦')
-                        Canvas[2] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize/2);
+                        Canvas[2] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize / 2);
                     if (map[TileY, TileX + i] == '☻') //left triangle
                     {
                         Rectangle Corner = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
@@ -478,7 +502,7 @@ namespace Platformer_Prototype
                 if (map[TileY, TileX + (int)Ratio.X] == '☺')
                     Canvas[3] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                 if (map[TileY, TileX + (int)Ratio.X] == '♦')
-                    Canvas[3] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize/2);
+                    Canvas[3] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize / 2);
                 if (map[TileY, TileX + (int)Ratio.X] == '☻') //left triangle
                 {
                     Rectangle Corner = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
@@ -506,7 +530,7 @@ namespace Platformer_Prototype
                         Canvas[4] = new Rectangle(TileX * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
 
                     if (map[TileY + i, TileX] == '♦')
-                        Canvas[4] = new Rectangle(TileX * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize/2);
+                        Canvas[4] = new Rectangle(TileX * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize / 2);
                     if (map[TileY + i, TileX] == '☻') //left triangle
                     {
                         Rectangle Corner = new Rectangle(TileX * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
@@ -534,7 +558,7 @@ namespace Platformer_Prototype
                         Canvas[5] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
 
                     if (map[TileY + i, TileX + (int)Ratio.X] == '♦')
-                        Canvas[5] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize/2);
+                        Canvas[5] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize / 2);
                     if (map[TileY + i, TileX + (int)Ratio.X] == '☻') //left triangle
                     {
                         Rectangle Corner = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
@@ -546,7 +570,7 @@ namespace Platformer_Prototype
                     {
                         Rectangle Corner = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                         tan6.a = new Vector2(Corner.X + tileSize, Corner.Y + 1);
-                        tan6.b = new Vector2(Corner.X, Corner.Y + tileSize );
+                        tan6.b = new Vector2(Corner.X, Corner.Y + tileSize);
                         tan6.c = new Vector2(Corner.X + tileSize, Corner.Y + tileSize);
                     }
                 }
@@ -555,15 +579,15 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
-            Rectangle tileDraw;
             background.Draw(sB);
 
-          
+
             Textures.TextureType = Textures.ETextureType.INGAME;
 
             Textures.DrawBackgroundMapTextures(sB, BackMapTextures, tileSize, Vector2.Zero, game1);
-            
+
             Textures.DrawTriggerMapData(sB, map, tileSize, Vector2.Zero, game1);
+
 
             foreach (Enemy enemy in enemies)
             {
@@ -588,11 +612,31 @@ namespace Platformer_Prototype
                             //Draw Water Base Tile
                             if (MapEffectTextures[j, i] == '•')
                                 WaterBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue);
+                            //Draw Lava Top Tile
+                            if (MapEffectTextures[j, i] == '◘')
+                                LavaTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+                            //Draw Lava Base Tile
+                            if (MapEffectTextures[j, i] == '○')
+                                LavaBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+
+                            //Crystal Item
+                            if (map[j, i] == '◘')
+                                Crystal.Draw(sB, this);
+
+                            //Crystal Collision
+                            if (player.Bounds.Intersects(Crystal.sprite.destinationRectangle))
+                            {
+                                if (map[j, i] == '◘')
+                                    map[j, i] = ' ';
+                                Crystal.sprite.destinationRectangle = Rectangle.Empty;
+                                GUI.CrystalPickUp = true;
+                                GUI.ShowCrystalBar = true;
+                            }
                         }
                 }
 
             Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
-            
+
             Textures.DrawMapEffects(sB, MapEffectTextures, tileSize, Vector2.Zero, game1);
 
         }

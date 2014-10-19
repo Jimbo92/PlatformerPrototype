@@ -63,7 +63,7 @@ namespace Platformer_Prototype
         private Rectangle BrushSize;
         private int BrushSizeValue = 32;
 
-        private Sprite[] Button = new Sprite[6];
+        private Sprite[] Button = new Sprite[8];
 
         System.Windows.Forms.FileDialog getFile = new System.Windows.Forms.OpenFileDialog();
         System.Windows.Forms.SaveFileDialog saveFile = new System.Windows.Forms.SaveFileDialog();
@@ -85,10 +85,10 @@ namespace Platformer_Prototype
             Font = getContent.Load<SpriteFont>("fonts/CopperplateGothicBold");
             ToolBarTexture = getContent.Load<Texture2D>("editor/toolbar");
             BottomBarRectangle = new Rectangle(300, (int)ScreenSize.Y - 64, 500, 64);
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
                 Button[i] = new Sprite(getContent, "editor/button" + i, 32, 32, 1, 3);
-            Button[4] = new Sprite(getContent, "editor/button2", 32, 32, 1, 3);
-            Button[5] = new Sprite(getContent, "editor/button3", 32, 32, 1, 3);
+            Button[6] = new Sprite(getContent, "editor/button2", 32, 32, 1, 3);
+            Button[7] = new Sprite(getContent, "editor/button3", 32, 32, 1, 3);
 
             for (int i = 0; i < FontTimers.Length; i++)
                 FontTimers[i] = 101;
@@ -140,13 +140,13 @@ namespace Platformer_Prototype
             //Buttons
             //Page Select
             //Next
-            if (Button[4].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+            if (Button[6].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 if (Input.ClickReleased(Input.EClicks.LEFT))
                 {
                     SelectorPageNumber++;
                 }
             //Previous
-            if (Button[5].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+            if (Button[7].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 if (Input.ClickReleased(Input.EClicks.LEFT))
                 {
                     SelectorPageNumber--;
@@ -197,6 +197,14 @@ namespace Platformer_Prototype
                 Layers = 0;
             else if (Layers < 0)
                 Layers = 3;
+            //Load
+            if (Button[4].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if (Input.ClickReleased(Input.EClicks.LEFT))
+                    Load();
+            //Save
+            if (Button[5].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if (Input.ClickReleased(Input.EClicks.LEFT))
+                    Save();
 
             //Button Animations
             foreach (Sprite button in Button)
@@ -211,6 +219,40 @@ namespace Platformer_Prototype
 
         }
 
+        private void Load()
+        {
+            getFile.Title = "Map Loader";
+            getFile.Filter = "Text files (*.txt*)| *.txt";
+
+            if (getFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                FileName = getFile.FileName;
+                GridDataL1 = LoadMap(FileName);
+                GridDataL2 = LoadMap(FileName.Replace(".txt", "") + "_back.txt");
+                GridDataL3 = LoadMap(FileName.Replace(".txt", "") + "_fore.txt");
+                GridDataL4 = LoadMap(FileName.Replace(".txt", "") + "_eff.txt");
+
+                FontTimers[2] = 0;
+            }
+        }
+        private void Save()
+        {
+            saveFile.Title = "Map Exporter";
+            saveFile.Filter = "Text files (*.txt*)| *.txt";
+
+            if (saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                FileName = saveFile.FileName;
+                SaveMap(GridDataL1, FileName);
+                SaveMap(GridDataL2, FileName.Replace(".txt", "") + "_back.txt");
+                SaveMap(GridDataL3, FileName.Replace(".txt", "") + "_fore.txt");
+                SaveMap(GridDataL4, FileName.Replace(".txt", "") + "_eff.txt");
+
+                FontTimers[1] = 0;
+            }
+        }
+
+
         public void Update(GraphicsDeviceManager getGraphics, Game1 getGame1)
         {
             game1 = getGame1;
@@ -218,36 +260,11 @@ namespace Platformer_Prototype
             Camera.Update(getGame1);
 
             //Open
-            getFile.Title = "Map Loader";
-            getFile.Filter = "Text files (*.txt*)| *.txt";
-
             if (Input.KeyboardPressed(Keys.L))
-                if (getFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                        FileName = getFile.FileName;
-                        GridDataL1 = LoadMap(FileName);
-                        GridDataL2 = LoadMap(FileName.Replace(".txt", "") + "_back.txt");
-                        GridDataL3 = LoadMap(FileName.Replace(".txt", "") + "_fore.txt");
-                        GridDataL4 = LoadMap(FileName.Replace(".txt", "") + "_eff.txt");
-
-                        FontTimers[2] = 0;
-                }
-            //Save
-            saveFile.Title = "Map Exporter";
-            saveFile.Filter = "Text files (*.txt*)| *.txt";
-
+                Load();
+            //Save           
             if (Input.KeyboardPressed(Keys.S))
-                if (saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    FileName = saveFile.FileName;
-                    SaveMap(GridDataL1, FileName);
-                    SaveMap(GridDataL2, FileName.Replace(".txt", "") + "_back.txt");
-                    SaveMap(GridDataL3, FileName.Replace(".txt", "") + "_fore.txt");
-                    SaveMap(GridDataL4, FileName.Replace(".txt", "") + "_eff.txt");
-
-                    FontTimers[1] = 0;
-                }
-
+                Save();
 
             //Texture Selector
             TextureSelector();
@@ -452,6 +469,7 @@ namespace Platformer_Prototype
                             if (BrushSize.Contains(DrawTile))
                                 sB.Draw(PlacerTexture, DrawTile, Color.White);
                         }
+                    
                     }
                 }
 
@@ -459,8 +477,8 @@ namespace Platformer_Prototype
             sB.Draw(SelectorBackgroundTexture, SelectorRectangle, Color.White);
             sB.Draw(SelectorButtonTexture, SelectorButton, Color.White);
             //Texture Selector Buttons
-            Button[4].Draw(sB, new Vector2(SelectorRectangle.X + SelectorRectangle.Width - 60, SelectorRectangle.Y + SelectorRectangle.Height - 100), 0, SpriteEffects.None);
-            Button[5].Draw(sB, new Vector2(SelectorRectangle.X + SelectorRectangle.Width - 150, SelectorRectangle.Y + SelectorRectangle.Height - 100), 0, SpriteEffects.None);
+            Button[6].Draw(sB, new Vector2(SelectorRectangle.X + SelectorRectangle.Width - 60, SelectorRectangle.Y + SelectorRectangle.Height - 100), 0, SpriteEffects.None);
+            Button[7].Draw(sB, new Vector2(SelectorRectangle.X + SelectorRectangle.Width - 150, SelectorRectangle.Y + SelectorRectangle.Height - 100), 0, SpriteEffects.None);
             //Selector Grid
             if (SelectorUp)
             {
@@ -509,6 +527,8 @@ namespace Platformer_Prototype
             Button[1].Draw(sB, new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 50, BottomBarRectangle.Y + BottomBarRectangle.Height - 42), 0, SpriteEffects.None);
             Button[2].Draw(sB, new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 250, BottomBarRectangle.Y + BottomBarRectangle.Height - 42), 0, SpriteEffects.None);
             Button[3].Draw(sB, new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 300, BottomBarRectangle.Y + BottomBarRectangle.Height - 42), 0, SpriteEffects.None);
+            Button[4].Draw(sB, new Vector2(BottomBarRectangle.X + 25, BottomBarRectangle.Y + 25), 0, SpriteEffects.None);
+            Button[5].Draw(sB, new Vector2(BottomBarRectangle.X + 65, BottomBarRectangle.Y + 25), 0, SpriteEffects.None);
             //Editor Fonts
             //Title Detail
             sB.DrawString(Font, "Map Editor", new Vector2(20, 20), Color.Snow);

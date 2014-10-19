@@ -24,6 +24,7 @@ namespace Platformer_Prototype
 
         //Object Textures
         static public Texture2D _OBJ_Ladder_Tex;
+        static public Texture2D _ITEM_Crystal_Tex;
 
         //Map Textures
         //Grass
@@ -38,6 +39,7 @@ namespace Platformer_Prototype
 
         //Debug Textures
         static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[4];
+        static public Texture2D[] _DBG_Lava_Tex = new Texture2D[2];
         static public Texture2D _DBG_WaterTop_Tex;
         static public Texture2D _DBG_WaterBot_Tex;
         static public Texture2D _DBG_Line_Tex;
@@ -53,6 +55,7 @@ namespace Platformer_Prototype
             //Object Textures
             _OBJ_Ladder_Tex = getContent.Load<Texture2D>("tiles/Ladder");
             //_OBJ_Grass_Tex = getContent.Load<Texture2D>("objects/grass4");
+            _ITEM_Crystal_Tex = getContent.Load<Texture2D>("objects/items/gemblue");
 
             //Map Textures
             //Grass
@@ -74,6 +77,10 @@ namespace Platformer_Prototype
             for (int i = 0; i < 4; i++)
             {
                 _DBG_Trigger_Tex[i] = getContent.Load<Texture2D>("editor/trigger" + i);
+            }
+            for (int i = 0; i < 2; i++)
+            {
+                _DBG_Lava_Tex[i] = getContent.Load<Texture2D>("editor/lava" + i);
             }
             _DBG_Line_Tex = getContent.Load<Texture2D>("debug/lineTex");
             _DBG_WaterTop_Tex = getContent.Load<Texture2D>("editor/watertopeditor");
@@ -136,6 +143,9 @@ namespace Platformer_Prototype
                                 //Trigger Water Block Texture
                                 if (MapData[j, i] == '♣')
                                     sB.Draw(_DBG_Trigger_Tex[2], tileDraw, Color.White);
+                                //Crystal Item
+                                if (MapData[j, i] == '◘')
+                                    sB.Draw(_ITEM_Crystal_Tex, tileDraw, Color.White);
                             }
 
                             //Trigger Ladder Block
@@ -495,6 +505,10 @@ namespace Platformer_Prototype
                                     sB.Draw(_DBG_WaterTop_Tex, tileDraw, Color.White);
                                 if (MapData[j, i] == '•')
                                     sB.Draw(_DBG_WaterBot_Tex, tileDraw, Color.White);
+                                if (MapData[j, i] == '◘')
+                                    sB.Draw(_DBG_Lava_Tex[0], tileDraw, Color.White);
+                                if (MapData[j, i] == '○')
+                                    sB.Draw(_DBG_Lava_Tex[1], tileDraw, Color.White);
                             }
                         }
                 }

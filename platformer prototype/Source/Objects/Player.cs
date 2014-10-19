@@ -366,8 +366,6 @@ namespace Platformer_Prototype
 
                 sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), Vector2.Zero, MathHelper.ToRadians(Rotation), SpriteEffects.None, Color.White);
 
-
-
             //Sprites
         }
 
