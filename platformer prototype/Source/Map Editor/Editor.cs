@@ -65,7 +65,10 @@ namespace Platformer_Prototype
 
         private Sprite[] Button = new Sprite[6];
 
-        System.Windows.Forms.OpenFileDialog FD = new System.Windows.Forms.OpenFileDialog();
+        System.Windows.Forms.FileDialog getFile = new System.Windows.Forms.OpenFileDialog();
+        System.Windows.Forms.SaveFileDialog saveFile = new System.Windows.Forms.SaveFileDialog();
+        private string FileName;                   
+
 
         public Editor(ContentManager getContent, Vector2 getScreenSize)
         {
@@ -215,18 +218,35 @@ namespace Platformer_Prototype
             Camera.Update(getGame1);
 
             //Open
+            getFile.Title = "Map Loader";
+            getFile.Filter = "Text files (*.txt*)| *.txt";
+
             if (Input.KeyboardPressed(Keys.L))
-            if (FD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                string fileToOpen = FD.FileName;
+                if (getFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                        FileName = getFile.FileName;
+                        GridDataL1 = LoadMap(FileName);
+                        GridDataL2 = LoadMap(FileName.Replace(".txt", "") + "_back.txt");
+                        GridDataL3 = LoadMap(FileName.Replace(".txt", "") + "_fore.txt");
+                        GridDataL4 = LoadMap(FileName.Replace(".txt", "") + "_eff.txt");
 
-                System.IO.FileInfo File = new System.IO.FileInfo(FD.FileName);
+                        FontTimers[2] = 0;
+                }
+            //Save
+            saveFile.Title = "Map Exporter";
+            saveFile.Filter = "Text files (*.txt*)| *.txt";
 
-                GridDataL1 = LoadMap(fileToOpen);
+            if (Input.KeyboardPressed(Keys.S))
+                if (saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    FileName = saveFile.FileName;
+                    SaveMap(GridDataL1, FileName);
+                    SaveMap(GridDataL2, FileName.Replace(".txt", "") + "_back.txt");
+                    SaveMap(GridDataL3, FileName.Replace(".txt", "") + "_fore.txt");
+                    SaveMap(GridDataL4, FileName.Replace(".txt", "") + "_eff.txt");
 
-                FontTimers[2] = 0;
-            }
-
+                    FontTimers[1] = 0;
+                }
 
 
             //Texture Selector
@@ -316,14 +336,14 @@ namespace Platformer_Prototype
 
 
             //Save Map
-            if (Input.KeyboardPressed(Keys.S))
-            {
-                FontTimers[1] = 0;
-                SaveMap(GridDataL1, "File");
-                SaveMap(GridDataL2, "File_Back");
-                SaveMap(GridDataL3, "File_Fore");
-                SaveMap(GridDataL4, "File_Eff");
-            }
+            //if (Input.KeyboardPressed(Keys.S))
+            //{
+            //    FontTimers[1] = 0;
+            //    SaveMap(GridDataL1, "File");
+            //    SaveMap(GridDataL2, "File_Back");
+            //    SaveMap(GridDataL3, "File_Fore");
+            //    SaveMap(GridDataL4, "File_Eff");
+            //}
 
             //Load Map
             //if (Input.KeyboardPressed(Keys.L))
@@ -359,7 +379,7 @@ namespace Platformer_Prototype
 
         private void SaveMap(char[,] getGrid, string MapFile)
         {
-            StreamWriter sw = new StreamWriter("maps/" + MapFile + ".txt");
+            StreamWriter sw = new StreamWriter(MapFile);
             for (int i = 0; i < getGrid.GetLength(0); i++)
             {
                 char[] linelist = new char[getGrid.GetLength(1)];
