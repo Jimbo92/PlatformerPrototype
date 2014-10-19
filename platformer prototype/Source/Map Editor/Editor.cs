@@ -65,6 +65,8 @@ namespace Platformer_Prototype
 
         private Sprite[] Button = new Sprite[6];
 
+        System.Windows.Forms.OpenFileDialog FD = new System.Windows.Forms.OpenFileDialog();
+
         public Editor(ContentManager getContent, Vector2 getScreenSize)
         {
             ScreenSize = getScreenSize;
@@ -212,6 +214,21 @@ namespace Platformer_Prototype
             //Camera
             Camera.Update(getGame1);
 
+            //Open
+            if (Input.KeyboardPressed(Keys.L))
+            if (FD.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string fileToOpen = FD.FileName;
+
+                System.IO.FileInfo File = new System.IO.FileInfo(FD.FileName);
+
+                GridDataL1 = LoadMap(fileToOpen);
+
+                FontTimers[2] = 0;
+            }
+
+
+
             //Texture Selector
             TextureSelector();
 
@@ -309,14 +326,14 @@ namespace Platformer_Prototype
             }
 
             //Load Map
-            if (Input.KeyboardPressed(Keys.L))
-            {
-                FontTimers[2] = 0;
-                GridDataL1 = MapLoader.LoadMapData("File");
-                GridDataL2 = MapLoader.LoadMapData("File_Back");
-                GridDataL3 = MapLoader.LoadMapData("File_Fore");
-                GridDataL4 = MapLoader.LoadMapData("File_Eff");
-            }
+            //if (Input.KeyboardPressed(Keys.L))
+            //{
+            //    FontTimers[2] = 0;
+            //    GridDataL1 = MapLoader.LoadMapData("File");
+            //    GridDataL2 = MapLoader.LoadMapData("File_Back");
+            //    GridDataL3 = MapLoader.LoadMapData("File_Fore");
+            //    GridDataL4 = MapLoader.LoadMapData("File_Eff");
+            //}
 
             //Keyboard Tile Chooser
             if (Input.KeyboardPressed(Keys.NumPad1) || Input.KeyboardPressed(Keys.D1))
@@ -357,6 +374,21 @@ namespace Platformer_Prototype
                 sw.WriteLine();
             }
             sw.Close();
+        }
+
+        public char[,] LoadMap(string MapDataFile)
+        {
+            char[,] loadMap;
+            var data = File.ReadAllLines(@MapDataFile);
+            loadMap = new char[data.Length, (data[0].Length + 1) / 2];
+            for (int i = 0; i < data.Length; i++)
+            {
+                string line = data[i];
+                string[] charr = line.Split(',');
+                for (int j = 0; j < charr.Length; j++)
+                    loadMap[i, j] = Convert.ToChar(charr[j]);
+            }
+            return loadMap;
         }
 
         public void Draw(SpriteBatch sB)
