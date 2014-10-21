@@ -45,12 +45,10 @@ namespace Platformer_Prototype
 
         //--------------------------------------------
 
-        public Player(ContentManager getContent)
+        public Player(ContentManager getContent, Vector2 getPlayerStart)
         {
-            Position = new Vector2(100, 50);
-
+            Position = getPlayerStart;
             sprite = new Sprite(getContent, "objects/player", Width, Height);
-
         }
 
         public void updateBounds(Vector2 Camera)

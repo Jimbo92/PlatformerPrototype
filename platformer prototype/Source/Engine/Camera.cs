@@ -25,7 +25,7 @@ namespace Platformer_Prototype
 
         static public CameraState CameraMode = CameraState.FOLLOW;
 
-        static public Vector2 Position = Vector2.Zero;
+        static public Vector2 Position;
         static Vector2 Speed = Vector2.Zero;
 
         static private Game1 game1;
@@ -35,9 +35,7 @@ namespace Platformer_Prototype
         static public void Initialize(Player getPlayer)
         {
             player = getPlayer;
-
-            Position.X = 0;
-            Position.Y = 0;
+            Position = player.Position;
         }
 
         static public void Update(Game1 getGame1)

@@ -32,6 +32,8 @@ namespace Platformer_Prototype
         public Vector2 Ratio;
         public Background background;
         public Player player;
+        public Vector2 PlayerStart;
+        public int PlayerWarpInTime;
         public Sprite WaterTop;
         public Sprite WaterBase;
         public Sprite LavaTop;
@@ -64,8 +66,18 @@ namespace Platformer_Prototype
 
         public BaseEngine(ContentManager getContent, Vector2 getScreenSize)
         {
+            for (int i = 0; i < map.GetLength(1); i++)
+                for (int j = 0; j < map.GetLength(0); j++)
+                {
+                    tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, 600 - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
+
+                    //Player Start
+                    if (map[j, i] == '○')
+                        PlayerStart = new Vector2(tileDraw.X, tileDraw.Y);
+                }
+
             Content = getContent;
-            player = new Player(getContent);
+            player = new Player(getContent, PlayerStart);
             Camera.Initialize(player);
 
             WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 10, 1);
@@ -82,18 +94,7 @@ namespace Platformer_Prototype
 
                 enemies[i].isDead = false;
                 enemies[i].Position = new Vector2(randomX, 0);
-
-
             }
-
-            //Items
-            for (int i = 0; i < map.GetLength(1); i++)
-                for (int j = map.GetLength(0) - 1; j > -1; j--)
-                {
-                    if (map[j, i] == '◘')
-                        Crystals.Add(Crystal);
-                }
-
             background = new Background(getContent, getScreenSize);
         }
 
@@ -101,52 +102,30 @@ namespace Platformer_Prototype
         {
             DrawLine(game1, sB, target.a, target.b);
             DrawLine(game1, sB, target.b, target.c);
-            DrawLine(game1, sB, target.c, target.a);
-             
-
+            DrawLine(game1, sB, target.c, target.a);          
         }
 
-        public void Update(Game1 getGame1)
+        private void PlayerWarpIn()
         {
-
-            Textures.Update(this);
-            LoadMapTimer++;
-            if (LoadMapTimer <= 1)
+            PlayerWarpInTime++;              
+            if (PlayerWarpInTime >= 50)
             {
-                map = MapLoader.LoadMapData("grasslands");
-                BackMapTextures = MapLoader.LoadMapData("grasslands_Back");
-                ForeMapTextures = MapLoader.LoadMapData("grasslands_fore");
-                MapEffectTextures = MapLoader.LoadMapData("grasslands_eff");
+                PlayerData();
+                PlayerWarpInTime = 50;
             }
-            else
-                LoadMapTimer = 2;
 
-            game1 = getGame1;
-            Camera.Update(game1);
-            Camera.CameraMode = Camera.CameraState.FOLLOW;
-            //Animated Textures
-            WaterTop.UpdateAnimation(0.15f);
-            WaterBase.UpdateAnimation(0.15f);
-            LavaTop.UpdateAnimation(0.15f);
-            LavaBase.UpdateAnimation(0.15f);
-            Torch.UpdateAnimation(0.5f);
+            //Warp in Effect goes here//
+        }
 
-
-
+        public void PlayerData()
+        {
             player.Update(game1, this);
-            foreach (Enemy e in enemies)
-            {
-                if (!e.isDead)
-                    e.Update(game1, this);
-            }
-
 
             // Check for Map boundries-----------------
             if (player.Position.Y > game1.GraphicsDevice.Viewport.Height)
             {
-                player.Position = new Vector2(100, 50);
-                Camera.Position.X = 0;
-                Camera.Position.Y = 0;
+                player.Position = PlayerStart;
+                Camera.Position = Vector2.Zero;
                 player.noclip = false;
                 player.Rotation = 0;
             }
@@ -176,26 +155,23 @@ namespace Platformer_Prototype
                 player.checkTollisionsX(tan6);
 
             }
-                // Check Y Collisions-----------------------------
-                //Will Check up to 6 Rectangles
+            // Check Y Collisions-----------------------------
+            //Will Check up to 6 Rectangles
             player.Position.Y += (int)player.Speed.Y;
-                player.updateBounds(Camera.Position);
-                updateHitboxes(player.Position, player.Bounds);
-                if (!player.noclip)
-                {
-                    foreach (Rectangle canvas in Canvas)
-                        player.checkCollisionsY(canvas);
-                    //Will check up to 6 Triangles
-                    player.checkTollisionsY(tan1);
-                    player.checkTollisionsY(tan2);
-                    player.checkTollisionsY(tan3);
-                    player.checkTollisionsY(tan4);
-                    player.checkTollisionsY(tan5);
-                    player.checkTollisionsY(tan6);
-                }
-                
-                
-            
+            player.updateBounds(Camera.Position);
+            updateHitboxes(player.Position, player.Bounds);
+            if (!player.noclip)
+            {
+                foreach (Rectangle canvas in Canvas)
+                    player.checkCollisionsY(canvas);
+                //Will check up to 6 Triangles
+                player.checkTollisionsY(tan1);
+                player.checkTollisionsY(tan2);
+                player.checkTollisionsY(tan3);
+                player.checkTollisionsY(tan4);
+                player.checkTollisionsY(tan5);
+                player.checkTollisionsY(tan6);
+            }
 
             //Check Non Clipping Collisions====================
 
@@ -278,6 +254,7 @@ namespace Platformer_Prototype
             }
         
 
+
             if (player.checks[2] == true)
             {
                 player.noclip = true;
@@ -285,10 +262,45 @@ namespace Platformer_Prototype
                 player.Speed.X = 0;
 
             }
-         
+
 
             //=================================================
             player.updateBounds(Camera.Position);
+        }
+
+        public void Update(Game1 getGame1)
+        {
+            Textures.Update(this);
+            LoadMapTimer++;
+            if (LoadMapTimer <= 1)
+            {
+                map = MapLoader.LoadMapData("grasslands");
+                BackMapTextures = MapLoader.LoadMapData("grasslands_Back");
+                ForeMapTextures = MapLoader.LoadMapData("grasslands_fore");
+                MapEffectTextures = MapLoader.LoadMapData("grasslands_eff");
+            }
+            else
+                LoadMapTimer = 2;
+
+            game1 = getGame1;
+            Camera.Update(game1);
+            Camera.CameraMode = Camera.CameraState.FOLLOW;
+            //Animated Textures
+            WaterTop.UpdateAnimation(0.15f);
+            WaterBase.UpdateAnimation(0.15f);
+            LavaTop.UpdateAnimation(0.15f);
+            LavaBase.UpdateAnimation(0.15f);
+            Torch.UpdateAnimation(0.5f);
+
+            //Enemy Update
+            foreach (Enemy e in enemies)
+            {
+                if (!e.isDead)
+                    e.Update(game1, this);
+            }
+
+            //Player Update
+            PlayerWarpIn();           
 
             foreach (Enemy e in enemies)
             {
@@ -766,9 +778,12 @@ namespace Platformer_Prototype
                         }
                 }
 
-            Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
-            player.Draw(sB);
             Textures.DrawMapEffects(sB, MapEffectTextures, tileSize, Vector2.Zero, game1);
+
+            Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
+
+            if (PlayerWarpInTime == 50)
+                player.Draw(sB);
 
         }
 
