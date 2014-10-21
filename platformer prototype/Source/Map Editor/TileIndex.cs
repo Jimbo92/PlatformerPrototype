@@ -25,6 +25,7 @@ namespace Platformer_Prototype
                 if (CurrentTile == '♣') return "Water Trigger";
                 if (CurrentTile == '♠') return "Ladder Trigger";
                 if (CurrentTile == '•') return "Lava Trigger";
+                if (CurrentTile == '○') return "Player Start";
 
             }
             if (getEditor.MapLayers == Editor.EMapLayers.BACKGROUND)
@@ -161,6 +162,8 @@ namespace Platformer_Prototype
                 if (CurrentTile == '♣') return "Shade Bottom Right";
                 if (CurrentTile == '♠') return "Water Top";
                 if (CurrentTile == '•') return "Water Solid";
+                if (CurrentTile == '◘') return "Lava Top";
+                if (CurrentTile == '○') return "Lava Solid";
             }
 
             return "None";

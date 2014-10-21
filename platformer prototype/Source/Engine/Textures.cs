@@ -38,7 +38,7 @@ namespace Platformer_Prototype
         static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
 
         //Debug Textures
-        static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[4];
+        static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[6];
         static public Texture2D[] _DBG_Lava_Tex = new Texture2D[2];
         static public Texture2D _DBG_WaterTop_Tex;
         static public Texture2D _DBG_WaterBot_Tex;
@@ -74,7 +74,7 @@ namespace Platformer_Prototype
 
 
             //Debug Textures & Editor
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
                 _DBG_Trigger_Tex[i] = getContent.Load<Texture2D>("editor/trigger" + i);
             }
@@ -143,9 +143,16 @@ namespace Platformer_Prototype
                                 //Trigger Water Block Texture
                                 if (MapData[j, i] == '♣')
                                     sB.Draw(_DBG_Trigger_Tex[2], tileDraw, Color.White);
+                                //Trigger Lava Block Texture
+                                if (MapData[j, i] == '•')
+                                    sB.Draw(_DBG_Trigger_Tex[4], tileDraw, Color.White);
                                 //Crystal Item
                                 if (MapData[j, i] == '◘')
                                     sB.Draw(_ITEM_Crystal_Tex, tileDraw, Color.White);
+                                //Trigger Player Start
+                                if (MapData[j, i] == '○')
+                                    sB.Draw(_DBG_Trigger_Tex[5], tileDraw, Color.White);
+
                             }
 
                             //Trigger Ladder Block

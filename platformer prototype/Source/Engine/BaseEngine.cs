@@ -242,8 +242,6 @@ namespace Platformer_Prototype
 
                 }
             }
-
-            
         
 
             if (player.checks[2] == true)
