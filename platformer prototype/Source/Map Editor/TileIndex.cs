@@ -24,6 +24,8 @@ namespace Platformer_Prototype
                 if (CurrentTile == '♦') return "Half CB";
                 if (CurrentTile == '♣') return "Water Trigger";
                 if (CurrentTile == '♠') return "Ladder Trigger";
+                if (CurrentTile == '•') return "Lava Trigger";
+
             }
             if (getEditor.MapLayers == Editor.EMapLayers.BACKGROUND)
             {

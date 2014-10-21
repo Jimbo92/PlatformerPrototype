@@ -102,6 +102,7 @@ namespace Platformer_Prototype
             DrawLine(game1, sB, target.a, target.b);
             DrawLine(game1, sB, target.b, target.c);
             DrawLine(game1, sB, target.c, target.a);
+             
 
         }
 
@@ -146,6 +147,7 @@ namespace Platformer_Prototype
                 player.Position = new Vector2(100, 50);
                 Camera.Position.X = 0;
                 Camera.Position.Y = 0;
+                player.noclip = false;
             }
 
             // Check X Collisions-----------------------------
@@ -154,62 +156,104 @@ namespace Platformer_Prototype
             player.Position.X += (int)player.Speed.X;
             player.updateBounds(Camera.Position);
             updateHitboxes(player.Position, player.Bounds);
-            foreach (Rectangle canvas in Canvas)
-                player.checkCollisionsX(canvas);
-
-            //Will Check up to 6 Triangles
-
-            player.updateBounds(Camera.Position);
-            updateHitboxes(player.Position, player.Bounds);
-            player.checkTollisionsX(tan1);
-            player.checkTollisionsX(tan2);
-            player.checkTollisionsX(tan3);
-            player.checkTollisionsX(tan4);
-            player.checkTollisionsX(tan5);
-            player.checkTollisionsX(tan6);
 
 
-            // Check Y Collisions-----------------------------
-            //Will Check up to 6 Rectangles
+            if (!player.noclip)
+            {
+                foreach (Rectangle canvas in Canvas)
+                    player.checkCollisionsX(canvas);
 
+                //Will Check up to 6 Triangles
+
+                player.updateBounds(Camera.Position);
+                updateHitboxes(player.Position, player.Bounds);
+                player.checkTollisionsX(tan1);
+                player.checkTollisionsX(tan2);
+                player.checkTollisionsX(tan3);
+                player.checkTollisionsX(tan4);
+                player.checkTollisionsX(tan5);
+                player.checkTollisionsX(tan6);
+
+            }
+                // Check Y Collisions-----------------------------
+                //Will Check up to 6 Rectangles
             player.Position.Y += (int)player.Speed.Y;
-            player.updateBounds(Camera.Position);
-            updateHitboxes(player.Position, player.Bounds);
-            foreach (Rectangle canvas in Canvas)
-                player.checkCollisionsY(canvas);
-            //Will check up to 6 Triangles
-            player.checkTollisionsY(tan1);
-            player.checkTollisionsY(tan2);
-            player.checkTollisionsY(tan3);
-            player.checkTollisionsY(tan4);
-            player.checkTollisionsY(tan5);
-            player.checkTollisionsY(tan6);
+                player.updateBounds(Camera.Position);
+                updateHitboxes(player.Position, player.Bounds);
+                if (!player.noclip)
+                {
+                    foreach (Rectangle canvas in Canvas)
+                        player.checkCollisionsY(canvas);
+                    //Will check up to 6 Triangles
+                    player.checkTollisionsY(tan1);
+                    player.checkTollisionsY(tan2);
+                    player.checkTollisionsY(tan3);
+                    player.checkTollisionsY(tan4);
+                    player.checkTollisionsY(tan5);
+                    player.checkTollisionsY(tan6);
+                }
+                
+                
+            
 
             //Check Non Clipping Collisions====================
 
             player.checks[0] = false;
-            player.updateBounds(Camera.Position);
-            updateNoclips(player.Position, player.Bounds, '♠');
-            foreach (Rectangle noclip in NoClip)
+            if (!player.noclip)
             {
-                if (player.Bounds.Intersects(noclip))
+                player.updateBounds(Camera.Position);
+                updateNoclips(player.Position, player.Bounds, '♠');
+                foreach (Rectangle noclip in NoClip)
                 {
-                    player.checks[0] = true;
-                }
+                    if (player.Bounds.Intersects(noclip))
+                    {
+                        player.checks[0] = true;
+                    }
 
+                }
             }
 
             player.checks[1] = false;
-            player.updateBounds(Camera.Position);
-            updateNoclips(player.Position, player.Bounds, '♣');
-            foreach (Rectangle noclip in NoClip)
+            if (!player.noclip)
             {
-                if (player.Bounds.Intersects(noclip))
+                player.updateBounds(Camera.Position);
+                updateNoclips(player.Position, player.Bounds, '♣');
+                foreach (Rectangle noclip in NoClip)
                 {
-                    player.checks[1] = true;
+                    if (player.Bounds.Intersects(noclip))
+                    {
+                        player.checks[1] = true;
+                    }
+
                 }
+            }
+
+            player.checks[2] = false;
+            if (!player.noclip)
+            {
+                player.updateBounds(Camera.Position);
+                updateNoclips(player.Position, player.Bounds, '•');
+                foreach (Rectangle noclip in NoClip)
+                {
+                    if (player.Bounds.Intersects(noclip))
+                    {
+                        player.checks[2] = true;
+                    }
+
+                }
+            }
+
+            
+        
+
+            if (player.checks[2] == true)
+            {
+                player.noclip = true;
+                player.Speed.Y = -7;
+                player.Speed.X = 0;
 
             }
+         
 
             //=================================================
             player.updateBounds(Camera.Position);
@@ -280,6 +324,28 @@ namespace Platformer_Prototype
                     }
 
                 }
+
+                e.checks[2] = false;
+               e.updateBounds(Camera.Position);
+                updateNoclips(e.Position, e.Bounds, '•');
+                foreach (Rectangle noclip in NoClip)
+                {
+                    if (e.Bounds.Intersects(noclip))
+                    {
+                        e.checks[2] = true;
+                    }
+
+                }
+
+           
+
+                if (e.checks[2] == true)
+                {
+                    e.isDead = true;
+                }
+
+
+
             }
 
         }
@@ -336,41 +402,73 @@ namespace Platformer_Prototype
                 {
 
                     if (TileY + j >= 0 && TileY + j < map.GetLength(0) && TileX + i >= 0 && TileX + i < map.GetLength(1))
-                        if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i] == type)
+                        if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i] == '•')
                         {
 
 
-                            NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                            NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize) + 8, tileSize, tileSize -8);
                             que++;
 
                         }
+                        else
+                        {
+                            if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i] == type)
+                            { 
+                            NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize) , tileSize, tileSize );
+                            que++;
+                            }
+                        }
                     if (TileY + j >= 0 && TileY + j < map.GetLength(0) && TileX + 1 >= 0 && TileX + 1 < map.GetLength(1))
-                        if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i + 1] == type)
+                        if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i + 1] == '•')
                         {
 
 
-                            NoClip[que] = new Rectangle((TileX + i + 1) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                            NoClip[que] = new Rectangle((TileX + i + 1) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize) + 8, tileSize, tileSize - 8);
                             que++;
 
+                        }
+                        else
+                        {
+                            if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i + 1] == type)
+                            {
+                                NoClip[que] = new Rectangle((TileX + i + 1) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                                que++;
+                            }
                         }
 
                     if (TileY + j + 1 >= 0 && TileY + j + 1 < map.GetLength(0) && TileX + i >= 0 && TileX + i < map.GetLength(1))
-                        if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i] == type)
+                        if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i] == '•')
                         {
 
 
-                            NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j + 1) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                            NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j + 1) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize) + 8, tileSize, tileSize - 8);
                             que++;
 
                         }
+                        else
+                        {
+                            if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i] == type)
+                            {
+                                NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j + 1) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                                que++;
+                            }
+                        }
                     if (TileY + j + 1 >= 0 && TileY + j + 1 < map.GetLength(0) && TileX + 1 >= 0 && TileX + 1 < map.GetLength(1))
-                        if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i + 1] == type)
+                        if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i + 1] == '•')
                         {
 
 
-                            NoClip[que] = new Rectangle((TileX + i + 1) * tileSize + (int)Camera.Position.X, ((TileY + j + 1) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                            NoClip[que] = new Rectangle((TileX + i + 1) * tileSize + (int)Camera.Position.X, ((TileY + j + 1) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize) + 8, tileSize, tileSize - 8);
                             que++;
 
+                        }
+                        else
+                        {
+                            if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i + 1] == type)
+                            {
+                                NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j + 1) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                                que++;
+                            }
                         }
 
 
@@ -595,7 +693,7 @@ namespace Platformer_Prototype
                     enemy.Draw(sB);
             }
 
-            player.Draw(sB);
+      
 
             //Hard Coded Texture Tiles// Water, Lava, Rain, Weather Effects
             for (int i = 0; i < map.GetLength(1); i++)
@@ -636,7 +734,7 @@ namespace Platformer_Prototype
                 }
 
             Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
-
+            player.Draw(sB);
             Textures.DrawMapEffects(sB, MapEffectTextures, tileSize, Vector2.Zero, game1);
 
         }

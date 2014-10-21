@@ -22,11 +22,13 @@ namespace Platformer_Prototype
         public Vector2 bl = Vector2.Zero;
         public Vector2 br = Vector2.Zero;
 
+        public bool noclip = false;
+
 
         public Rectangle Bounds;
         public Vector2 Speed;
 
-        public bool[] checks = new bool[2];
+        public bool[] checks = new bool[4];
 
         public float xFriction = 1;
         public float yFriction = 1;
@@ -65,6 +67,7 @@ namespace Platformer_Prototype
             BEngine = getEngine;
             game1 = getGame1;
 
+            
 
             //Gravity--------------
 
@@ -113,7 +116,14 @@ namespace Platformer_Prototype
             }
 
             //---------------------
+        
+       
+            //Lava rotation Script--------------
 
+            if (noclip)
+            {
+                Rotation += 5;
+            }
 
             //Controls--------------------------------
             if (Input.KeyboardPress(Keys.OemPlus))
@@ -126,6 +136,7 @@ namespace Platformer_Prototype
             //Out of water
             if (checks[1] == false)
             {
+                if(!noclip)
                 if (Input.KeyboardPress(Keys.W) || Input.KeyboardPress(Keys.Up))
                 {
                     bool returner = false;
@@ -239,6 +250,7 @@ namespace Platformer_Prototype
 
 
                 }
+                if(!noclip)
                 if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
                     if (Speed.X > -3)
                         Speed.X -= 0.25f;
@@ -251,7 +263,7 @@ namespace Platformer_Prototype
                     else
                         Speed.X = 3;
 
-                if (Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right))
+                if ((Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right)) || noclip)
                     if (Math.Abs(Speed.X) > 1)
                         Speed.X *= 0.92f;
                     else

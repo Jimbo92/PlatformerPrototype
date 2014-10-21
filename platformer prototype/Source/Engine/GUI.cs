@@ -35,7 +35,7 @@ namespace Platformer_Prototype
         public static bool CrystalPickUp = false;
 
         private static float CrystalBarYPos = 20;
-        private static int CrystalBarTimer;
+        public static int CrystalBarTimer;
         //------------------------------------------------//
 
 
@@ -76,6 +76,7 @@ namespace Platformer_Prototype
             {
                 ShowCrystalBar = true;
                 CrystalPickUp = true;
+                CrystalBarTimer = 0;
             }
             if (ShowCrystalBar)
                 CrystalBarAnimation();
@@ -91,7 +92,7 @@ namespace Platformer_Prototype
             Crosshair.UpdateAnimation(0.3f);
         }
 
-        private static void CrystalBarAnimation()
+        public static void CrystalBarAnimation()
         {
             CrystalBarTimer++;
             if (CrystalBarTimer < 100)

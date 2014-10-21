@@ -34,7 +34,7 @@ namespace Platformer_Prototype
         bool jump = false;
 
 
-        public bool[] checks = new bool[2];
+        public bool[] checks = new bool[4];
 
         public float xFriction = 1;
         public float yFriction = 1;
