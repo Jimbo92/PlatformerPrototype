@@ -41,7 +41,7 @@ namespace Platformer_Prototype
 
         private BaseEngine BEngine;
         private Game1 game1;
-        private int wallTimer;
+        public int wallTimer;
 
         //--------------------------------------------
 
@@ -149,6 +149,12 @@ namespace Platformer_Prototype
                         Position.Y += 1;
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
+
+                        if (checks[3] == true)
+                        {
+                            Speed.Y = -jump;
+                            returner = true;
+                        }
 
                         for (int i = 0; i < BEngine.Canvas.Length; i++)
                             if (Bounds.Intersects(BEngine.Canvas[i]))

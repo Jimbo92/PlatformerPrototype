@@ -26,6 +26,7 @@ namespace Platformer_Prototype
                 if (CurrentTile == '♠') return "Ladder Trigger";
                 if (CurrentTile == '•') return "Lava Trigger";
                 if (CurrentTile == '○') return "Player Start";
+                if (CurrentTile == '◙') return "Classic CB";
 
             }
             if (getEditor.MapLayers == Editor.EMapLayers.BACKGROUND)

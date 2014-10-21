@@ -148,6 +148,7 @@ namespace Platformer_Prototype
                 Camera.Position.X = 0;
                 Camera.Position.Y = 0;
                 player.noclip = false;
+                player.Rotation = 0;
             }
 
             // Check X Collisions-----------------------------
@@ -238,6 +239,39 @@ namespace Platformer_Prototype
                     if (player.Bounds.Intersects(noclip))
                     {
                         player.checks[2] = true;
+                    }
+
+                }
+            }
+
+
+            player.checks[3] = false;
+            if (!player.noclip)
+            {
+                player.updateBounds(Camera.Position);
+                updateNoclips(player.Position, player.Bounds, '◙');
+                foreach (Rectangle noclip in NoClip)
+                {
+                    if (noclip.Y > player.Bounds.Y + player.Bounds.Height - player.Speed.Y - 1)
+                    if (player.Bounds.Intersects(noclip))
+                    {
+                        player.checks[3] = true;
+
+                      
+                            for (int i = 20; i > 0; i--)
+                            {
+                                player.updateBounds(Camera.Position);
+                                updateHitboxes(player.Position, player.Bounds);
+                                if (player.Bounds.Intersects(noclip))
+                                {
+                                    player.Position.Y--;
+                                    player.wallTimer = 0;
+                                    player.Rotation = 0;
+
+                                }
+                            }
+
+                        player.Speed.Y = 0;
                     }
 
                 }
@@ -464,7 +498,7 @@ namespace Platformer_Prototype
                         {
                             if (que < NoClip.GetLength(0) && map[TileY + j + 1, TileX + i + 1] == type)
                             {
-                                NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j + 1) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                                NoClip[que] = new Rectangle((TileX + i + 1) * tileSize + (int)Camera.Position.X, ((TileY + j + 1) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                                 que++;
                             }
                         }
@@ -727,6 +761,7 @@ namespace Platformer_Prototype
                                 Crystal.sprite.destinationRectangle = Rectangle.Empty;
                                 GUI.CrystalPickUp = true;
                                 GUI.ShowCrystalBar = true;
+                                GUI.CrystalBarTimer = 0;
                             }
                         }
                 }
