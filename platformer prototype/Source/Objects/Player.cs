@@ -15,6 +15,7 @@ namespace Platformer_Prototype
     class Player
     {
         public Sprite sprite;
+        public Texture2D capTex;
         public Vector2 Position;
        
 
@@ -56,7 +57,8 @@ namespace Platformer_Prototype
         public Player(ContentManager getContent, Vector2 getPlayerStart)
         {
             Position = getPlayerStart;
-            sprite = new Sprite(getContent, "objects/playerSS", Width, Height, 3, 7);
+            sprite = new Sprite(getContent, "objects/playerSS", Width, Height, 2, 8);
+            capTex = getContent.Load<Texture2D>("objects/hat1");
         }
 
         public void updateBounds(Vector2 Camera)
@@ -90,13 +92,16 @@ namespace Platformer_Prototype
             if (isWalking && !isJumping)
             {
                 sprite.CurrentFrame += 0.25f;
-                if (sprite.CurrentFrame > 6)
+                if (sprite.CurrentFrame > 10)
                     sprite.CurrentFrame = 0;
             }
-            else if(isJumping)
-                sprite.CurrentFrame = 13;
+            else if (isJumping)
+                sprite.CurrentFrame = 11;
             else
+            {
+                sprEffect = SpriteEffects.None;
                 sprite.CurrentFrame = 14;
+            }
         }
 
         public void Update(Game1 getGame1, BaseEngine getEngine)
@@ -433,7 +438,7 @@ namespace Platformer_Prototype
         {
 
                 sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), Vector2.Zero, MathHelper.ToRadians(Rotation), sprEffect, Color.White);
-
+                sB.Draw(capTex, new Rectangle((int)Bounds.X + 5, (int)Bounds.Y - 10, 20, 20), null, Color.White, MathHelper.ToRadians(Rotation), Vector2.Zero, sprEffect, 0);
             //Sprites
         }
 

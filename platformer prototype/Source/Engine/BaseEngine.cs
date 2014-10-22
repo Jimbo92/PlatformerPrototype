@@ -25,7 +25,7 @@ namespace Platformer_Prototype
         public Triangle tan5 = new Triangle();
         public Triangle tan6 = new Triangle();
 
-        
+
 
         public Rectangle[] NoClip = new Rectangle[6];
 
@@ -63,7 +63,6 @@ namespace Platformer_Prototype
 
         private List<Item> Crystals = new List<Item>();
         private Item Crystal;
-
 
         //-----------------------------------------------------
 
@@ -106,12 +105,12 @@ namespace Platformer_Prototype
         {
             DrawLine(game1, sB, target.a, target.b);
             DrawLine(game1, sB, target.b, target.c);
-            DrawLine(game1, sB, target.c, target.a);          
+            DrawLine(game1, sB, target.c, target.a);
         }
 
         private void PlayerWarpIn()
         {
-            PlayerWarpInTime++;              
+            PlayerWarpInTime++;
             if (PlayerWarpInTime >= 50)
             {
                 PlayerData();
@@ -159,7 +158,7 @@ namespace Platformer_Prototype
                 player.checkTollisionsX(tan5);
                 player.checkTollisionsX(tan6);
 
-                
+
 
             }
             // Check Y Collisions-----------------------------
@@ -236,11 +235,11 @@ namespace Platformer_Prototype
                 foreach (Rectangle noclip in NoClip)
                 {
                     if (noclip.Y > player.Bounds.Y + player.Bounds.Height - player.Speed.Y - 1)
-                    if (player.Bounds.Intersects(noclip))
-                    {
-                        player.checks[3] = true;
+                        if (player.Bounds.Intersects(noclip))
+                        {
+                            player.checks[3] = true;
 
-                      
+
                             for (int i = 20; i > 0; i--)
                             {
                                 player.updateBounds(Camera.Position);
@@ -254,39 +253,44 @@ namespace Platformer_Prototype
                                 }
                             }
 
-                        player.Speed.Y = 0;
-                    }
-
-                }
-            }
-
-
-          
-            bool oneKill = false;
-            if(!player.noclip && player.cooldown == 0)
-            foreach (Enemy e in Enemies) {
-                if(e.Bounds.Intersects(player.Bounds) && !e.isDead && !oneKill)
-                {
-                    if (player.Position.Y < e.Position.Y - 16) {
-                        e.isDead = true;
-                        oneKill = true;
-                        player.Speed.Y = -7;
-                        for (int i = 0; i < 20; i++) {
-                            if (e.Bounds.Intersects(player.Bounds))
-                                player.Position.Y--;
+                            player.Speed.Y = 0;
                         }
-                    } else {
-                        GUI.isHit = true;
-                        GUI.ShowHealthBar = true;
-                        player.cooldown = 45;
-                        player.Speed.Y = -4;
-                        player.Speed.X *= -1;
-                    }
+
                 }
             }
 
-            
-          
+
+
+            bool oneKill = false;
+            if (!player.noclip && player.cooldown == 0)
+                foreach (Enemy e in Enemies)
+                {
+                    if (e.Bounds.Intersects(player.Bounds) && !e.isDead && !oneKill)
+                    {
+                        if (player.Position.Y < e.Position.Y - 16)
+                        {
+                            e.isDead = true;
+                            oneKill = true;
+                            player.Speed.Y = -7;
+                            for (int i = 0; i < 20; i++)
+                            {
+                                if (e.Bounds.Intersects(player.Bounds))
+                                    player.Position.Y--;
+                            }
+                        }
+                        else
+                        {
+                            GUI.isHit = true;
+                            GUI.ShowHealthBar = true;
+                            player.cooldown = 45;
+                            player.Speed.Y = -4;
+                            player.Speed.X *= -1;
+                        }
+                    }
+                }
+
+
+
 
 
             if (player.checks[2] == true)
@@ -295,7 +299,8 @@ namespace Platformer_Prototype
                 GUI.ShowHealthBar = true;
             }
 
-            if (GUI.PlayerHitPoints == 0 && !player.noclip) {
+            if (GUI.PlayerHitPoints == 0 && !player.noclip)
+            {
                 player.noclip = true;
                 player.Speed.Y = -7;
                 player.Speed.X = 0;
@@ -347,15 +352,15 @@ namespace Platformer_Prototype
             {
                 // Check X Collisions-----------------------------
                 //Will Check up to 6 Rectangles
-            
+
                 e.Position.X += (int)e.Speed.X;
                 e.updateBounds(Camera.Position);
                 updateHitboxes(e.Position, e.Bounds);
                 foreach (Rectangle canvas in Canvas)
                     e.checkCollisionsX(canvas);
-            
+
                 //Will Check up to 6 Triangles
-            
+
                 e.updateBounds(Camera.Position);
                 updateHitboxes(e.Position, e.Bounds);
                 e.checkTollisionsX(tan1);
@@ -364,19 +369,19 @@ namespace Platformer_Prototype
                 e.checkTollisionsX(tan4);
                 e.checkTollisionsX(tan5);
                 e.checkTollisionsX(tan6);
-            
-            
+
+
                 // Check Y Collisions-----------------------------
                 //Will Check up to 6 Rectangles
-            
+
                 e.Position.Y += (int)e.Speed.Y;
                 e.updateBounds(Camera.Position);
                 updateHitboxes(e.Position, e.Bounds);
                 foreach (Rectangle canvas in Canvas)
                     e.checkCollisionsY(canvas);
-            
+
                 //Will Check up to 6 Triangles
-            
+
                 e.updateBounds(Camera.Position);
                 updateHitboxes(e.Position, e.Bounds);
                 e.checkTollisionsY(tan1);
@@ -385,7 +390,7 @@ namespace Platformer_Prototype
                 e.checkTollisionsY(tan4);
                 e.checkTollisionsY(tan5);
                 e.checkTollisionsY(tan6);
-            
+
                 e.checks[0] = false;
                 e.updateBounds(Camera.Position);
                 updateNoclips(e.Position, e.Bounds, '♠');
@@ -395,9 +400,9 @@ namespace Platformer_Prototype
                     {
                         e.checks[0] = true;
                     }
-            
+
                 }
-            
+
                 e.checks[1] = false;
                 e.updateBounds(Camera.Position);
                 updateNoclips(e.Position, e.Bounds, '♣');
@@ -407,11 +412,11 @@ namespace Platformer_Prototype
                     {
                         e.checks[1] = true;
                     }
-            
+
                 }
-            
+
                 e.checks[2] = false;
-               e.updateBounds(Camera.Position);
+                e.updateBounds(Camera.Position);
                 updateNoclips(e.Position, e.Bounds, '•');
                 foreach (Rectangle noclip in NoClip)
                 {
@@ -419,45 +424,49 @@ namespace Platformer_Prototype
                     {
                         e.checks[2] = true;
                     }
-            
+
                 }
 
                 e.checks[3] = false;
-              
-                    e.updateBounds(Camera.Position);
-                    updateNoclips(e.Position, e.Bounds, '◙');
-                    foreach (Rectangle noclip in NoClip) {
-                        if (noclip.Y > e.Bounds.Y + e.Bounds.Height - e.Speed.Y - 1)
-                            if (e.Bounds.Intersects(noclip)) {
-                                e.checks[3] = true;
 
-            
-            
-            
+                e.updateBounds(Camera.Position);
+                updateNoclips(e.Position, e.Bounds, '◙');
+                foreach (Rectangle noclip in NoClip)
+                {
+                    if (noclip.Y > e.Bounds.Y + e.Bounds.Height - e.Speed.Y - 1)
+                        if (e.Bounds.Intersects(noclip))
+                        {
+                            e.checks[3] = true;
 
-                                for (int i = 20; i > 0; i--) {
-                                    e.updateBounds(Camera.Position);
-                                    updateHitboxes(e.Position, e.Bounds);
-                                    if (e.Bounds.Intersects(noclip)) {
-                                        e.Position.Y--;
-                                       
 
-                                    }
+
+
+
+                            for (int i = 20; i > 0; i--)
+                            {
+                                e.updateBounds(Camera.Position);
+                                updateHitboxes(e.Position, e.Bounds);
+                                if (e.Bounds.Intersects(noclip))
+                                {
+                                    e.Position.Y--;
+
+
                                 }
-
-                                e.Speed.Y = 0;
                             }
 
-                    
+                            e.Speed.Y = 0;
+                        }
+
+
                 }
 
                 if (e.checks[2] == true)
                 {
                     e.isDead = true;
                 }
-                
-            
-            
+
+
+
             }
 
         }
@@ -518,16 +527,16 @@ namespace Platformer_Prototype
                         {
 
 
-                            NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize) + 8, tileSize, tileSize -8);
+                            NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize) + 8, tileSize, tileSize - 8);
                             que++;
 
                         }
                         else
                         {
                             if (que < NoClip.GetLength(0) && map[TileY + j, TileX + i] == type)
-                            { 
-                            NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize) , tileSize, tileSize );
-                            que++;
+                            {
+                                NoClip[que] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + j) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
+                                que++;
                             }
                         }
                     if (TileY + j >= 0 && TileY + j < map.GetLength(0) && TileX + 1 >= 0 && TileX + 1 < map.GetLength(1))
@@ -804,7 +813,7 @@ namespace Platformer_Prototype
                     Enemies[i].Draw(sB);
             }
 
-      
+
 
             //Hard Coded Texture Tiles// Water, Lava, Rain, Weather Effects
             for (int i = 0; i < map.GetLength(1); i++)
@@ -841,6 +850,12 @@ namespace Platformer_Prototype
                                 GUI.CrystalPickUp = true;
                                 GUI.ShowCrystalBar = true;
                                 GUI.CrystalBarTimer = 0;
+                            }
+
+                            //Foliage
+                            if (BackMapTextures[j, i] == '☺')
+                            {
+                                sB.Draw(Textures._OBJ_Foliage_Tex, new Rectangle(tileDraw.X, tileDraw.Y - 32, 32, 32), Color.White);
                             }
                         }
                 }

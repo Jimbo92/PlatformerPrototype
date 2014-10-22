@@ -31,7 +31,7 @@ namespace Platformer_Prototype
             {
                 backgroundNear[i] = new Sprite(getContent, "backgrounds/backgroundhills", 828, 358);
                 background[i] = new Sprite(getContent, "backgrounds/backgroundday2", 1300, (int)ScreenSize.Y * 2);
-                Clouds[i] = new Sprite(getContent, "backgrounds/cloud1", 256, 128);
+                Clouds[i] = new Sprite(getContent, "backgrounds/cloud1", 128, 71);
             }
         }
 
@@ -46,11 +46,11 @@ namespace Platformer_Prototype
             CloudMoveX -= 0.3f;
             for (int i = 0; i < 5; i++)
             {
-                if (CloudMoveX < -Clouds[i].Texture.Width)
+                if (CloudMoveX < -Clouds[i].Texture.Width * 4)
                     CloudMoveX = 0;
 
                 backgroundNear[i].Draw(sB, new Vector2((backgroundNear[i].Texture.Width * i) + Camera.Position.X / 3, (Camera.Position.Y / 3) + ScreenSize.Y - (backgroundNear[0].Texture.Height / 2)), 0, SpriteEffects.None);
-                Clouds[i].Draw(sB, new Vector2((Clouds[i].Texture.Width * i) + Camera.Position.X / 2 + CloudMoveX, Camera.Position.Y / 2), 0, SpriteEffects.None);
+                Clouds[i].Draw(sB, new Vector2((Clouds[i].Texture.Width * 4 * i) + Camera.Position.X / 2 + CloudMoveX, Camera.Position.Y / 2), 0, SpriteEffects.None);
             }
         }
     }
