@@ -16,11 +16,14 @@ namespace Platformer_Prototype
     {
         public Sprite sprite;
         public Vector2 Position;
+       
 
         public Vector2 tl = Vector2.Zero;
         public Vector2 tr = Vector2.Zero;
         public Vector2 bl = Vector2.Zero;
         public Vector2 br = Vector2.Zero;
+
+        public int cooldown = 0;
 
         public bool noclip = false;
 
@@ -65,7 +68,9 @@ namespace Platformer_Prototype
             BEngine = getEngine;
             game1 = getGame1;
 
-            
+            //cooldown(invincibility)
+            if (cooldown > 0)
+                cooldown--;
 
             //Gravity--------------
 
@@ -120,7 +125,7 @@ namespace Platformer_Prototype
 
             if (noclip)
             {
-                Rotation += 5;
+                Rotation += 4;
             }
 
             //Controls--------------------------------

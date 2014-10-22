@@ -25,6 +25,8 @@ namespace Platformer_Prototype
         public Triangle tan5 = new Triangle();
         public Triangle tan6 = new Triangle();
 
+        
+
         public Rectangle[] NoClip = new Rectangle[6];
 
         public int TileX;
@@ -130,6 +132,7 @@ namespace Platformer_Prototype
                 Camera.Position = new Vector2(-(PlayerStart.X - 400), PlayerStart.Y + 138);
                 player.noclip = false;
                 player.Rotation = 0;
+                GUI.PlayerHitPoints = 5;
             }
 
             // Check X Collisions-----------------------------
@@ -258,9 +261,9 @@ namespace Platformer_Prototype
             }
 
 
-            bool enemyKill = false;
+          
             bool oneKill = false;
-            if(!player.noclip)
+            if(!player.noclip && player.cooldown == 0)
             foreach (Enemy e in Enemies) {
                 if(e.Bounds.Intersects(player.Bounds) && !e.isDead && !oneKill)
                 {
@@ -272,24 +275,30 @@ namespace Platformer_Prototype
                             if (e.Bounds.Intersects(player.Bounds))
                                 player.Position.Y--;
                         }
-                    } else
-                        enemyKill = true;
+                    } else {
+                        GUI.isHit = true;
+                        GUI.ShowHealthBar = true;
+                        player.cooldown = 45;
+                        player.Speed.Y = -4;
+                        player.Speed.X *= -1;
+                    }
                 }
             }
 
-            if (enemyKill) {
-                player.noclip = true;
-                player.Speed.Y = -7;
-                player.Speed.X = 0;
-            }
+            
+          
 
 
             if (player.checks[2] == true)
             {
+                GUI.PlayerHitPoints = 0;
+                GUI.ShowHealthBar = true;
+            }
+
+            if (GUI.PlayerHitPoints == 0 && !player.noclip) {
                 player.noclip = true;
                 player.Speed.Y = -7;
                 player.Speed.X = 0;
-
             }
 
 
