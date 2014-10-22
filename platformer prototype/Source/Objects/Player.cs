@@ -39,12 +39,17 @@ namespace Platformer_Prototype
 
         public float Rotation = 0;
 
-        public int Width = 24;
+        public int Width = 30;
         public int Height = 32;
 
         private BaseEngine BEngine;
         private Game1 game1;
         public int wallTimer;
+
+        public bool isWalking;
+        public bool isJumping;
+
+        private SpriteEffects sprEffect;
 
         //--------------------------------------------
 
@@ -63,17 +68,43 @@ namespace Platformer_Prototype
             br = new Vector2(Bounds.X + Bounds.Width, Bounds.Y + Bounds.Height);
         }
 
+        private void Animations()
+        {
+            if (Input.KeyboardPress(Keys.A))
+            {
+                sprEffect = SpriteEffects.FlipHorizontally;
+                isWalking = true;
+            }
+            else if (Input.KeyboardPress(Keys.D))
+            {
+                sprEffect = SpriteEffects.None;
+                isWalking = true;
+            }
+            else
+                isWalking = false;
+
+            if (Input.KeyboardPress(Keys.W))
+                isJumping = true;
+
+
+            if (isWalking && !isJumping)
+            {
+                sprite.CurrentFrame += 0.25f;
+                if (sprite.CurrentFrame > 6)
+                    sprite.CurrentFrame = 0;
+            }
+            else if(isJumping)
+                sprite.CurrentFrame = 13;
+            else
+                sprite.CurrentFrame = 14;
+        }
+
         public void Update(Game1 getGame1, BaseEngine getEngine)
         {
             BEngine = getEngine;
             game1 = getGame1;
 
-            if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.D))
-            {
-                sprite.CurrentFrame += 0.25f;
-                if (sprite.CurrentFrame >= 6)
-                    sprite.CurrentFrame = 1;
-            }
+            Animations();
 
             //cooldown(invincibility)
             if (cooldown > 0)
@@ -266,18 +297,22 @@ namespace Platformer_Prototype
 
 
                 }
-                if(!noclip)
-                if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
-                    if (Speed.X > -3)
-                        Speed.X -= 0.25f;
-                    else
-                        Speed.X = -3;
+                if (!noclip)
+                    if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
+                    {
+                        if (Speed.X > -3)
+                            Speed.X -= 0.25f;
+                        else
+                            Speed.X = -3;
+                    }
 
                 if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
+                {
                     if (Speed.X < 3)
                         Speed.X += 0.25f;
                     else
                         Speed.X = 3;
+                }
 
                 if ((Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right)) || noclip)
                     if (Math.Abs(Speed.X) > 1)
@@ -303,7 +338,6 @@ namespace Platformer_Prototype
                 }
                 if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
                 {
-                    
                     if (Speed.X > -4)
                         Speed.X -= 0.25f;
                     else
@@ -311,10 +345,12 @@ namespace Platformer_Prototype
                 }
 
                 if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
+                {
                     if (Speed.X < 4)
                         Speed.X += 0.25f;
                     else
                         Speed.X = 4;
+                }
 
                 if (Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right))
                     if (Math.Abs(Speed.X) > 1)
@@ -376,6 +412,7 @@ namespace Platformer_Prototype
                             Position.Y--;
                             wallTimer = 0;
                             Rotation = 0;
+                            isJumping = false;
                         }
                     }
 
@@ -395,7 +432,7 @@ namespace Platformer_Prototype
         public void Draw(SpriteBatch sB)
         {
 
-                sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), Vector2.Zero, MathHelper.ToRadians(Rotation), SpriteEffects.None, Color.White);
+                sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), Vector2.Zero, MathHelper.ToRadians(Rotation), sprEffect, Color.White);
 
             //Sprites
         }
@@ -460,7 +497,7 @@ namespace Platformer_Prototype
                             Position.Y--;
                             wallTimer = 0;
                             Rotation = 0;
-                            
+                            isJumping = false;                          
                         }
                     }
 

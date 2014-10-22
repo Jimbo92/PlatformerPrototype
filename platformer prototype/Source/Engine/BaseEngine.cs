@@ -250,7 +250,7 @@ namespace Platformer_Prototype
                                     player.Position.Y--;
                                     player.wallTimer = 0;
                                     player.Rotation = 0;
-
+                                    player.isJumping = false;
                                 }
                             }
 
