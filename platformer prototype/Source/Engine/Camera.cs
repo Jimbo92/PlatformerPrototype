@@ -32,10 +32,10 @@ namespace Platformer_Prototype
         static private Player player;
         static public Rectangle MouseRect;
 
-        static public void Initialize(Player getPlayer)
+        static public void Initialize(Player getPlayer, BaseEngine be)
         {
             player = getPlayer;
-            Position = player.Position;
+            Position = new Vector2(-(be.PlayerStart.X - 400), be.PlayerStart.Y + 138); ;
         }
 
         static public void Update(Game1 getGame1)

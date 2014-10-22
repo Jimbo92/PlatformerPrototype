@@ -72,13 +72,15 @@ namespace Platformer_Prototype
                     tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, 600 - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
 
                     //Player Start
-                    if (map[j, i] == '○')
+                    if (map[j, i] == '○') {
                         PlayerStart = new Vector2(tileDraw.X, tileDraw.Y);
+                       
+                    }
                 }
 
             Content = getContent;
             player = new Player(getContent, PlayerStart);
-            Camera.Initialize(player);
+            Camera.Initialize(player, this);
 
             WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 10, 1);
             WaterBase = new Sprite(getContent, "tiles/water1", 32, 32, 10, 1);
@@ -125,7 +127,7 @@ namespace Platformer_Prototype
             if (player.Position.Y > game1.GraphicsDevice.Viewport.Height)
             {
                 player.Position = PlayerStart;
-                Camera.Position = Vector2.Zero;
+                Camera.Position = new Vector2(-(PlayerStart.X - 400), PlayerStart.Y + 138);
                 player.noclip = false;
                 player.Rotation = 0;
             }
@@ -387,7 +389,7 @@ namespace Platformer_Prototype
                 {
                     e.isDead = true;
                 }
-
+                
 
 
             }

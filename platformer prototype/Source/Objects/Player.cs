@@ -213,7 +213,7 @@ namespace Platformer_Prototype
                     {
                         if (!returner)
                         {
-                            if (Input.KeyboardPressed(Keys.W))
+                            if (Input.KeyboardPressed(Keys.W) || Input.KeyboardPress(Keys.Up))
                             {
                             Position.X += 1;
                             updateBounds(Camera.Position);
