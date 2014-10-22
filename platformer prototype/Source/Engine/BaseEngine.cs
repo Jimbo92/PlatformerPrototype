@@ -44,7 +44,8 @@ namespace Platformer_Prototype
 
         private ContentManager Content;
 
-        public Enemy[] enemies = new Enemy[10];
+        public List<Enemy> Enemies = new List<Enemy>();
+        public Vector2 EnemySpawn;
 
         Random random = new Random();
 
@@ -66,22 +67,27 @@ namespace Platformer_Prototype
 
         public BaseEngine(ContentManager getContent, Vector2 getScreenSize)
         {
+            Content = getContent;
             for (int i = 0; i < map.GetLength(1); i++)
                 for (int j = 0; j < map.GetLength(0); j++)
                 {
                     tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, 600 - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
 
                     //Player Start
-                    if (map[j, i] == '○') {
+                    if (map[j, i] == '○')
                         PlayerStart = new Vector2(tileDraw.X, tileDraw.Y);
-                       
+                    //Enemy Spawn
+                    if (map[j, i] == '♂')
+                    {
+                        Enemy BasicEnemy = new Enemy(getContent);
+                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        BasicEnemy.Position = EnemySpawn;
+                        BasicEnemy.isDead = false;
+                        Enemies.Add(BasicEnemy);
                     }
                 }
-
-            Content = getContent;
             player = new Player(getContent, PlayerStart);
             Camera.Initialize(player, this);
-
             WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 10, 1);
             WaterBase = new Sprite(getContent, "tiles/water1", 32, 32, 10, 1);
             LavaTop = new Sprite(getContent, "tiles/lava0", 32, 32, 10, 1);
@@ -89,15 +95,15 @@ namespace Platformer_Prototype
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
             Crystal = new Item(Content, "objects/items/gemblue", 48, 48);
 
-            for (int i = 0; i < enemies.Length; i++)
+            for (int i = 0; i < Enemies.Count; i++)
             {
                 int randomX = random.Next(100, 1200);
-                enemies[i] = new Enemy(getContent);
+                Enemies[i] = new Enemy(getContent);
 
-                enemies[i].isDead = false;
-                enemies[i].Position = new Vector2(randomX, 0);
-                enemies[i].runPlanes.X += enemies[i].Position.X;
-                enemies[i].runPlanes.Y += enemies[i].Position.X;
+                Enemies[i].isDead = false;
+                Enemies[i].Position = new Vector2(randomX, 0);
+                Enemies[i].runPlanes.X += Enemies[i].Position.X;
+                Enemies[i].runPlanes.Y += Enemies[i].Position.X;
             }
             background = new Background(getContent, getScreenSize);
         }
@@ -261,7 +267,7 @@ namespace Platformer_Prototype
             bool enemyKill = false;
             bool oneKill = false;
             if(!player.noclip)
-            foreach (Enemy e in enemies) {
+            foreach (Enemy e in Enemies) {
                 if(e.Bounds.Intersects(player.Bounds) && !e.isDead && !oneKill)
                 {
                     if (player.Position.Y < e.Position.Y - 16) {
@@ -322,28 +328,31 @@ namespace Platformer_Prototype
             Torch.UpdateAnimation(0.5f);
 
             //Enemy Update
-            foreach (Enemy e in enemies)
+            foreach (Enemy e in Enemies)
             {
                 if (!e.isDead)
                     e.Update(this);
             }
+            for (int i = 0; i < Enemies.Count; i++)
+                if (!Enemies[i].isDead)
+                    Enemies[i].Update(this);
 
             //Player Update
-            PlayerWarpIn();           
+            PlayerWarpIn();
 
-            foreach (Enemy e in enemies)
+            foreach (Enemy e in Enemies)
             {
                 // Check X Collisions-----------------------------
                 //Will Check up to 6 Rectangles
-
+            
                 e.Position.X += (int)e.Speed.X;
                 e.updateBounds(Camera.Position);
                 updateHitboxes(e.Position, e.Bounds);
                 foreach (Rectangle canvas in Canvas)
                     e.checkCollisionsX(canvas);
-
+            
                 //Will Check up to 6 Triangles
-
+            
                 e.updateBounds(Camera.Position);
                 updateHitboxes(e.Position, e.Bounds);
                 e.checkTollisionsX(tan1);
@@ -352,19 +361,19 @@ namespace Platformer_Prototype
                 e.checkTollisionsX(tan4);
                 e.checkTollisionsX(tan5);
                 e.checkTollisionsX(tan6);
-
-
+            
+            
                 // Check Y Collisions-----------------------------
                 //Will Check up to 6 Rectangles
-
+            
                 e.Position.Y += (int)e.Speed.Y;
                 e.updateBounds(Camera.Position);
                 updateHitboxes(e.Position, e.Bounds);
                 foreach (Rectangle canvas in Canvas)
                     e.checkCollisionsY(canvas);
-
+            
                 //Will Check up to 6 Triangles
-
+            
                 e.updateBounds(Camera.Position);
                 updateHitboxes(e.Position, e.Bounds);
                 e.checkTollisionsY(tan1);
@@ -373,7 +382,7 @@ namespace Platformer_Prototype
                 e.checkTollisionsY(tan4);
                 e.checkTollisionsY(tan5);
                 e.checkTollisionsY(tan6);
-
+            
                 e.checks[0] = false;
                 e.updateBounds(Camera.Position);
                 updateNoclips(e.Position, e.Bounds, '♠');
@@ -383,9 +392,9 @@ namespace Platformer_Prototype
                     {
                         e.checks[0] = true;
                     }
-
+            
                 }
-
+            
                 e.checks[1] = false;
                 e.updateBounds(Camera.Position);
                 updateNoclips(e.Position, e.Bounds, '♣');
@@ -395,9 +404,9 @@ namespace Platformer_Prototype
                     {
                         e.checks[1] = true;
                     }
-
+            
                 }
-
+            
                 e.checks[2] = false;
                e.updateBounds(Camera.Position);
                 updateNoclips(e.Position, e.Bounds, '•');
@@ -407,7 +416,7 @@ namespace Platformer_Prototype
                     {
                         e.checks[2] = true;
                     }
-
+            
                 }
 
                 e.checks[3] = false;
@@ -419,6 +428,9 @@ namespace Platformer_Prototype
                             if (e.Bounds.Intersects(noclip)) {
                                 e.checks[3] = true;
 
+            
+            
+            
 
                                 for (int i = 20; i > 0; i--) {
                                     e.updateBounds(Camera.Position);
@@ -441,8 +453,8 @@ namespace Platformer_Prototype
                     e.isDead = true;
                 }
                 
-
-
+            
+            
             }
 
         }
@@ -783,11 +795,10 @@ namespace Platformer_Prototype
 
             Textures.DrawTriggerMapData(sB, map, tileSize, Vector2.Zero, game1);
 
-
-            foreach (Enemy enemy in enemies)
+            for (int i = 0; i < Enemies.Count; i++)
             {
-                if (!enemy.isDead)
-                    enemy.Draw(sB);
+                if (!Enemies[i].isDead)
+                    Enemies[i].Draw(sB);
             }
 
       

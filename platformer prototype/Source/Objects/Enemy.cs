@@ -52,6 +52,7 @@ namespace Platformer_Prototype
             left = true;
             runPlanes = new Vector2(-50, 50);
             sprite = new Sprite(getContent, "objects/enemy", Width, Height);
+            sprite = new Sprite(getContent, "objects/enemy", Width, Height);            
         }
 
         public void updateBounds(Vector2 Camera)

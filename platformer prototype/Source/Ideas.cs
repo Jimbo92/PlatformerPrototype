@@ -12,7 +12,7 @@
 
 //?//   Objects that can be picked up and throwable
 
-//?//   Melee combat, maybe a sort of kick that can fling enemies away
+//?//   Melee combat, maybe a sort of kick that can fling Enemies away
 
 //?//   Ranged combat, Guns, Slingshot, Bow and Arrow
 
