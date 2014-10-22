@@ -22,16 +22,21 @@ namespace Platformer_Prototype
         public int Width = 24;
         public int Height = 24;
 
+
         private BaseEngine BEngine;
-        private Game1 game1;
+        //private Game1 game1;
 
         public Vector2 tl = Vector2.Zero;
         public Vector2 tr = Vector2.Zero;
         public Vector2 bl = Vector2.Zero;
         public Vector2 br = Vector2.Zero;
 
+        public Vector2 runPlanes;
+
         //Controls
         bool jump = false;
+        bool left = false;
+        bool right = false;
 
 
         public bool[] checks = new bool[4];
@@ -44,6 +49,8 @@ namespace Platformer_Prototype
         public Enemy(ContentManager getContent)
         {
             Position = Vector2.Zero;
+            left = true;
+            runPlanes = new Vector2(-50, 50);
             sprite = new Sprite(getContent, "objects/enemy", Width, Height);
         }
 
@@ -56,11 +63,21 @@ namespace Platformer_Prototype
             br = new Vector2(Bounds.X + Bounds.Width, Bounds.Y + Bounds.Height);
         }
 
-        public void Update(Game1 getGame1, BaseEngine getEngine)
+        public void Update(BaseEngine getBEngine)
         {
-         
-            BEngine = getEngine;
-            game1 = getGame1;
+
+            BEngine = getBEngine;
+
+
+            if (Position.X < runPlanes.X) {
+                right = true;
+                left = false;
+            }
+
+            if (Position.X > runPlanes.Y) {
+                right = false;
+                left = true;
+            }
 
 
             //Gravity--------------
@@ -109,9 +126,28 @@ namespace Platformer_Prototype
                     Speed.Y = 2;
             }
 
+            if (left == true)
+                if (Speed.X > -1.5f)
+                    Speed.X -= 0.25f;
+                else
+                    Speed.X = -1.5f;
+
+            if (right == true)
+                if (Speed.X < 1.5f)
+                    Speed.X += 0.25f;
+                else
+                    Speed.X = 1.5f;
+
+            if (!left && !right)
+                if (Math.Abs(Speed.X) > 0.1f)
+                    Speed.X *= 0.92f;
+                else
+                    Speed.X = 0;
+
 
             //jump
             if (jump == true) {
+                jump = false;
                 Position.Y += 1;
                 updateBounds(Camera.Position);
                 BEngine.updateHitboxes(Position, Bounds);
@@ -119,7 +155,14 @@ namespace Platformer_Prototype
                 for (int i = 0; i < BEngine.Canvas.Length; i++) {
                     if (Bounds.Intersects(BEngine.Canvas[i]))
                         Speed.Y = -7f;
+                    
 
+                }
+
+
+                if (checks[3] == true) {
+                    Speed.Y = -7f;
+                    
                 }
 
                 if (checkAllLines(BEngine.tan1) == true) {
@@ -171,6 +214,7 @@ namespace Platformer_Prototype
                     }
 
                 Speed.X = 0;
+                jump = true;
             }
         }
 
@@ -209,54 +253,64 @@ namespace Platformer_Prototype
 
         }
 
-        public void checkTollisionsX(Triangle target)
-        {
-            if (checkAllLines(target) == true)
-            {
+        public void checkTollisionsX(Triangle target) {
+          
+            if (checkAllLines(target) == true) {
 
-                if (Speed.X > 0)
-                    for (int i = 20; i > 0; i--)
-                    {
+                if (Speed.X > 0) {
+                    for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)
                             Position.X--;
                     }
 
-                if (Speed.X < 0)
-                    for (int i = 20; i > 0; i--)
-                    {
+                    Position.X += Math.Abs(Speed.X);
+                    Position.Y -= Math.Abs(Speed.X);
+
+
+
+
+                }
+
+                if (Speed.X < 0) {
+                    for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)
                             Position.X++;
                     }
 
-                Speed.X = 0;
+                    Position.X -= Math.Abs(Speed.X);
+                    Position.Y -= Math.Abs(Speed.X);
+
+                }
+
+
+
+
+
+
             }
         }
 
-        public void checkTollisionsY(Triangle target)
-        {
-            if (checkAllLines(target) == true)
-            {
+        public void checkTollisionsY(Triangle target) {
+            if (checkAllLines(target) == true) {
 
 
                 if (Speed.Y > 0)
-                    for (int i = 20; i > 0; i--)
-                    {
+                    for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
-                        if (checkAllLines(target) == true)
-                        {
+                        if (checkAllLines(target) == true) {
                             Position.Y--;
-                         
+                            
+
                         }
                     }
 
                 if (Speed.Y < 0)
-                    for (int i = 20; i > 0; i--)
-                    {
+                    for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)

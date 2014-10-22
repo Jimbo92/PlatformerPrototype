@@ -96,6 +96,8 @@ namespace Platformer_Prototype
 
                 enemies[i].isDead = false;
                 enemies[i].Position = new Vector2(randomX, 0);
+                enemies[i].runPlanes.X += enemies[i].Position.X;
+                enemies[i].runPlanes.Y += enemies[i].Position.X;
             }
             background = new Background(getContent, getScreenSize);
         }
@@ -298,7 +300,7 @@ namespace Platformer_Prototype
             foreach (Enemy e in enemies)
             {
                 if (!e.isDead)
-                    e.Update(game1, this);
+                    e.Update(this);
             }
 
             //Player Update
@@ -383,7 +385,31 @@ namespace Platformer_Prototype
 
                 }
 
-           
+                e.checks[3] = false;
+              
+                    e.updateBounds(Camera.Position);
+                    updateNoclips(e.Position, e.Bounds, '◙');
+                    foreach (Rectangle noclip in NoClip) {
+                        if (noclip.Y > e.Bounds.Y + e.Bounds.Height - e.Speed.Y - 1)
+                            if (e.Bounds.Intersects(noclip)) {
+                                e.checks[3] = true;
+
+
+                                for (int i = 20; i > 0; i--) {
+                                    e.updateBounds(Camera.Position);
+                                    updateHitboxes(e.Position, e.Bounds);
+                                    if (e.Bounds.Intersects(noclip)) {
+                                        e.Position.Y--;
+                                       
+
+                                    }
+                                }
+
+                                e.Speed.Y = 0;
+                            }
+
+                    
+                }
 
                 if (e.checks[2] == true)
                 {
