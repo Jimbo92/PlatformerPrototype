@@ -256,7 +256,32 @@ namespace Platformer_Prototype
 
                 }
             }
-        
+
+
+            bool enemyKill = false;
+            bool oneKill = false;
+            if(!player.noclip)
+            foreach (Enemy e in enemies) {
+                if(e.Bounds.Intersects(player.Bounds) && !e.isDead && !oneKill)
+                {
+                    if (player.Position.Y < e.Position.Y - 16) {
+                        e.isDead = true;
+                        oneKill = true;
+                        player.Speed.Y = -7;
+                        for (int i = 0; i < 20; i++) {
+                            if (e.Bounds.Intersects(player.Bounds))
+                                player.Position.Y--;
+                        }
+                    } else
+                        enemyKill = true;
+                }
+            }
+
+            if (enemyKill) {
+                player.noclip = true;
+                player.Speed.Y = -7;
+                player.Speed.X = 0;
+            }
 
 
             if (player.checks[2] == true)
