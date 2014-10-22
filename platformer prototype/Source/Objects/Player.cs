@@ -39,7 +39,7 @@ namespace Platformer_Prototype
 
         public float Rotation = 0;
 
-        public int Width = 16;
+        public int Width = 24;
         public int Height = 32;
 
         private BaseEngine BEngine;
@@ -51,7 +51,7 @@ namespace Platformer_Prototype
         public Player(ContentManager getContent, Vector2 getPlayerStart)
         {
             Position = getPlayerStart;
-            sprite = new Sprite(getContent, "objects/player", Width, Height);
+            sprite = new Sprite(getContent, "objects/playerSS", Width, Height, 3, 7);
         }
 
         public void updateBounds(Vector2 Camera)
@@ -67,6 +67,13 @@ namespace Platformer_Prototype
         {
             BEngine = getEngine;
             game1 = getGame1;
+
+            if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.D))
+            {
+                sprite.CurrentFrame += 0.25f;
+                if (sprite.CurrentFrame >= 6)
+                    sprite.CurrentFrame = 1;
+            }
 
             //cooldown(invincibility)
             if (cooldown > 0)
@@ -295,10 +302,13 @@ namespace Platformer_Prototype
                         Speed.Y = 4;
                 }
                 if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
+                {
+                    
                     if (Speed.X > -4)
                         Speed.X -= 0.25f;
                     else
                         Speed.X = -4;
+                }
 
                 if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
                     if (Speed.X < 4)
