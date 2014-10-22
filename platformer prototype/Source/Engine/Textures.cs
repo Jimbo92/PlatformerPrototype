@@ -38,7 +38,7 @@ namespace Platformer_Prototype
         static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
 
         //Debug Textures
-        static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[6];
+        static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[8];
         static public Texture2D[] _DBG_Lava_Tex = new Texture2D[2];
         static public Texture2D _DBG_WaterTop_Tex;
         static public Texture2D _DBG_WaterBot_Tex;
@@ -74,7 +74,7 @@ namespace Platformer_Prototype
 
 
             //Debug Textures & Editor
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 8; i++)
             {
                 _DBG_Trigger_Tex[i] = getContent.Load<Texture2D>("editor/trigger" + i);
             }
@@ -152,6 +152,12 @@ namespace Platformer_Prototype
                                 //Trigger Player Start
                                 if (MapData[j, i] == '○')
                                     sB.Draw(_DBG_Trigger_Tex[5], tileDraw, Color.White);
+                                //Trigger One way platforms
+                                if (MapData[j, i] == '◙')
+                                    sB.Draw(_DBG_Trigger_Tex[7], tileDraw, Color.White);
+                                //Trigger Enemy Spawner
+                                if (MapData[j, i] == '♂')
+                                    sB.Draw(_DBG_Trigger_Tex[6], tileDraw, Color.White);
 
                             }
 

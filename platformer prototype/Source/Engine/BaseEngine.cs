@@ -83,6 +83,8 @@ namespace Platformer_Prototype
                         EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         BasicEnemy.Position = EnemySpawn;
                         BasicEnemy.isDead = false;
+                        BasicEnemy.runPlanes.X += BasicEnemy.Position.X;
+                        BasicEnemy.runPlanes.Y += BasicEnemy.Position.X;
                         Enemies.Add(BasicEnemy);
                     }
                 }
@@ -95,16 +97,6 @@ namespace Platformer_Prototype
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
             Crystal = new Item(Content, "objects/items/gemblue", 48, 48);
 
-            for (int i = 0; i < Enemies.Count; i++)
-            {
-                int randomX = random.Next(100, 1200);
-                Enemies[i] = new Enemy(getContent);
-
-                Enemies[i].isDead = false;
-                Enemies[i].Position = new Vector2(randomX, 0);
-                Enemies[i].runPlanes.X += Enemies[i].Position.X;
-                Enemies[i].runPlanes.Y += Enemies[i].Position.X;
-            }
             background = new Background(getContent, getScreenSize);
         }
 
@@ -163,6 +155,8 @@ namespace Platformer_Prototype
                 player.checkTollisionsX(tan4);
                 player.checkTollisionsX(tan5);
                 player.checkTollisionsX(tan6);
+
+                
 
             }
             // Check Y Collisions-----------------------------
