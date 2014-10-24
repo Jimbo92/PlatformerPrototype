@@ -64,11 +64,131 @@ namespace Platformer_Prototype
             br = new Vector2(Bounds.X + Bounds.Width, Bounds.Y + Bounds.Height);
         }
 
+        private void Collisions()
+        {
+                            // Check X Collisions-----------------------------
+                //Will Check up to 6 Rectangles
+
+                Position.X += (int)Speed.X;
+                updateBounds(Camera.Position);
+                BEngine.updateHitboxes(Position, Bounds);
+                foreach (Rectangle canvas in BEngine.Canvas)
+                    checkCollisionsX(canvas);
+
+                //Will Check up to 6 Triangles
+
+                updateBounds(Camera.Position);
+                BEngine.updateHitboxes(Position, Bounds);
+                checkTollisionsX(BEngine.tan1);
+                checkTollisionsX(BEngine.tan2);
+                checkTollisionsX(BEngine.tan3);
+                checkTollisionsX(BEngine.tan4);
+                checkTollisionsX(BEngine.tan5);
+                checkTollisionsX(BEngine.tan6);
+
+
+                // Check Y Collisions-----------------------------
+                //Will Check up to 6 Rectangles
+
+                Position.Y += (int)Speed.Y;
+                updateBounds(Camera.Position);
+                BEngine.updateHitboxes(Position, Bounds);
+                foreach (Rectangle canvas in BEngine.Canvas)
+                    checkCollisionsY(canvas);
+
+                //Will Check up to 6 Triangles
+
+                updateBounds(Camera.Position);
+                BEngine.updateHitboxes(Position, Bounds);
+                checkTollisionsY(BEngine.tan1);
+                checkTollisionsY(BEngine.tan2);
+                checkTollisionsY(BEngine.tan3);
+                checkTollisionsY(BEngine.tan4);
+                checkTollisionsY(BEngine.tan5);
+                checkTollisionsY(BEngine.tan6);
+
+                checks[0] = false;
+                updateBounds(Camera.Position);
+                BEngine.updateNoclips(Position, Bounds, '♠');
+                foreach (Rectangle noclips in BEngine.NoClip)
+                {
+                    if (Bounds.Intersects(noclips))
+                    {
+                        checks[0] = true;
+                    }
+
+                }
+
+                checks[1] = false;
+                updateBounds(Camera.Position);
+                BEngine.updateNoclips(Position, Bounds, '♣');
+                foreach (Rectangle noclips in BEngine.NoClip)
+                {
+                    if (Bounds.Intersects(noclips))
+                    {
+                        checks[1] = true;
+                    }
+
+                }
+
+                checks[2] = false;
+                updateBounds(Camera.Position);
+                BEngine.updateNoclips(Position, Bounds, '•');
+                foreach (Rectangle noclips in BEngine.NoClip)
+                {
+                    if (Bounds.Intersects(noclips))
+                    {
+                        checks[2] = true;
+                    }
+
+                }
+
+                checks[3] = false;
+
+                updateBounds(Camera.Position);
+                BEngine.updateNoclips(Position, Bounds, '◙');
+                foreach (Rectangle noclips in BEngine.NoClip)
+                {
+                    if (noclips.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                        if (Bounds.Intersects(noclips))
+                        {
+                            checks[3] = true;
+
+
+
+
+
+                            for (int i = 20; i > 0; i--)
+                            {
+                                updateBounds(Camera.Position);
+                                BEngine.updateHitboxes(Position, Bounds);
+                                if (Bounds.Intersects(noclips))
+                                {
+                                    Position.Y--;
+
+
+                                }
+                            }
+
+                            Speed.Y = 0;
+                        }
+
+
+                }
+
+                if (checks[2] == true)
+                {
+                    isDead = true;
+                }
+
+        }
+
         public void Update(BaseEngine getBEngine)
         {
 
             BEngine = getBEngine;
 
+            Collisions();
 
             if (Position.X < runPlanes.X) {
                 right = true;
