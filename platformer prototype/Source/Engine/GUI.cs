@@ -72,12 +72,12 @@ namespace Platformer_Prototype
                 HealthBarAnimation();
 
             //Crystals//
-            if (Input.KeyboardPressed(Keys.C))
-            {
-                ShowCrystalBar = true;
-                CrystalPickUp = true;
-                CrystalBarTimer = 0;
-            }
+            //if (Input.KeyboardPressed(Keys.C))
+            //{
+            //    ShowCrystalBar = true;
+            //    CrystalPickUp = true;
+            //    CrystalBarTimer = 0;
+            //}
             if (ShowCrystalBar)
                 CrystalBarAnimation();
 

@@ -113,202 +113,12 @@ namespace Platformer_Prototype
             PlayerWarpInTime++;
             if (PlayerWarpInTime >= 50)
             {
-                PlayerData();
+                player.Update(game1, this);
+                //PlayerData();
                 PlayerWarpInTime = 50;
             }
 
             //Warp in Effect goes here//
-        }
-
-        public void PlayerData()
-        {
-            player.Update(game1, this);
-
-            // Check for Map boundries-----------------
-            if (player.Position.Y > game1.GraphicsDevice.Viewport.Height)
-            {
-                player.Position = PlayerStart;
-                Camera.Position = new Vector2(-(PlayerStart.X - 400), PlayerStart.Y + 138);
-                player.noclip = false;
-                player.Rotation = 0;
-                GUI.PlayerHitPoints = 5;
-            }
-
-            // Check X Collisions-----------------------------
-            //Will Check up to 6 Rectangles
-
-            player.Position.X += (int)player.Speed.X;
-            player.updateBounds(Camera.Position);
-            updateHitboxes(player.Position, player.Bounds);
-
-
-            if (!player.noclip)
-            {
-                foreach (Rectangle canvas in Canvas)
-                    player.checkCollisionsX(canvas);
-
-                //Will Check up to 6 Triangles
-
-                player.updateBounds(Camera.Position);
-                updateHitboxes(player.Position, player.Bounds);
-                player.checkTollisionsX(tan1);
-                player.checkTollisionsX(tan2);
-                player.checkTollisionsX(tan3);
-                player.checkTollisionsX(tan4);
-                player.checkTollisionsX(tan5);
-                player.checkTollisionsX(tan6);
-
-
-
-            }
-            // Check Y Collisions-----------------------------
-            //Will Check up to 6 Rectangles
-            player.Position.Y += (int)player.Speed.Y;
-            player.updateBounds(Camera.Position);
-            updateHitboxes(player.Position, player.Bounds);
-            if (!player.noclip)
-            {
-                foreach (Rectangle canvas in Canvas)
-                    player.checkCollisionsY(canvas);
-                //Will check up to 6 Triangles
-                player.checkTollisionsY(tan1);
-                player.checkTollisionsY(tan2);
-                player.checkTollisionsY(tan3);
-                player.checkTollisionsY(tan4);
-                player.checkTollisionsY(tan5);
-                player.checkTollisionsY(tan6);
-            }
-
-            //Check Non Clipping Collisions====================
-
-            player.checks[0] = false;
-            if (!player.noclip)
-            {
-                player.updateBounds(Camera.Position);
-                updateNoclips(player.Position, player.Bounds, '♠');
-                foreach (Rectangle noclip in NoClip)
-                {
-                    if (player.Bounds.Intersects(noclip))
-                    {
-                        player.checks[0] = true;
-                    }
-
-                }
-            }
-
-            player.checks[1] = false;
-            if (!player.noclip)
-            {
-                player.updateBounds(Camera.Position);
-                updateNoclips(player.Position, player.Bounds, '♣');
-                foreach (Rectangle noclip in NoClip)
-                {
-                    if (player.Bounds.Intersects(noclip))
-                    {
-                        player.checks[1] = true;
-                    }
-
-                }
-            }
-
-            player.checks[2] = false;
-            if (!player.noclip)
-            {
-                player.updateBounds(Camera.Position);
-                updateNoclips(player.Position, player.Bounds, '•');
-                foreach (Rectangle noclip in NoClip)
-                {
-                    if (player.Bounds.Intersects(noclip))
-                    {
-                        player.checks[2] = true;
-                    }
-
-                }
-            }
-
-
-            player.checks[3] = false;
-            if (!player.noclip)
-            {
-                player.updateBounds(Camera.Position);
-                updateNoclips(player.Position, player.Bounds, '◙');
-                foreach (Rectangle noclip in NoClip)
-                {
-                    if (noclip.Y > player.Bounds.Y + player.Bounds.Height - player.Speed.Y - 1)
-                        if (player.Bounds.Intersects(noclip))
-                        {
-                            player.checks[3] = true;
-
-
-                            for (int i = 20; i > 0; i--)
-                            {
-                                player.updateBounds(Camera.Position);
-                                updateHitboxes(player.Position, player.Bounds);
-                                if (player.Bounds.Intersects(noclip))
-                                {
-                                    player.Position.Y--;
-                                    player.wallTimer = 0;
-                                    player.Rotation = 0;
-                                    player.isJumping = false;
-                                }
-                            }
-
-                            player.Speed.Y = 0;
-                        }
-
-                }
-            }
-
-
-
-            bool oneKill = false;
-            if (!player.noclip && player.cooldown == 0)
-                foreach (Enemy e in Enemies)
-                {
-                    if (e.Bounds.Intersects(player.Bounds) && !e.isDead && !oneKill)
-                    {
-                        if (player.Position.Y < e.Position.Y - 16)
-                        {
-                            e.isDead = true;
-                            oneKill = true;
-                            player.Speed.Y = -7;
-                            for (int i = 0; i < 20; i++)
-                            {
-                                if (e.Bounds.Intersects(player.Bounds))
-                                    player.Position.Y--;
-                            }
-                        }
-                        else
-                        {
-                            GUI.isHit = true;
-                            GUI.ShowHealthBar = true;
-                            player.cooldown = 45;
-                            player.Speed.Y = -4;
-                            player.Speed.X *= -1;
-                        }
-                    }
-                }
-
-
-
-
-
-            if (player.checks[2] == true)
-            {
-                GUI.PlayerHitPoints = 0;
-                GUI.ShowHealthBar = true;
-            }
-
-            if (GUI.PlayerHitPoints == 0 && !player.noclip)
-            {
-                player.noclip = true;
-                player.Speed.Y = -7;
-                player.Speed.X = 0;
-            }
-
-
-            //=================================================
-            player.updateBounds(Camera.Position);
         }
 
         public void Update(Game1 getGame1)
@@ -345,7 +155,7 @@ namespace Platformer_Prototype
                 if (!Enemies[i].isDead)
                     Enemies[i].Update(this);
 
-            //Player Update
+            //Player Update                          
             PlayerWarpIn();
 
             foreach (Enemy e in Enemies)
@@ -851,12 +661,6 @@ namespace Platformer_Prototype
                                 GUI.ShowCrystalBar = true;
                                 GUI.CrystalBarTimer = 0;
                             }
-
-                            //Foliage
-                            if (BackMapTextures[j, i] == '☺')
-                            {
-                                sB.Draw(Textures._OBJ_Foliage_Tex, new Rectangle(tileDraw.X, tileDraw.Y - 32, 32, 32), Color.White);
-                            }
                         }
                 }
 
@@ -866,7 +670,6 @@ namespace Platformer_Prototype
 
             if (PlayerWarpInTime == 50)
                 player.Draw(sB);
-
         }
 
 

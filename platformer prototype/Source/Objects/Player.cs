@@ -72,12 +72,12 @@ namespace Platformer_Prototype
 
         private void Animations()
         {
-            if (Input.KeyboardPress(Keys.A))
+            if (Speed.X <= -1)
             {
                 sprEffect = SpriteEffects.FlipHorizontally;
                 isWalking = true;
             }
-            else if (Input.KeyboardPress(Keys.D))
+            else if (Speed.X >= 1)
             {
                 sprEffect = SpriteEffects.None;
                 isWalking = true;
@@ -85,9 +85,13 @@ namespace Platformer_Prototype
             else
                 isWalking = false;
 
-            if (Input.KeyboardPress(Keys.W))
+            if (Speed.Y >= 1 || Speed.Y <= -1 && !GUI.isHit)
                 isJumping = true;
+            else if (Speed.Y == 0)
+                isJumping = false;
 
+            if (GUI.isHit)
+                sprite.CurrentFrame = 12;
 
             if (isWalking && !isJumping)
             {
@@ -104,10 +108,200 @@ namespace Platformer_Prototype
             }
         }
 
+        public void Collisions()
+        {
+            // Check for Map boundries-----------------
+            if (Position.Y > game1.GraphicsDevice.Viewport.Height)
+            {
+                Position = BEngine.PlayerStart;
+                Camera.Position = new Vector2(-(BEngine.PlayerStart.X - 400), BEngine.PlayerStart.Y + 138);
+                noclip = false;
+                Rotation = 0;
+                GUI.PlayerHitPoints = 5;
+            }
+
+            // Check X Collisions-----------------------------
+            //Will Check up to 6 Rectangles
+
+            Position.X += (int)Speed.X;
+            updateBounds(Camera.Position);
+            BEngine.updateHitboxes(Position, Bounds);
+
+
+            if (!noclip)
+            {
+                foreach (Rectangle canvas in BEngine.Canvas)
+                    checkCollisionsX(canvas);
+
+                //Will Check up to 6 Triangles
+
+                updateBounds(Camera.Position);
+                BEngine.updateHitboxes(Position, Bounds);
+                checkTollisionsX(BEngine.tan1);
+                checkTollisionsX(BEngine.tan2);
+                checkTollisionsX(BEngine.tan3);
+                checkTollisionsX(BEngine.tan4);
+                checkTollisionsX(BEngine.tan5);
+                checkTollisionsX(BEngine.tan6);
+
+
+
+            }
+            // Check Y Collisions-----------------------------
+            //Will Check up to 6 Rectangles
+            Position.Y += (int)Speed.Y;
+            updateBounds(Camera.Position);
+            BEngine.updateHitboxes(Position, Bounds);
+            if (!noclip)
+            {
+                foreach (Rectangle canvas in BEngine.Canvas)
+                    checkCollisionsY(canvas);
+                //Will check up to 6 Triangles
+                checkTollisionsY(BEngine.tan1);
+                checkTollisionsY(BEngine.tan2);
+                checkTollisionsY(BEngine.tan3);
+                checkTollisionsY(BEngine.tan4);
+                checkTollisionsY(BEngine.tan5);
+                checkTollisionsY(BEngine.tan6);
+            }
+
+            //Check Non Clipping Collisions====================
+
+            checks[0] = false;
+            if (!noclip)
+            {
+                updateBounds(Camera.Position);
+                BEngine.updateNoclips(Position, Bounds, '♠');
+                foreach (Rectangle noclips in BEngine.NoClip)
+                {
+                    if (Bounds.Intersects(noclips))
+                    {
+                        checks[0] = true;
+                    }
+
+                }
+            }
+
+            checks[1] = false;
+            if (!noclip)
+            {
+                updateBounds(Camera.Position);
+                BEngine.updateNoclips(Position, Bounds, '♣');
+                foreach (Rectangle noclips in BEngine.NoClip)
+                {
+                    if (Bounds.Intersects(noclips))
+                    {
+                        checks[1] = true;
+                    }
+
+                }
+            }
+
+            checks[2] = false;
+            if (!noclip)
+            {
+                updateBounds(Camera.Position);
+                BEngine.updateNoclips(Position, Bounds, '•');
+                foreach (Rectangle noclips in BEngine.NoClip)
+                {
+                    if (Bounds.Intersects(noclips))
+                    {
+                        checks[2] = true;
+                    }
+
+                }
+            }
+
+
+            checks[3] = false;
+            if (!noclip)
+            {
+                updateBounds(Camera.Position);
+                BEngine.updateNoclips(Position, Bounds, '◙');
+                foreach (Rectangle noclips in BEngine.NoClip)
+                {
+                    if (noclips.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                        if (Bounds.Intersects(noclips))
+                        {
+                            checks[3] = true;
+
+
+                            for (int i = 20; i > 0; i--)
+                            {
+                                updateBounds(Camera.Position);
+                                BEngine.updateHitboxes(Position, Bounds);
+                                if (Bounds.Intersects(noclips))
+                                {
+                                    Position.Y--;
+                                    wallTimer = 0;
+                                    Rotation = 0;
+                                }
+                            }
+
+                            Speed.Y = 0;
+                        }
+
+                }
+            }
+
+
+
+            bool oneKill = false;
+            if (!noclip && cooldown == 0)
+                foreach (Enemy e in BEngine.Enemies)
+                {
+                    if (e.Bounds.Intersects(Bounds) && !e.isDead && !oneKill)
+                    {
+                        if (Position.Y < e.Position.Y - 16)
+                        {
+                            e.isDead = true;
+                            oneKill = true;
+                            Speed.Y = -7;
+                            for (int i = 0; i < 20; i++)
+                            {
+                                if (e.Bounds.Intersects(Bounds))
+                                    Position.Y--;
+                            }
+                        }
+                        else
+                        {
+                            GUI.isHit = true;
+                            GUI.ShowHealthBar = true;
+                            cooldown = 45;
+                            Speed.Y = -4;
+                            Speed.X *= -1;
+                        }
+                    }
+                }
+
+
+
+
+
+            if (checks[2] == true)
+            {
+                GUI.PlayerHitPoints = 0;
+                GUI.ShowHealthBar = true;
+            }
+
+            if (GUI.PlayerHitPoints == 0 && !noclip)
+            {
+                noclip = true;
+                Speed.Y = -7;
+                Speed.X = 0;
+            }
+
+
+            //=================================================
+            updateBounds(Camera.Position);
+        }
+
         public void Update(Game1 getGame1, BaseEngine getEngine)
         {
             BEngine = getEngine;
             game1 = getGame1;
+
+            Collisions();
 
             Animations();
 
@@ -417,7 +611,6 @@ namespace Platformer_Prototype
                             Position.Y--;
                             wallTimer = 0;
                             Rotation = 0;
-                            isJumping = false;
                         }
                     }
 
@@ -431,7 +624,7 @@ namespace Platformer_Prototype
                     }
 
                 Speed.Y = 0;
-            }
+            }           
         }
 
         public void Draw(SpriteBatch sB)
@@ -501,8 +694,7 @@ namespace Platformer_Prototype
                         {
                             Position.Y--;
                             wallTimer = 0;
-                            Rotation = 0;
-                            isJumping = false;                          
+                            Rotation = 0;                       
                         }
                     }
 
