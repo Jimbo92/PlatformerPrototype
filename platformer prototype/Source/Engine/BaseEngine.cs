@@ -41,6 +41,7 @@ namespace Platformer_Prototype
         public Sprite LavaTop;
         public Sprite LavaBase;
         public Sprite Torch;
+        public Sprite WarpPad;
 
         public Rectangle tileDraw;
 
@@ -96,6 +97,7 @@ namespace Platformer_Prototype
             LavaTop = new Sprite(getContent, "tiles/lava0", 32, 32, 10, 1);
             LavaBase = new Sprite(getContent, "tiles/lava1", 32, 32, 10, 1);
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
+            WarpPad = new Sprite(getContent, "objects/warppadss", 48, 48, 1, 10);
             Crystal = new Item(Content, "objects/items/gemblue", 48, 48);
 
             background = new Background(getContent, getScreenSize);
@@ -144,6 +146,7 @@ namespace Platformer_Prototype
             LavaTop.UpdateAnimation(0.15f);
             LavaBase.UpdateAnimation(0.15f);
             Torch.UpdateAnimation(0.5f);
+            WarpPad.UpdateAnimation(0.3f);
 
             //Enemy Update
             foreach (Enemy e in Enemies)
@@ -525,6 +528,8 @@ namespace Platformer_Prototype
                             if (MapEffectTextures[j, i] == '○')
                                 LavaBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
 
+
+
                             //Crystal Item
                             if (map[j, i] == '◘')
                                 Crystal.Draw(sB, this);
@@ -548,6 +553,17 @@ namespace Platformer_Prototype
 
             if (PlayerWarpInTime == 50)
                 player.Draw(sB);
+
+            for (int i = 0; i < map.GetLength(1); i++)
+                for (int j = map.GetLength(0) - 1; j > -1; j--)
+                {
+                    tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
+
+                    //Draw Warp Pad
+                    if (map[j, i] == '○')
+                        WarpPad.Draw(sB, new Vector2(tileDraw.X - 8, tileDraw.Y - 10), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+
+                }
         }
 
 

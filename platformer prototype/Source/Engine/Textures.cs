@@ -33,6 +33,13 @@ namespace Platformer_Prototype
         static public Texture2D _TILE_DirtSS_Tex;
         //Sand
         static public Texture2D _TILE_SandSS_Tex;
+        //Snow
+        static public Texture2D _TILE_SnowSS_Tex;
+        //Castle
+        static public Texture2D _TILE_CastleSS_Tex;
+        //Metal
+        static public Texture2D _TILE_MetalSS_Tex;
+
 
         //Effects
         static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
@@ -64,6 +71,12 @@ namespace Platformer_Prototype
             _TILE_DirtSS_Tex = getContent.Load<Texture2D>("tiles/dirt");
             //Sand
             _TILE_SandSS_Tex = getContent.Load<Texture2D>("tiles/sand");
+            //Snow
+            _TILE_SnowSS_Tex = getContent.Load<Texture2D>("tiles/snow");
+            //Castle
+            _TILE_CastleSS_Tex = getContent.Load<Texture2D>("tiles/castle");
+            //Metal
+            _TILE_MetalSS_Tex = getContent.Load<Texture2D>("tiles/metal");
 
 
             //Effects
@@ -290,14 +303,98 @@ namespace Platformer_Prototype
                             if (MapData[j, i] == '*') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 36);
                             //Sand Solid Hill Down Left
                             if (MapData[j, i] == '+') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 1);
-                            //------//Dirt No Top Foreback//------//
+                            //------//Sand No Top Foreback//------//
                             //Sand Solid Mid NoTop
                             if (MapData[j, i] == '-') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 19);
-                            //------------//Dirt Background//---------//
+                            //------------//Sand Background//---------//
                             //Sand Solid Mid NoTop Behind
                             if (MapData[j, i] == '.') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.Gray, 6, 7, 19);
                             //Sand Mid No Top Bottomless Behind
                             if (MapData[j, i] == '/') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.Gray, 6, 7, 6);
+
+                            //------------//Snow Foreback//---------//
+                            //Snow Solid Up
+                            if (MapData[j, i] == '0') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 20);
+                            //Snow Solid Left
+                            if (MapData[j, i] == '1') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 32);
+                            //Snow Solid Right
+                            if (MapData[j, i] == '2') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 26);
+                            //Snow Solid Down
+                            if (MapData[j, i] == '3') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 19);
+                            //Snow Solid Corner Up Left
+                            if (MapData[j, i] == '4') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 15);
+                            //Snow Solid Corner Up Right
+                            if (MapData[j, i] == '5') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 9);
+                            //Snow Solid Corner Down Left
+                            if (MapData[j, i] == '6') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 2);
+                            //Snow Solid Corner Down Right
+                            if (MapData[j, i] == '7') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 37);
+                            //-----//Solid Hill//----//
+                            //Snow Solid Hill Up Right
+                            if (MapData[j, i] == '8') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 38);
+                            //Snow Solid Hill Up Left
+                            if (MapData[j, i] == '9') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 3);
+                            //Snow Solid Hill Down Right
+                            if (MapData[j, i] == ':') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 25);
+                            //Snow Solid Hill Down Left
+                            if (MapData[j, i] == ';') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 31);
+                            //------//Snow No Top Foreback//------//
+                            //Snow Solid Mid NoTop
+                            if (MapData[j, i] == '<') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 13);
+                            //------------//Snow Background//---------//
+                            //Snow Solid Mid NoTop Behind
+                            if (MapData[j, i] == '=') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.Gray, 6, 7, 13);
+                            //Snow Mid No Top Bottomless Behind
+                            if (MapData[j, i] == '>') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.Gray, 6, 7, 36);
+
+                            //------------//Castle Foreback//---------//
+                            //Castle Solid Up
+                            if (MapData[j, i] == '?') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 22);
+                            //Castle Solid Left
+                            if (MapData[j, i] == '@') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 8);
+                            //Castle Solid Right
+                            if (MapData[j, i] == 'A') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 2);
+                            //Castle Solid Down
+                            if (MapData[j, i] == 'B') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 36);
+                            //Castle Solid Corner Up Left
+                            if (MapData[j, i] == 'C') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 32);
+                            //Castle Solid Corner Up Right
+                            if (MapData[j, i] == 'D') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 26);
+                            //Castle Solid Corner Down Left
+                            if (MapData[j, i] == 'E') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 19);
+                            //Castle Solid Corner Down Right
+                            if (MapData[j, i] == 'F') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 13);
+                            //-----//Solid Hill//----//
+                            //Castle Solid Hill Up Right
+                            if (MapData[j, i] == 'G') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 5);
+                            //Castle Solid Hill Up Left
+                            if (MapData[j, i] == 'H') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 3);
+                            //Castle Solid Hill Down Right
+                            if (MapData[j, i] == 'I') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 1);
+                            //Castle Solid Hill Down Left
+                            if (MapData[j, i] == 'J') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 7);
+                            //------//Castle No Top Foreback//------//
+                            //Castle Solid Mid NoTop
+                            if (MapData[j, i] == 'K') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 30);
+                            //------------//Castle Background//---------//
+                            //Castle Solid Mid NoTop Behind
+                            if (MapData[j, i] == 'L') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.Gray, 6, 7, 30);
+                            //Castle Mid No Top Bottomless Behind
+                            if (MapData[j, i] == 'M') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.Gray, 6, 7, 12);
+
+                            //------------//Metal Foreback//---------//
+                            //Metal Solid Up
+                            if (MapData[j, i] == 'N') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 3);
+                            //------//Metal No Top Foreback//------//
+                            //Metal Solid Mid NoTop
+                            if (MapData[j, i] == 'O') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 15);
+                            //Metal Solid Mid NoTop Alt 1
+                            if (MapData[j, i] == 'P') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 21);
+                            //Metal Solid Mid NoTop Alt 2
+                            if (MapData[j, i] == 'Q') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 26);
+                            //------------//Metal Background//---------//
+                            //Metal Solid Mid NoTop Behind
+                            if (MapData[j, i] == 'R') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.Gray, 5, 7, 6);
 
 
                             //Foliage                            
@@ -451,7 +548,7 @@ namespace Platformer_Prototype
                             if (MapData[j, i] == '>') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 10);
                             //Sand Mid Top
                             if (MapData[j, i] == '?') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 4);
-                            //------------//Dirt No Top Foreground//---------//
+                            //------------//Sand No Top Foreground//---------//
                             //Sand Single NoTop
                             if (MapData[j, i] == '@') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 3);
                             //Sand Mid NoTop Bottomless
@@ -464,6 +561,134 @@ namespace Platformer_Prototype
                             if (MapData[j, i] == 'D') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 25);
                             //Sand Half Up NoTop Right
                             if (MapData[j, i] == 'E') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 31);
+
+                            //------------//Snow Foreground//---------//
+                            //Snow Left Cliff Style 1
+                            if (MapData[j, i] == 'F') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 39);
+                            //Snow Right Cliff Style 1
+                            if (MapData[j, i] == 'G') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 4);
+                            //Snow Left Cliff Style 2
+                            if (MapData[j, i] == 'H') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 10);
+                            //Snow Right Cliff Style 2
+                            if (MapData[j, i] == 'I') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 16);
+                            //Snow Left Hill Top
+                            if (MapData[j, i] == 'J') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 28);
+                            //Snow Right Hill Top
+                            if (MapData[j, i] == 'K') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 22);
+                            //Snow Half Single
+                            if (MapData[j, i] == 'L') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 30);
+                            //Snow Half Mid Left
+                            if (MapData[j, i] == 'M') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 12);
+                            //Snow Half Mid
+                            if (MapData[j, i] == 'N') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 18);
+                            //Snow Half Mid Right
+                            if (MapData[j, i] == 'O') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 24);
+                            //Snow Edge Left
+                            if (MapData[j, i] == 'P') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 17);
+                            //Snow Edge Right
+                            if (MapData[j, i] == 'Q') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 11);
+                            //Snow Single
+                            if (MapData[j, i] == 'R') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 6);
+                            //Snow Mid Left
+                            if (MapData[j, i] == 'S') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 40);
+                            //Snow Mid Right
+                            if (MapData[j, i] == 'T') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 0);
+                            //Snow Mid Top
+                            if (MapData[j, i] == 'U') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 34);
+                            //------------//Snow No Top Foreground//---------//
+                            //Snow Single NoTop
+                            if (MapData[j, i] == 'V') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 33);
+                            //Snow Mid NoTop Bottomless
+                            if (MapData[j, i] == 'W') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 36);
+                            //Snow Half Down NoTop Left
+                            if (MapData[j, i] == 'X') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 7);
+                            //Snow Half Down NoTop Right
+                            if (MapData[j, i] == 'Y') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 1);
+                            //Snow Half Up NoTop Left
+                            if (MapData[j, i] == 'Z') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 5);
+                            //Snow Half Up NoTop Right
+                            if (MapData[j, i] == '[') SpriteSheetDraw(sB, _TILE_SnowSS_Tex, tileDraw, Color.White, 6, 7, 14);
+
+                            //------------//Castle Foreground//---------//
+                            //Castle Left Cliff Style 1
+                            if (MapData[j, i] == ']') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 15);
+                            //Castle Right Cliff Style 1
+                            if (MapData[j, i] == '^') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 21);
+                            //Castle Left Cliff Style 2
+                            if (MapData[j, i] == '_') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 27);
+                            //Castle Right Cliff Style 2
+                            if (MapData[j, i] == '`') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 33);
+                            //Castle Left Hill Top
+                            if (MapData[j, i] == 'a') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 39);
+                            //Castle Right Hill Top
+                            if (MapData[j, i] == 'b') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 4);
+                            //Castle Half Single
+                            if (MapData[j, i] == 'c') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 6);
+                            //Castle Half Mid Left
+                            if (MapData[j, i] == 'd') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 0);
+                            //Castle Half Mid
+                            if (MapData[j, i] == 'e') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 20);
+                            //Castle Half Mid Right
+                            if (MapData[j, i] == 'f') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 40);
+                            //Castle Edge Left
+                            if (MapData[j, i] == 'g') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 17);
+                            //Castle Edge Right
+                            if (MapData[j, i] == 'h') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 11);
+                            //Castle Single
+                            if (MapData[j, i] == 'i') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 34);
+                            //Castle Mid Left
+                            if (MapData[j, i] == 'j') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 28);
+                            //Castle Mid Right
+                            if (MapData[j, i] == 'k') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 16);
+                            //Castle Mid Top
+                            if (MapData[j, i] == 'l') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 10);
+                            //------------//Castle No Top Foreground//---------//
+                            //Castle Single NoTop
+                            if (MapData[j, i] == 'm') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 9);
+                            //Castle Mid NoTop Bottomless
+                            if (MapData[j, i] == 'n') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 12);
+                            //Castle Half Down NoTop Left
+                            if (MapData[j, i] == 'o') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 24);
+                            //Castle Half Down NoTop Right
+                            if (MapData[j, i] == 'p') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 18);
+                            //Castle Half Up NoTop Left
+                            if (MapData[j, i] == 'q') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 31);
+                            //Castle Half Up NoTop Right
+                            if (MapData[j, i] == 'r') SpriteSheetDraw(sB, _TILE_CastleSS_Tex, tileDraw, Color.White, 6, 7, 37);
+
+                            //------------//Metal Foreground//---------//
+                            //Metal Left Cliff Style 1
+                            if (MapData[j, i] == 's') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 32);
+                            //Metal Right Cliff Style 1
+                            if (MapData[j, i] == 't') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 2);
+                            //Metal Left Cliff Style 2
+                            if (MapData[j, i] == 'u') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 7);
+                            //Metal Right Cliff Style 2
+                            if (MapData[j, i] == 'v') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 13);
+                            //Metal Left Hill Top
+                            if (MapData[j, i] == 'w') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 23);
+                            //Metal Right Hill Top
+                            if (MapData[j, i] == 'x') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 18);
+                            //Metal Half Single
+                            if (MapData[j, i] == 'y') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 20);
+                            //Metal Half Mid Left
+                            if (MapData[j, i] == 'z') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 12);
+                            //Metal Half Mid
+                            if (MapData[j, i] == '{') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 16);
+                            //Metal Half Mid Right
+                            if (MapData[j, i] == '|') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 10);
+                            //Metal Single
+                            if (MapData[j, i] == '}') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 27);
+                            //Metal Mid Left
+                            if (MapData[j, i] == '~') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 33);
+                            //Metal Mid Right
+                            if (MapData[j, i] == '⌂') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 8);
+                            //Metal Mid Top
+                            if (MapData[j, i] == 'Ç') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 28);
+                            //------------//Metal No Top Foreground//---------//
+                            //Metal Single NoTop
+                            if (MapData[j, i] == 'ü') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.White, 5, 7, 14);
+
                             ////----------------------------------------------------//Objects//----------------------------------------------------//
                             //
                             ////Draw Grass Obj
