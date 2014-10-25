@@ -44,7 +44,7 @@ namespace Platformer_Prototype
             Position = Vector2.Zero;
             left = true;
             runPlanes = new Vector2(-50, 50);
-            sprite = new Sprite(getContent, "objects/Moving", Width, Height);
+            sprite = new Sprite(getContent, "objects/platform", Width, Height);
                        
         }
 
@@ -103,7 +103,7 @@ namespace Platformer_Prototype
         {
 
             //sB.Draw(Textures._OBJ_Ladder_Tex, Bounds, Color.Red);
-            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.LightGoldenrodYellow);
 
         }
 

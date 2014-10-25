@@ -26,6 +26,7 @@ namespace Platformer_Prototype
         static public Texture2D _OBJ_Ladder_Tex;
         static public Texture2D _ITEM_Crystal_Tex;
         static public Texture2D _ITEM_WoodBox_Tex;
+        static public Texture2D[] _OBJ_Platforms_Tex = new Texture2D[2];
 
         //Map Textures
         //Grass
@@ -65,6 +66,11 @@ namespace Platformer_Prototype
             //_OBJ_Grass_Tex = getContent.Load<Texture2D>("objects/grass4");
             _ITEM_Crystal_Tex = getContent.Load<Texture2D>("objects/items/gemblue");
             _ITEM_WoodBox_Tex = getContent.Load<Texture2D>("objects/box");
+            for (int i = 0; i < 2; i++)
+            {
+                _OBJ_Platforms_Tex[i] = getContent.Load<Texture2D>("editor/triggerplatform" + i);
+            }
+
 
 
             //Map Textures
@@ -177,6 +183,12 @@ namespace Platformer_Prototype
                                 //Trigger Wood Box
                                 if (MapData[j, i] == '♀')
                                     sB.Draw(_ITEM_WoodBox_Tex, tileDraw, Color.White);
+                                //Trigger Platform Hor
+                                if (MapData[j, i] == '♪')
+                                    sB.Draw(_OBJ_Platforms_Tex[0], tileDraw, Color.White);
+                                //Trigger Platform Ver
+                                if (MapData[j, i] == '♫')
+                                    sB.Draw(_OBJ_Platforms_Tex[1], tileDraw, Color.White);
                             }
 
                             //Trigger Ladder Block

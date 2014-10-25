@@ -43,6 +43,7 @@ namespace Platformer_Prototype
         public Sprite Torch;
         public Sprite WarpPad;
         public Rectangle tileDraw;
+        public Vector2 PlatformStart;
 
         private ContentManager Content;
 
@@ -92,15 +93,21 @@ namespace Platformer_Prototype
                         BasicEnemy.runPlanes.Y += BasicEnemy.Position.X;
                         Enemies.Add(BasicEnemy);
                     }
+
+                    //Platform Start
+                    if (map[j, i] == '♪')
+                    {
+                        Platform Hor = new Platform(getContent);
+                        Hor.Position = new Vector2(tileDraw.X, tileDraw.Y);
+                        Hor.Set(new Vector2(-64, 64), false);
+                        Hor.runPlanes.X += Hor.Position.X;
+                        Hor.runPlanes.Y += Hor.Position.X;
+                        Platforms.Add(Hor);
+                    }
                 }
 
 
-            Platform Hor = new Platform(getContent);
-            Hor.Position = new Vector2(128, 256);
-            Hor.Set(new Vector2(-64, 64), false);
-            Hor.runPlanes.X += Hor.Position.X;
-            Hor.runPlanes.Y += Hor.Position.X;
-            Platforms.Add(Hor);
+
 
 
             player = new Player(getContent, PlayerStart);
@@ -578,7 +585,7 @@ namespace Platformer_Prototype
                     //Wood Box Crate Collision
                     if (player.Bounds.Intersects(WoodBox.sprite.CollisionBox))
                     {
-                        if (player.Bounds.Y > WoodBox.Position.Y)
+                        if (player.Bounds.Y - 32 > WoodBox.Position.Y)
                         {
                             if (map[j, i] == '♀')
                                 map[j, i] = ' ';
