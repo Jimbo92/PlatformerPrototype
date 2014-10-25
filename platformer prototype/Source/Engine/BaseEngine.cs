@@ -47,7 +47,10 @@ namespace Platformer_Prototype
         private ContentManager Content;
 
         public List<Enemy> Enemies = new List<Enemy>();
+        public List<Platform> Platforms = new List<Platform>();
+
         public Vector2 EnemySpawn;
+       
 
         Random random = new Random();
 
@@ -90,6 +93,16 @@ namespace Platformer_Prototype
                         Enemies.Add(BasicEnemy);
                     }
                 }
+
+
+            Platform Hor = new Platform(getContent);
+            Hor.Position = new Vector2(128, 256);
+            Hor.Set(new Vector2(-64, 64), false);
+            Hor.runPlanes.X += Hor.Position.X;
+            Hor.runPlanes.Y += Hor.Position.X;
+            Platforms.Add(Hor);
+
+
             player = new Player(getContent, PlayerStart);
             Camera.Initialize(player, this);
             WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 10, 1);
@@ -155,9 +168,8 @@ namespace Platformer_Prototype
                 if (!e.isDead)
                     e.Update(this);
             }
-            for (int i = 0; i < Enemies.Count; i++)
-                if (!Enemies[i].isDead)
-                    Enemies[i].Update(this);
+            for (int i = 0; i < Platforms.Count; i++)
+                Platforms[i].Update(this);
 
             //Player Update                          
             PlayerWarpIn();
@@ -502,16 +514,28 @@ namespace Platformer_Prototype
             for (int i = 0; i < Enemies.Count; i++)
             {
                 if (!Enemies[i].isDead)
+                    if (Enemies[i].Position.X + Camera.Position.X > 0 - 24 + 0 && Enemies[i].Position.X + Camera.Position.X  < game1.GraphicsDevice.Viewport.Width)
+                        if (Enemies[i].Position.Y + Camera.Position.Y > 0 - 24 + 0 && Enemies[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
                     Enemies[i].Draw(sB);
+            }
+            
+
+            for (int i = 0; i < Platforms.Count; i++)           
+            {
+                if (Platforms[i].Position.X + Camera.Position.X > 0 - 32 + 0 && Platforms[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
+                    if (Platforms[i].Position.Y + Camera.Position.Y > 0 - 32 + 0 && Platforms[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
+                    Platforms[i].Draw(sB);
             }
 
 
-            Textures.DrawMapEffects(sB, MapEffectTextures, tileSize, Vector2.Zero, game1);
 
+            //Hard Coded Texture Tiles// Water, Lava, Rain, Weather Effects
             Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
 
             if (PlayerWarpInTime == 50)
                 player.Draw(sB);
+
+            Textures.DrawMapEffects(sB, MapEffectTextures, tileSize, Vector2.Zero, game1);
 
             for (int i = 0; i < map.GetLength(1); i++)
                 for (int j = map.GetLength(0) - 1; j > -1; j--)

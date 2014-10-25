@@ -41,6 +41,7 @@
     <Compile Include="Source\Engine\Global_GameState.cs" />
     <Compile Include="Source\Engine\Item.cs" />
     <Compile Include="Source\Map Editor\TileIndex.cs" />
+    <Compile Include="Source\Objects\Platform.cs" />
     <Compile Include="Source\Objects\Enemy.cs" />
     <Compile Include="Source\Engine\Game1.cs" />
     <Compile Include="Source\Engine\GUI.cs" />
@@ -196,6 +197,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\Foliage\Plant.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\Moving.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\PlayerCap.png">

@@ -32,7 +32,8 @@ namespace Platformer_Prototype
         public Rectangle Bounds;
         public Vector2 Speed;
 
-        public bool[] checks = new bool[4];
+        public bool[] checks = new bool[5];
+        public Vector2 platMod;
 
         public float xFriction = 1;
         public float yFriction = 1;
@@ -124,6 +125,7 @@ namespace Platformer_Prototype
             //Will Check up to 6 Rectangles
 
             Position.X += (int)Speed.X;
+          
             updateBounds(Camera.Position);
             BEngine.updateHitboxes(Position, Bounds);
 
@@ -244,6 +246,48 @@ namespace Platformer_Prototype
                 }
             }
 
+           
+            platMod = Vector2.Zero;
+            if (!noclip)
+            {
+                updateBounds(Camera.Position);
+                Bounds.Y += 1;
+
+                foreach (Platform p in BEngine.Platforms)
+                {
+                   
+
+                    p.updateBounds(Camera.Position);
+                    if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                        if (Bounds.Intersects(p.Bounds))
+                        {
+                            
+                            platMod.X += (int)p.Speed.X;
+                            platMod.Y += (int)p.Speed.Y;
+
+
+                            for (int i = 20; i > 0; i--)
+                            {
+                                updateBounds(Camera.Position);
+                                p.updateBounds(Camera.Position);
+                                if (Bounds.Intersects(p.Bounds))
+                                {
+                                    Position.Y--;
+                                    wallTimer = 0;
+                                    Rotation = 0;
+                                }
+                            }
+
+                            Speed.Y = 0;
+                        }
+
+                }
+                Bounds.Y -= 1;
+
+            }
+
+
+
             bool oneKill = false;
             if (!noclip && cooldown == 0)
                 foreach (Enemy e in BEngine.Enemies)
@@ -272,8 +316,10 @@ namespace Platformer_Prototype
                     }
                 }
 
-
-
+    
+            
+          
+           
 
 
             if (checks[2] == true)
@@ -300,6 +346,11 @@ namespace Platformer_Prototype
             game1 = getGame1;
 
             Collisions();
+
+
+            Position.X += platMod.X;
+
+                
 
             Animations();
 
@@ -392,6 +443,16 @@ namespace Platformer_Prototype
                         {
                             Speed.Y = -jump;
                             returner = true;
+                        }
+
+                        foreach (Platform p in BEngine.Platforms)
+                        {
+                            p.updateBounds(Camera.Position);
+                            if (p.Bounds.Intersects(Bounds))
+                            {
+                                Speed.Y = -jump;
+                                returner = true;
+                            }
                         }
 
                         for (int i = 0; i < BEngine.Canvas.Length; i++)
@@ -559,10 +620,13 @@ namespace Platformer_Prototype
             Speed.X *= xFriction;
             Speed.Y *= yFriction;
 
+            
+
         }
 
         public void checkCollisionsX(Rectangle target)
         {
+
             if (Bounds.Intersects(target))
             {
 

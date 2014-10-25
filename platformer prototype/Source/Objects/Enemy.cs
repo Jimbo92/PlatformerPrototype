@@ -33,10 +33,14 @@ namespace Platformer_Prototype
 
         public Vector2 runPlanes;
 
+        public Vector2 platMod;
+
         //Controls
+        public bool controllable = false;
         bool jump = false;
         bool left = false;
         bool right = false;
+        bool down = false;
 
 
         public bool[] checks = new bool[4];
@@ -168,6 +172,43 @@ namespace Platformer_Prototype
                         }
                 }
 
+                platMod = Vector2.Zero;
+              
+                    updateBounds(Camera.Position);
+                    Bounds.Y += 1;
+
+                    foreach (Platform p in BEngine.Platforms)
+                    {
+
+
+                        p.updateBounds(Camera.Position);
+                        if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                            if (Bounds.Intersects(p.Bounds))
+                            {
+
+                                platMod.X += (int)p.Speed.X;
+                                platMod.Y += (int)p.Speed.Y;
+
+
+                                for (int i = 20; i > 0; i--)
+                                {
+                                    updateBounds(Camera.Position);
+                                    p.updateBounds(Camera.Position);
+                                    if (Bounds.Intersects(p.Bounds))
+                                    {
+                                        Position.Y--;
+              
+                                    }
+                                }
+
+                                Speed.Y = 0;
+                            }
+
+                    }
+                    Bounds.Y -= 1;
+
+                
+
                 if (checks[2] == true)
                 {
                     isDead = true;
@@ -182,14 +223,28 @@ namespace Platformer_Prototype
 
             Collisions();
 
-            if (Position.X < runPlanes.X) {
-                right = true;
-                left = false;
-            }
+            Position += platMod;
 
-            if (Position.X > runPlanes.Y) {
-                right = false;
-                left = true;
+            if (!controllable)
+            {
+                if (Position.X < runPlanes.X)
+                {
+                    right = true;
+                    left = false;
+                }
+
+                if (Position.X > runPlanes.Y)
+                {
+                    right = false;
+                    left = true;
+                }
+            }
+            else
+            {
+                jump = Input.KeyboardPress(Keys.I);
+                down = Input.KeyboardPress(Keys.K);
+                left = Input.KeyboardPress(Keys.J);
+                right = Input.KeyboardPress(Keys.L);
             }
 
 
@@ -239,68 +294,161 @@ namespace Platformer_Prototype
                     Speed.Y = 2;
             }
 
-            if (left == true)
-                if (Speed.X > -1.5f)
-                    Speed.X -= 0.25f;
-                else
-                    Speed.X = -1.5f;
+            //---------------------
 
-            if (right == true)
-                if (Speed.X < 1.5f)
-                    Speed.X += 0.25f;
-                else
-                    Speed.X = 1.5f;
+            if (checks[1] == false)
+            {
+                if (left == true)
+                    if (Speed.X > -1.5f)
+                        Speed.X -= 0.25f;
+                    else
+                        Speed.X = -1.5f;
 
-            if (!left && !right)
-                if (Math.Abs(Speed.X) > 0.1f)
-                    Speed.X *= 0.92f;
-                else
-                    Speed.X = 0;
+                if (right == true)
+                    if (Speed.X < 1.5f)
+                        Speed.X += 0.25f;
+                    else
+                        Speed.X = 1.5f;
+
+                if (!left && !right)
+                    if (Math.Abs(Speed.X) > 0.1f)
+                        Speed.X *= 0.92f;
+                    else
+                        Speed.X = 0;
 
 
-            //jump
-            if (jump == true) {
-                jump = false;
-                Position.Y += 1;
-                updateBounds(Camera.Position);
-                BEngine.updateHitboxes(Position, Bounds);
+                //jump
+                if (jump == true)
+                {
+                    jump = false;
+                    bool returner = false;
 
-                for (int i = 0; i < BEngine.Canvas.Length; i++) {
-                    if (Bounds.Intersects(BEngine.Canvas[i]))
-                        Speed.Y = -7f;
-                    
+                    //Jump--------------
+
+                    if (!returner)
+                    {
+
+                        Position.Y += 1;
+                        updateBounds(Camera.Position);
+                        BEngine.updateHitboxes(Position, Bounds);
+
+
+
+                        for (int i = 0; i < BEngine.Canvas.Length; i++)
+                            if (Bounds.Intersects(BEngine.Canvas[i]))
+                            {
+                                Speed.Y = -7;
+                                returner = true;
+                            }
+
+                        foreach (Platform p in BEngine.Platforms)
+                        {
+                            p.updateBounds(Camera.Position);
+                            if(p.Bounds.Intersects(Bounds))
+                            {
+                                Speed.Y = -7;
+                                returner = true;
+                            }
+                        }
+                        if (checkAllLines(BEngine.tan1) == true)
+                        {
+                            Speed.Y = -7;
+                            returner = true;
+                        }
+                        if (checkAllLines(BEngine.tan2) == true)
+                        {
+                            Speed.Y = -7;
+                            returner = true;
+                        }
+                        if (checkAllLines(BEngine.tan3) == true)
+                        {
+                            Speed.Y = -7;
+                            returner = true;
+                        }
+                        if (checkAllLines(BEngine.tan4) == true)
+                        {
+                            Speed.Y = -7;
+                            returner = true;
+                        }
+                        if (checkAllLines(BEngine.tan5) == true)
+                        {
+                            Speed.Y = -7;
+                            returner = true;
+                        }
+                        if (checkAllLines(BEngine.tan6) == true)
+                        {
+                            Speed.Y = -7;
+                            returner = true;
+                        }
+
+
+                        Position.Y -= 1;
+
+                    }
+                    //--------------------
+
+                    //Ladders----------------------------------------
+                    if (!returner)
+                    {
+                        if (checks[0] == true)
+                        {
+
+                            Speed.Y = -4;
+                        }
+                    }
 
                 }
+                
+//Continue here
+
+                
 
 
-                if (checks[3] == true) {
-                    Speed.Y = -7f;
-                    
-                }
-
-                if (checkAllLines(BEngine.tan1) == true) {
-                    Speed.Y = -7f;
-                }
-                if (checkAllLines(BEngine.tan2) == true) {
-                    Speed.Y = -7f;
-                }
-                if (checkAllLines(BEngine.tan3) == true) {
-                    Speed.Y = -7f;
-                }
-                if (checkAllLines(BEngine.tan4) == true) {
-                    Speed.Y = -7f;
-                }
-                if (checkAllLines(BEngine.tan5) == true) {
-                    Speed.Y = -7f;
-                }
-                if (checkAllLines(BEngine.tan6) == true) {
-                    Speed.Y = -7f;
-                }
-
-                Position.Y -= 1;
             }
-         
+            else
+            {
+                if (left == true)
+                    if (Speed.X > -1.5f)
+                        Speed.X -= 0.25f;
+                    else
+                        Speed.X = -1.5f;
 
+                if (right == true)
+                    if (Speed.X < 1.5f)
+                        Speed.X += 0.25f;
+                    else
+                        Speed.X = 1.5f;
+
+                if (!left && !right)
+                    if (Math.Abs(Speed.X) > 0.1f)
+                        Speed.X *= 0.92f;
+                    else
+                        Speed.X = 0;
+
+                if (down == true)
+                    if (Speed.Y > -1.5f)
+                        Speed.Y -= 0.25f;
+                    else
+                        Speed.Y = -1.5f;
+
+                if (jump == true)
+                    if (Speed.Y < 1.5f)
+                        Speed.Y += 0.25f;
+                    else
+                        Speed.Y = 1.5f;
+
+                if (!down && !jump)
+                    if (Math.Abs(Speed.Y) > 0.1f)
+                        Speed.Y *= 0.92f;
+                    else
+                        Speed.Y = 0;
+
+
+            }
+
+
+            Speed.X *= xFriction;
+            Speed.Y *= yFriction;
         }
 
         public void checkCollisionsX(Rectangle target)
