@@ -62,7 +62,7 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB, Vector2 getPosition, float getRotation, SpriteEffects getEffects)
         {
-            CollisionBox = new Rectangle((int)getPosition.X - Width / 2, (int)getPosition.Y - Width / 2, Width, Height);
+            CollisionBox = new Rectangle((int)getPosition.X - Width / 2, (int)getPosition.Y - Width / 2, Width + 2, Height + 2);
 
             if (SpriteType == ESpriteType.Basic)
             {
@@ -99,7 +99,7 @@ namespace Platformer_Prototype
         }
         public void Draw(SpriteBatch sB, Vector2 getPosition, Vector2 getOrigin, float getRotation, SpriteEffects getEffects, Color getColour)
         {
-            CollisionBox = new Rectangle((int)getPosition.X - Width / 2, (int)getPosition.Y - Width / 2, Width, Height);
+            CollisionBox = new Rectangle((int)getPosition.X, (int)getPosition.Y, Width + 2, Height + 2);
 
             if (SpriteType == ESpriteType.Basic)
             {

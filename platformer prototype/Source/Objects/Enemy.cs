@@ -154,10 +154,6 @@ namespace Platformer_Prototype
                         {
                             checks[3] = true;
 
-
-
-
-
                             for (int i = 20; i > 0; i--)
                             {
                                 updateBounds(Camera.Position);
@@ -165,15 +161,11 @@ namespace Platformer_Prototype
                                 if (Bounds.Intersects(noclips))
                                 {
                                     Position.Y--;
-
-
                                 }
                             }
 
                             Speed.Y = 0;
                         }
-
-
                 }
 
                 if (checks[2] == true)

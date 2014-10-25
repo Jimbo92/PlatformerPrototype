@@ -244,8 +244,6 @@ namespace Platformer_Prototype
                 }
             }
 
-
-
             bool oneKill = false;
             if (!noclip && cooldown == 0)
                 foreach (Enemy e in BEngine.Enemies)

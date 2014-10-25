@@ -17,10 +17,14 @@ namespace Platformer_Prototype
         public Sprite sprite;
         public Vector2 Position;
         public bool IsDrawn = true;
+        private int Width;
+        private int Height;
 
-        public Item(ContentManager getContent, string getTexture, int getWidth, int getheight)
+        public Item(ContentManager getContent, string getTexture, int getWidth, int getHeight)
         {
-            sprite = new Sprite(getContent, getTexture, getWidth, getheight);
+            Width = getWidth;
+            Height = getHeight;
+            sprite = new Sprite(getContent, getTexture, getWidth, getHeight);
         }
 
         public void Draw(SpriteBatch sB, BaseEngine getBengine)
@@ -28,7 +32,7 @@ namespace Platformer_Prototype
             if (IsDrawn)
             {
                 Position = new Vector2(getBengine.tileDraw.X, getBengine.tileDraw.Y);
-                sprite.Draw(sB, Position, 0, SpriteEffects.None);
+                sprite.Draw(sB, Position, Vector2.Zero, 0, SpriteEffects.None, Color.White);
             }
         }
 

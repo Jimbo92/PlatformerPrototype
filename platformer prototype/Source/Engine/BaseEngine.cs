@@ -42,7 +42,6 @@ namespace Platformer_Prototype
         public Sprite LavaBase;
         public Sprite Torch;
         public Sprite WarpPad;
-
         public Rectangle tileDraw;
 
         private ContentManager Content;
@@ -62,8 +61,9 @@ namespace Platformer_Prototype
 
         public int tileSize = 32;
 
-        private List<Item> Crystals = new List<Item>();
+        //Items
         private Item Crystal;
+        public Item WoodBox;
 
         //-----------------------------------------------------
 
@@ -99,6 +99,7 @@ namespace Platformer_Prototype
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
             WarpPad = new Sprite(getContent, "objects/warppadss", 48, 48, 1, 10);
             Crystal = new Item(Content, "objects/items/gemblue", 48, 48);
+            WoodBox = new Item(Content, "objects/box", 32, 32);
 
             background = new Background(getContent, getScreenSize);
         }
@@ -321,7 +322,7 @@ namespace Platformer_Prototype
                 if (TileX + i >= 0 && TileX + i < map.GetLength(1) && TileY + Ratio.Y >= 0 && TileY + Ratio.Y < map.GetLength(0))
                 {
 
-                    if (map[TileY + (int)Ratio.Y, TileX + i] == '☺')
+                    if (map[TileY + (int)Ratio.Y, TileX + i] == '☺' || map[TileY + (int)Ratio.Y, TileX + i] == '♀')
                     {
                         Canvas[0] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                     }
@@ -354,7 +355,7 @@ namespace Platformer_Prototype
             tan2.c = Vector2.Zero;
             if (TileX + Ratio.X >= 0 && TileX + Ratio.X < map.GetLength(1) && TileY + (int)Ratio.Y >= 0 && TileY + (int)Ratio.Y < map.GetLength(0))
             {
-                if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == '☺')
+                if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == '☺' || map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == '♀')
                     Canvas[1] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + (int)Ratio.Y) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
 
                 if (map[TileY + (int)Ratio.Y, TileX + (int)Ratio.X] == '♦')
@@ -383,7 +384,7 @@ namespace Platformer_Prototype
             for (int i = 0; i < Ratio.X; i++)
                 if (TileX + i >= 0 && TileX + i < map.GetLength(1) && TileY >= 0 && TileY < map.GetLength(0))
                 {
-                    if (map[TileY, TileX + i] == '☺')
+                    if (map[TileY, TileX + i] == '☺' || map[TileY, TileX + i] == '♀')
                         Canvas[2] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                     if (map[TileY, TileX + i] == '♦')
                         Canvas[2] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize / 2);
@@ -409,7 +410,7 @@ namespace Platformer_Prototype
             tan4.c = Vector2.Zero;
             if (TileX + Ratio.X >= 0 && TileX + Ratio.X < map.GetLength(1) && TileY >= 0 && TileY < map.GetLength(0))
             {
-                if (map[TileY, TileX + (int)Ratio.X] == '☺')
+                if (map[TileY, TileX + (int)Ratio.X] == '☺' || map[TileY, TileX + (int)Ratio.X] == '♀')
                     Canvas[3] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                 if (map[TileY, TileX + (int)Ratio.X] == '♦')
                     Canvas[3] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize / 2);
@@ -436,7 +437,7 @@ namespace Platformer_Prototype
             for (int i = 0; i < Ratio.Y; i++)
                 if (TileX >= 0 && TileX < map.GetLength(1) && TileY + i >= 0 && TileY + i < map.GetLength(0))
                 {
-                    if (map[TileY + i, TileX] == '☺')
+                    if (map[TileY + i, TileX] == '☺' || map[TileY + i, TileX] == '♀')
                         Canvas[4] = new Rectangle(TileX * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
 
                     if (map[TileY + i, TileX] == '♦')
@@ -464,7 +465,7 @@ namespace Platformer_Prototype
             for (int i = 0; i < Ratio.Y; i++)
                 if (TileX + Ratio.X >= 0 && TileX + Ratio.X < map.GetLength(1) && TileY + i >= 0 && TileY + i < map.GetLength(0))
                 {
-                    if (map[TileY + i, TileX + (int)Ratio.X] == '☺')
+                    if (map[TileY + i, TileX + (int)Ratio.X] == '☺' || map[TileY + i, TileX + (int)Ratio.X] == '♀')
                         Canvas[5] = new Rectangle((TileX + (int)Ratio.X) * tileSize + (int)Camera.Position.X, (TileY + i) * tileSize + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
 
                     if (map[TileY + i, TileX + (int)Ratio.X] == '♦')
@@ -505,48 +506,6 @@ namespace Platformer_Prototype
             }
 
 
-
-            //Hard Coded Texture Tiles// Water, Lava, Rain, Weather Effects
-            for (int i = 0; i < map.GetLength(1); i++)
-                for (int j = map.GetLength(0) - 1; j > -1; j--)
-                {
-                    tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
-
-                    if (tileDraw.X > 0 - tileSize + 0 && tileDraw.X < game1.GraphicsDevice.Viewport.Width)
-                        if (tileDraw.Y > 0 - tileSize + 0 && tileDraw.Y < game1.GraphicsDevice.Viewport.Height)
-                        {
-                            //Draw Water Top Tile
-                            if (MapEffectTextures[j, i] == '♠')
-                                WaterTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue);
-                            //Draw Water Base Tile
-                            if (MapEffectTextures[j, i] == '•')
-                                WaterBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue);
-                            //Draw Lava Top Tile
-                            if (MapEffectTextures[j, i] == '◘')
-                                LavaTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
-                            //Draw Lava Base Tile
-                            if (MapEffectTextures[j, i] == '○')
-                                LavaBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
-
-
-
-                            //Crystal Item
-                            if (map[j, i] == '◘')
-                                Crystal.Draw(sB, this);
-
-                            //Crystal Collision
-                            if (player.Bounds.Intersects(Crystal.sprite.destinationRectangle))
-                            {
-                                if (map[j, i] == '◘')
-                                    map[j, i] = ' ';
-                                Crystal.sprite.destinationRectangle = Rectangle.Empty;
-                                GUI.CrystalPickUp = true;
-                                GUI.ShowCrystalBar = true;
-                                GUI.CrystalBarTimer = 0;
-                            }
-                        }
-                }
-
             Textures.DrawMapEffects(sB, MapEffectTextures, tileSize, Vector2.Zero, game1);
 
             Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
@@ -559,10 +518,53 @@ namespace Platformer_Prototype
                 {
                     tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
 
+
+
+                    //Draw Water Top Tile
+                    if (MapEffectTextures[j, i] == '♠')
+                        WaterTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue);
+                    //Draw Water Base Tile
+                    if (MapEffectTextures[j, i] == '•')
+                        WaterBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue);
+                    //Draw Lava Top Tile
+                    if (MapEffectTextures[j, i] == '◘')
+                        LavaTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+                    //Draw Lava Base Tile
+                    if (MapEffectTextures[j, i] == '○')
+                        LavaBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+
+                    //----------//Objects//---------//
+                    //Crystal Item
+                    if (map[j, i] == '◘')
+                        Crystal.Draw(sB, this);
+                    //Crystal Collision
+                    if (player.Bounds.Intersects(Crystal.sprite.destinationRectangle))
+                    {
+                        if (map[j, i] == '◘')
+                            map[j, i] = ' ';
+                        Crystal.sprite.destinationRectangle = Rectangle.Empty;
+                        GUI.CrystalPickUp = true;
+                        GUI.ShowCrystalBar = true;
+                        GUI.CrystalBarTimer = 0;
+                    }
+
+                    //Wood Box Crate
+                    if (map[j, i] == '♀')
+                        WoodBox.Draw(sB, this);
+                    //Wood Box Crate Collision
+                    if (player.Bounds.Intersects(WoodBox.sprite.CollisionBox))
+                    {
+                        if (player.Bounds.Y > WoodBox.Position.Y)
+                        {
+                            if (map[j, i] == '♀')
+                                map[j, i] = ' ';
+                            WoodBox.sprite.destinationRectangle = Rectangle.Empty;
+                        }
+                    }
+
                     //Draw Warp Pad
                     if (map[j, i] == '○')
                         WarpPad.Draw(sB, new Vector2(tileDraw.X - 8, tileDraw.Y - 10), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
-
                 }
         }
 

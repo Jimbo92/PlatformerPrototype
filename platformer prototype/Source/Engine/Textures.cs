@@ -25,6 +25,7 @@ namespace Platformer_Prototype
         //Object Textures
         static public Texture2D _OBJ_Ladder_Tex;
         static public Texture2D _ITEM_Crystal_Tex;
+        static public Texture2D _ITEM_WoodBox_Tex;
 
         //Map Textures
         //Grass
@@ -63,6 +64,8 @@ namespace Platformer_Prototype
             _OBJ_Ladder_Tex = getContent.Load<Texture2D>("tiles/Ladder");
             //_OBJ_Grass_Tex = getContent.Load<Texture2D>("objects/grass4");
             _ITEM_Crystal_Tex = getContent.Load<Texture2D>("objects/items/gemblue");
+            _ITEM_WoodBox_Tex = getContent.Load<Texture2D>("objects/box");
+
 
             //Map Textures
             //Grass
@@ -171,7 +174,9 @@ namespace Platformer_Prototype
                                 //Trigger Enemy Spawner
                                 if (MapData[j, i] == '♂')
                                     sB.Draw(_DBG_Trigger_Tex[6], tileDraw, Color.White);
-
+                                //Trigger Wood Box
+                                if (MapData[j, i] == '♀')
+                                    sB.Draw(_ITEM_WoodBox_Tex, tileDraw, Color.White);
                             }
 
                             //Trigger Ladder Block
