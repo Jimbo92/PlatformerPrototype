@@ -570,8 +570,7 @@ namespace Platformer_Prototype
 
 
             //Hard Coded Texture Tiles// Water, Lava, Rain, Weather Effects
-            Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
-
+           
             if (PlayerWarpInTime == 50)
                 player.Draw(sB);
 
@@ -630,6 +629,8 @@ namespace Platformer_Prototype
                     if (map[j, i] == '○')
                         WarpPad.Draw(sB, new Vector2(tileDraw.X - 8, tileDraw.Y - 10), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
                 }
+
+            Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
         }
 
 
