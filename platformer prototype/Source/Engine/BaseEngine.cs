@@ -58,10 +58,10 @@ namespace Platformer_Prototype
         private Game1 game1;
 
         public int LoadMapTimer;
-        public char[,] map = MapLoader.LoadMapData("grasslands");
-        public char[,] BackMapTextures = MapLoader.LoadMapData("grasslands_back");
-        public char[,] ForeMapTextures = MapLoader.LoadMapData("grasslands_fore");
-        public char[,] MapEffectTextures = MapLoader.LoadMapData("grasslands_eff");
+        public char[,] map = MapLoader.LoadMapData("hub");
+        public char[,] BackMapTextures = MapLoader.LoadMapData("hub_back");
+        public char[,] ForeMapTextures = MapLoader.LoadMapData("hub_fore");
+        public char[,] MapEffectTextures = MapLoader.LoadMapData("hub_eff");
 
         public int tileSize = 32;
 
@@ -183,10 +183,10 @@ namespace Platformer_Prototype
             LoadMapTimer++;
             if (LoadMapTimer <= 1)
             {
-                map = MapLoader.LoadMapData("grasslands");
-                BackMapTextures = MapLoader.LoadMapData("grasslands_Back");
-                ForeMapTextures = MapLoader.LoadMapData("grasslands_fore");
-                MapEffectTextures = MapLoader.LoadMapData("grasslands_eff");
+                map = MapLoader.LoadMapData("hub");
+                BackMapTextures = MapLoader.LoadMapData("hub_Back");
+                ForeMapTextures = MapLoader.LoadMapData("hub_fore");
+                MapEffectTextures = MapLoader.LoadMapData("hub_eff");
             }
             else
                 LoadMapTimer = 2;
