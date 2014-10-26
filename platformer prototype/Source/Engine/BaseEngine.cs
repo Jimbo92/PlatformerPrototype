@@ -85,7 +85,7 @@ namespace Platformer_Prototype
                     //Enemy Spawn
                     if (map[j, i] == '♂')
                     {
-                        Enemy BasicEnemy = new Enemy(getContent);
+                        Enemy BasicEnemy = new Enemy(getContent, Enemy.enemyType.FLYER);
                         EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         BasicEnemy.Position = EnemySpawn;
                         BasicEnemy.isDead = false;
@@ -99,13 +99,23 @@ namespace Platformer_Prototype
                     {
                         Platform Hor = new Platform(getContent);
                         Hor.Position = new Vector2(tileDraw.X, tileDraw.Y);
-                        Hor.Set(new Vector2(-64, 64), false);
+                        Hor.Set(new Vector2(-64, 64), false,true);
                         Hor.runPlanes.X += Hor.Position.X;
                         Hor.runPlanes.Y += Hor.Position.X;
                         Platforms.Add(Hor);
                     }
-                }
 
+                    //Platform Start
+                    if (map[j, i] == '♫')
+                    {
+                        Platform Ver = new Platform(getContent);
+                        Ver.Position = new Vector2(tileDraw.X, tileDraw.Y);
+                        Ver.Set(new Vector2(-64, 64), false,false);
+                        Ver.runPlanes.X += Ver.Position.X;
+                        Ver.runPlanes.Y += Ver.Position.X;
+                        Platforms.Add(Ver);
+                    }
+                }
 
 
 

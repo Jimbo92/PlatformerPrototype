@@ -28,6 +28,9 @@ namespace Platformer_Prototype
                 if (CurrentTile == '○') return "Player Start";
                 if (CurrentTile == '◙') return "Classic CB";
                 if (CurrentTile == '♂') return "Enemy Start";
+                if (CurrentTile == '♪') return "Horizontal MB";
+                if (CurrentTile == '♫') return "Vertical MB";
+                
 
             }
             if (getEditor.MapLayers == Editor.EMapLayers.BACKGROUND)

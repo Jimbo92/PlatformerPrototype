@@ -21,6 +21,8 @@ namespace Platformer_Prototype
         public int Width = 32;
         public int Height = 32;
 
+        public bool hor;
+
 
         private BaseEngine BEngine;
         //private Game1 game1;
@@ -42,17 +44,22 @@ namespace Platformer_Prototype
         public Platform(ContentManager getContent)
         {
             Position = Vector2.Zero;
-            left = true;
+          
             runPlanes = new Vector2(-50, 50);
             sprite = new Sprite(getContent, "objects/platform", Width, Height);
                        
         }
 
-        public void Set(Vector2 desiredPlanes, bool ddirection)
+        public void Set(Vector2 desiredPlanes, bool ddirection, bool axis)
         {
             runPlanes = desiredPlanes;
             left = ddirection;
             right = !ddirection;
+            hor = axis;
+            if (hor)
+                left = true;
+            else
+                up = true;
         }
 
         public void updateBounds(Vector2 Camera)
@@ -77,24 +84,63 @@ namespace Platformer_Prototype
 
             Collisions();
 
+            if (hor)
+            {
+                up = false;
+                down = false;
                 if (Position.X < runPlanes.X)
                 {
+
                     right = true;
                     left = false;
+
+
+
                 }
 
                 if (Position.X > runPlanes.Y)
                 {
+
                     right = false;
                     left = true;
-                }
 
+
+
+                }
+            }
+            else
+            {
+                right = false;
+                left = false;
+                if (Position.Y < runPlanes.X)
+                {
+
+
+                    {
+                        up = false;
+                        down = true;
+                    }
+
+                }
+                   
+
+                if (Position.Y > runPlanes.Y)
+                {
+   
+                        up = true;
+                        down = false;
+                    
+                }
+             }
 
                 if (left)
                     Speed.X = -1;
                 if (right)
                     Speed.X = 1;
-            
+                if (up)
+                    Speed.Y = -1;
+                if (down)
+                    Speed.Y = 1;
        
         }
 

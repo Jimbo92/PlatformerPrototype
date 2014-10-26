@@ -246,7 +246,8 @@ namespace Platformer_Prototype
                 }
             }
 
-           
+            bool platX = false;
+            bool platY = false;
             platMod = Vector2.Zero;
             if (!noclip)
             {
@@ -258,28 +259,41 @@ namespace Platformer_Prototype
                    
 
                     p.updateBounds(Camera.Position);
-                    if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
-                        if (Bounds.Intersects(p.Bounds))
-                        {
-                            
-                            platMod.X += (int)p.Speed.X;
-                            platMod.Y += (int)p.Speed.Y;
-
-
-                            for (int i = 20; i > 0; i--)
+                    if (p.Bounds.Y + Speed.Y + 1 > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                    {
+                            if (Bounds.Intersects(p.Bounds))
                             {
-                                updateBounds(Camera.Position);
-                                p.updateBounds(Camera.Position);
-                                if (Bounds.Intersects(p.Bounds))
-                                {
-                                    Position.Y--;
-                                    wallTimer = 0;
-                                    Rotation = 0;
-                                }
-                            }
 
-                            Speed.Y = 0;
+                                if (platX == false)
+                                {
+                                    platMod.X += (int)p.Speed.X;
+                                    platX = true;
+                                }
+
+                                if (platY == false)
+                                {
+                                    platMod.Y += (int)p.Speed.Y;
+                                    platY = true;
+                                }
+
+
+
+                                for (int i = 20; i > 0; i--)
+                                {
+                                    updateBounds(Camera.Position);
+                                    p.updateBounds(Camera.Position);
+                                    if (Bounds.Intersects(p.Bounds))
+                                    {
+                                        Position.Y--;
+                                        wallTimer = 0;
+                                        Rotation = 0;
+                                    }
+                                }
+
+                                Speed.Y = 0;
+                            }
                         }
+                    
 
                 }
                 Bounds.Y -= 1;
@@ -448,6 +462,7 @@ namespace Platformer_Prototype
                         foreach (Platform p in BEngine.Platforms)
                         {
                             p.updateBounds(Camera.Position);
+                            if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
                             if (p.Bounds.Intersects(Bounds))
                             {
                                 Speed.Y = -jump;

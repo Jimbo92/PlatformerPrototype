@@ -14,7 +14,17 @@ namespace Platformer_Prototype
 {
     class Enemy
     {
+        public enum enemyType
+        {
+            WALKER,
+            FLYER,
+            CRAWLER,
+        }
+
         public Sprite sprite;
+
+        public enemyType type;
+
         public Vector2 Position;
         public Rectangle Bounds;
         public Vector2 Speed;
@@ -50,13 +60,14 @@ namespace Platformer_Prototype
        
         //--------------------------------------------
 
-        public Enemy(ContentManager getContent)
+        public Enemy(ContentManager getContent, enemyType e)
         {
             Position = Vector2.Zero;
             left = true;
             runPlanes = new Vector2(-50, 50);
             sprite = new Sprite(getContent, "objects/enemy", Width, Height);
-            sprite = new Sprite(getContent, "objects/enemy", Width, Height);            
+            sprite = new Sprite(getContent, "objects/enemy", Width, Height);
+            type = e;
         }
 
         public void updateBounds(Vector2 Camera)
@@ -173,6 +184,8 @@ namespace Platformer_Prototype
                 }
 
                 platMod = Vector2.Zero;
+                bool platX = false;
+                bool platY = false;
               
                     updateBounds(Camera.Position);
                     Bounds.Y += 1;
@@ -185,9 +198,17 @@ namespace Platformer_Prototype
                         if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
                             if (Bounds.Intersects(p.Bounds))
                             {
+                                if (!platX)
+                                {
+                                    platMod.X += (int)p.Speed.X;
+                                    platX = true;
+                                }
 
-                                platMod.X += (int)p.Speed.X;
-                                platMod.Y += (int)p.Speed.Y;
+                                if (!platY)
+                                {
+                                    platMod.Y += (int)p.Speed.Y;
+                                    platY = true;
+                                }
 
 
                                 for (int i = 20; i > 0; i--)
@@ -249,49 +270,51 @@ namespace Platformer_Prototype
 
 
             //Gravity--------------
+            if (type != enemyType.FLYER)
+            {
+                bool Checked = false;
+                if (!Checked)
+                {
+                    if (checks[0] == true)
+                    {
+                        yFriction = 0.95f;
+                        Checked = true;
+                    }
+                    else
+                    {
+                        yFriction = 1;
+                    }
+                }
 
-            bool Checked = false;
-            if (!Checked)
-            {
-                if (checks[0] == true)
+                if (!Checked)
                 {
-                    yFriction = 0.95f;
-                    Checked = true;
+                    if (checks[1] == true)
+                    {
+                        xFriction = 0.92f;
+                        yFriction = 0.95f;
+                        Checked = true;
+                    }
+                    else
+                    {
+                        xFriction = 1;
+                        yFriction = 1;
+                    }
                 }
-                else
-                {
-                    yFriction = 1;
-                }
-            }
 
-            if (!Checked)
-            {
-                if (checks[1] == true)
+                if (checks[1] == false)
                 {
-                    xFriction = 0.92f;
-                    yFriction = 0.95f;
-                    Checked = true;
+                    if (Speed.Y < 12)
+                        Speed.Y += 0.2f;
+                    else
+                        Speed.Y = 12;
                 }
                 else
                 {
-                    xFriction = 1;
-                    yFriction = 1;
+                    if (Speed.Y < 2)
+                        Speed.Y += 0.2f;
+                    else
+                        Speed.Y = 2;
                 }
-            }
-
-            if (checks[1] == false)
-            {
-                if (Speed.Y < 12)
-                    Speed.Y += 0.2f;
-                else
-                    Speed.Y = 12;
-            }
-            else
-            {
-                if (Speed.Y < 2)
-                    Speed.Y += 0.2f;
-                else
-                    Speed.Y = 2;
             }
 
             //---------------------
