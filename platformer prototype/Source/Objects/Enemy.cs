@@ -57,17 +57,34 @@ namespace Platformer_Prototype
 
         public float xFriction = 1;
         public float yFriction = 1;
+
+        private int AnimTimer;
+        private SpriteEffects SprEff;
        
         //--------------------------------------------
 
-        public Enemy(ContentManager getContent, enemyType e)
+        public Enemy(ContentManager getContent, string getTexture, enemyType e, int getWidth, int getHeight)
         {
+            Width = getWidth;
+            Height = getHeight;
             Position = Vector2.Zero;
             left = true;
             runPlanes = new Vector2(-50, 50);
-            sprite = new Sprite(getContent, "objects/enemy", Width, Height);
-            sprite = new Sprite(getContent, "objects/enemy", Width, Height);
+            sprite = new Sprite(getContent, getTexture, getWidth, getHeight, 1, 3);
             type = e;
+        }
+
+        private void Animations()
+        {
+                AnimTimer++;
+                if (AnimTimer < 10)
+                    sprite.CurrentFrame = 0;
+                else
+                    sprite.CurrentFrame = 1;
+
+
+                if (AnimTimer > 20)
+                    AnimTimer = 0;
         }
 
         public void updateBounds(Vector2 Camera)
@@ -238,9 +255,10 @@ namespace Platformer_Prototype
         }
 
         public void Update(BaseEngine getBEngine)
-        {
-
+        {          
             BEngine = getBEngine;
+
+            Animations();
 
             Collisions();
 
@@ -252,12 +270,14 @@ namespace Platformer_Prototype
                 {
                     right = true;
                     left = false;
+                    SprEff = SpriteEffects.FlipHorizontally;
                 }
 
                 if (Position.X > runPlanes.Y)
                 {
                     right = false;
                     left = true;
+                    SprEff = SpriteEffects.None;
                 }
             }
             else
@@ -533,7 +553,7 @@ namespace Platformer_Prototype
         {
 
             //sB.Draw(Textures._OBJ_Ladder_Tex, Bounds, Color.Red);
-            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SprEff, Color.White);
 
         }
 

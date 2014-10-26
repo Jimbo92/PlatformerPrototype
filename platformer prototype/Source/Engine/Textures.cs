@@ -48,6 +48,7 @@ namespace Platformer_Prototype
 
         //Debug Textures
         static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[8];
+        static public Texture2D[] _DBG_ETrigger_Tex = new Texture2D[3];
         static public Texture2D[] _DBG_Lava_Tex = new Texture2D[2];
         static public Texture2D _DBG_WaterTop_Tex;
         static public Texture2D _DBG_WaterBot_Tex;
@@ -99,6 +100,10 @@ namespace Platformer_Prototype
             for (int i = 0; i < 8; i++)
             {
                 _DBG_Trigger_Tex[i] = getContent.Load<Texture2D>("editor/trigger" + i);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                _DBG_ETrigger_Tex[i] = getContent.Load<Texture2D>("editor/etrigger" + i);
             }
             for (int i = 0; i < 2; i++)
             {
@@ -178,8 +183,8 @@ namespace Platformer_Prototype
                                 if (MapData[j, i] == '◙')
                                     sB.Draw(_DBG_Trigger_Tex[7], tileDraw, Color.White);
                                 //Trigger Enemy Spawner
-                                if (MapData[j, i] == '♂')
-                                    sB.Draw(_DBG_Trigger_Tex[6], tileDraw, Color.White);
+                                //if (MapData[j, i] == '♂')
+                                //    sB.Draw(_DBG_Trigger_Tex[6], tileDraw, Color.White);
                                 //Trigger Wood Box
                                 if (MapData[j, i] == '♀')
                                     sB.Draw(_ITEM_WoodBox_Tex, tileDraw, Color.White);
@@ -189,6 +194,16 @@ namespace Platformer_Prototype
                                 //Trigger Platform Ver
                                 if (MapData[j, i] == '♫')
                                     sB.Draw(_OBJ_Platforms_Tex[1], tileDraw, Color.White);
+                                //Trigger Enemy Spawn Crw
+                                if (MapData[j, i] == '☼')
+                                    sB.Draw(_DBG_ETrigger_Tex[0], tileDraw, Color.White);
+                                //Trigger Enemy Spawn Wlk
+                                if (MapData[j, i] == '►')
+                                    sB.Draw(_DBG_ETrigger_Tex[1], tileDraw, Color.White);
+                                //Trigger Enemy Spawn Fly
+                                if (MapData[j, i] == '◄')
+                                    sB.Draw(_DBG_ETrigger_Tex[2], tileDraw, Color.White);
+
                             }
 
                             //Trigger Ladder Block

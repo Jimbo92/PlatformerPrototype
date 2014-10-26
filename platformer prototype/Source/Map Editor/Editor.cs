@@ -30,7 +30,9 @@ namespace Platformer_Prototype
         public char[,] GridDataL2;
         public char[,] GridDataL3;
         public char[,] GridDataL4;
-        public Vector2 MapSize = new Vector2(100, 20);
+        public Vector2 MapSize;
+        public int MapWidth = 100;
+        public int MapHeight = 20;
 
         private Rectangle DrawTile;
         private Texture2D GridTexture;
@@ -63,7 +65,7 @@ namespace Platformer_Prototype
         private Rectangle BrushSize;
         private int BrushSizeValue = 32;
 
-        private Sprite[] Button = new Sprite[8];
+        private Sprite[] Button = new Sprite[9];
 
         System.Windows.Forms.FileDialog getFile = new System.Windows.Forms.OpenFileDialog();
         System.Windows.Forms.SaveFileDialog saveFile = new System.Windows.Forms.SaveFileDialog();
@@ -72,9 +74,9 @@ namespace Platformer_Prototype
 
         public Editor(ContentManager getContent, Vector2 getScreenSize)
         {
+            MapSize = new Vector2(MapWidth, MapHeight);
             ScreenSize = getScreenSize;
             Camera.CameraMode = Camera.CameraState.FREE;
-
             //Textures
             SelectorBackgroundTexture = getContent.Load<Texture2D>("editor/sidebar");
             SelectorButtonTexture = getContent.Load<Texture2D>("editor/sidebarbutton");
@@ -89,6 +91,7 @@ namespace Platformer_Prototype
                 Button[i] = new Sprite(getContent, "editor/button" + i, 32, 32, 1, 3);
             Button[6] = new Sprite(getContent, "editor/button2", 32, 32, 1, 3);
             Button[7] = new Sprite(getContent, "editor/button3", 32, 32, 1, 3);
+            Button[8] = new Sprite(getContent, "editor/button6", 32, 32, 1, 3);
 
             for (int i = 0; i < FontTimers.Length; i++)
                 FontTimers[i] = 101;
@@ -205,6 +208,10 @@ namespace Platformer_Prototype
             if (Button[5].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                 if (Input.ClickReleased(Input.EClicks.LEFT))
                     Save();
+            //New Map
+            if (Button[8].CollisionBox.Contains(Mouse.GetState().X, Mouse.GetState().Y))
+                if (Input.ClickReleased(Input.EClicks.LEFT))
+                    New();
 
             //Button Animations
             foreach (Sprite button in Button)
@@ -252,6 +259,74 @@ namespace Platformer_Prototype
             }
         }
 
+        private void New()
+        {
+            System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            System.Windows.Forms.Label WidthLabel = new System.Windows.Forms.Label();
+            System.Windows.Forms.NumericUpDown WidthBox = new System.Windows.Forms.NumericUpDown();
+            System.Windows.Forms.Label HeightLabel = new System.Windows.Forms.Label();
+            System.Windows.Forms.NumericUpDown HeightBox = new System.Windows.Forms.NumericUpDown();
+            System.Windows.Forms.Button buttonOk = new System.Windows.Forms.Button();
+            System.Windows.Forms.Button buttonCancel = new System.Windows.Forms.Button();
+
+            form.Text = "New Map";
+            WidthLabel.Text = "Columns";
+            WidthBox.Text = "100";
+            WidthBox.Maximum = 255;
+            HeightLabel.Text = "Rows";
+            HeightBox.Text = "20";
+            HeightBox.Maximum = 255;
+
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+
+            WidthLabel.SetBounds(15, 20, 64, 13);
+            WidthBox.SetBounds(15, 36, 64, 20);
+            HeightLabel.SetBounds(100, 20, 64, 13);
+            HeightBox.SetBounds(100, 36, 64, 20);
+
+            buttonOk.SetBounds(228, 72, 75, 23);
+            buttonCancel.SetBounds(309, 72, 75, 23);
+
+
+            WidthLabel.AutoSize = true;
+            HeightLabel.AutoSize = true;
+            buttonOk.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            buttonCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+
+            form.ClientSize = new System.Drawing.Size(396, 107);
+            form.Controls.AddRange(new System.Windows.Forms.Control[] { WidthLabel, WidthBox, HeightLabel, HeightBox, buttonOk, buttonCancel });
+            form.ClientSize = new System.Drawing.Size(Math.Max(200, WidthLabel.Right + 10), form.ClientSize.Height);
+            form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            System.Windows.Forms.DialogResult dialogResult = form.ShowDialog();
+
+            if (form.DialogResult == System.Windows.Forms.DialogResult.OK)
+            {
+                Camera.Position = Vector2.Zero;
+
+                MapWidth = (int)WidthBox.Value;
+                MapHeight = (int)HeightBox.Value;
+
+                MapSize = new Vector2(MapWidth, MapHeight);
+
+                for (int i = 0; i < (int)MapSize.X; i++)
+                    for (int j = 0; j < (int)MapSize.Y; j++)
+                    {
+                        GridDataL1 = new char[j, i];
+                        GridDataL2 = new char[j, i];
+                        GridDataL3 = new char[j, i];
+                        GridDataL4 = new char[j, i];
+                    }
+            }
+        }
 
         public void Update(GraphicsDeviceManager getGraphics, Game1 getGame1)
         {
@@ -265,6 +340,9 @@ namespace Platformer_Prototype
             //Save           
             if (Input.KeyboardPressed(Keys.S))
                 Save();
+            //New Map
+            if (Input.KeyboardPressed(Keys.N))
+                New();
 
             //Texture Selector
             TextureSelector();
@@ -396,6 +474,8 @@ namespace Platformer_Prototype
 
         private void SaveMap(char[,] getGrid, string MapFile)
         {
+            Camera.Position = Vector2.Zero;
+
             StreamWriter sw = new StreamWriter(MapFile);
             for (int i = 0; i < getGrid.GetLength(0); i++)
             {
@@ -415,6 +495,8 @@ namespace Platformer_Prototype
 
         public char[,] LoadMap(string MapDataFile)
         {
+            Camera.Position = Vector2.Zero;
+
             char[,] loadMap;
             var data = File.ReadAllLines(@MapDataFile);
             loadMap = new char[data.Length, (data[0].Length + 1) / 2];
@@ -529,6 +611,7 @@ namespace Platformer_Prototype
             Button[3].Draw(sB, new Vector2(BottomBarRectangle.X + BottomBarRectangle.Width - 300, BottomBarRectangle.Y + BottomBarRectangle.Height - 42), 0, SpriteEffects.None);
             Button[4].Draw(sB, new Vector2(BottomBarRectangle.X + 25, BottomBarRectangle.Y + 25), 0, SpriteEffects.None);
             Button[5].Draw(sB, new Vector2(BottomBarRectangle.X + 65, BottomBarRectangle.Y + 25), 0, SpriteEffects.None);
+            Button[8].Draw(sB, new Vector2(BottomBarRectangle.X + 105, BottomBarRectangle.Y + 25), 0, SpriteEffects.None);
             //Editor Fonts
             //Title Detail
             sB.DrawString(Font, "Map Editor", new Vector2(20, 20), Color.Snow);

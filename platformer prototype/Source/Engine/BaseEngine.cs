@@ -82,16 +82,39 @@ namespace Platformer_Prototype
                     //Player Start
                     if (map[j, i] == '○')
                         PlayerStart = new Vector2(tileDraw.X, tileDraw.Y);
-                    //Enemy Spawn
-                    if (map[j, i] == '♂')
+                    //Enemy Spawns//
+                    //Crawler
+                    if (map[j, i] == '☼')
                     {
-                        Enemy BasicEnemy = new Enemy(getContent, Enemy.enemyType.FLYER);
+                        Enemy CrawlerEnemy = new Enemy(getContent, "objects/enemies/snailss", Enemy.enemyType.CRAWLER, 24, 16);
                         EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
-                        BasicEnemy.Position = EnemySpawn;
-                        BasicEnemy.isDead = false;
-                        BasicEnemy.runPlanes.X += BasicEnemy.Position.X;
-                        BasicEnemy.runPlanes.Y += BasicEnemy.Position.X;
-                        Enemies.Add(BasicEnemy);
+                        CrawlerEnemy.Position = EnemySpawn;
+                        CrawlerEnemy.isDead = false;
+                        CrawlerEnemy.runPlanes.X += CrawlerEnemy.Position.X;
+                        CrawlerEnemy.runPlanes.Y += CrawlerEnemy.Position.X;
+                        Enemies.Add(CrawlerEnemy);
+                    }
+                    //Walker
+                    if (map[j, i] == '►')
+                    {
+                        Enemy WalkerEnemy = new Enemy(getContent, "objects/enemies/slimess", Enemy.enemyType.WALKER, 46, 24);
+                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        WalkerEnemy.Position = EnemySpawn;
+                        WalkerEnemy.isDead = false;
+                        WalkerEnemy.runPlanes.X += WalkerEnemy.Position.X;
+                        WalkerEnemy.runPlanes.Y += WalkerEnemy.Position.X;
+                        Enemies.Add(WalkerEnemy);
+                    }
+                    //Flyer
+                    if (map[j, i] == '◄')
+                    {
+                        Enemy FlyerEnemy = new Enemy(getContent, "objects/enemies/flyss", Enemy.enemyType.FLYER, 24, 16);
+                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        FlyerEnemy.Position = EnemySpawn;
+                        FlyerEnemy.isDead = false;
+                        FlyerEnemy.runPlanes.X += FlyerEnemy.Position.X;
+                        FlyerEnemy.runPlanes.Y += FlyerEnemy.Position.X;
+                        Enemies.Add(FlyerEnemy);
                     }
 
                     //Platform Start
