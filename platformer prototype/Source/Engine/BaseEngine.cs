@@ -43,25 +43,31 @@ namespace Platformer_Prototype
         public Sprite Torch;
         public Sprite WarpPad;
         public Rectangle tileDraw;
-        public Vector2 PlatformStart;
 
         private ContentManager Content;
 
-        public List<Enemy> Enemies = new List<Enemy>();
+        public List<Enemy> Enemies = new List<Enemy>(100);
         public List<Platform> Platforms = new List<Platform>();
 
         public Vector2 EnemySpawn;
-       
+        //Enemy Types;
+        Enemy CrawlerEnemy;
+        Enemy WalkerEnemy;
+        Enemy FlyerEnemy;
+
 
         Random random = new Random();
 
         private Game1 game1;
 
-        public int LoadMapTimer;
+        public bool MapLoading = true;
+        public int LoadMapTimer = 2;
         public char[,] map = MapLoader.LoadMapData("hub");
         public char[,] BackMapTextures = MapLoader.LoadMapData("hub_back");
         public char[,] ForeMapTextures = MapLoader.LoadMapData("hub_fore");
         public char[,] MapEffectTextures = MapLoader.LoadMapData("hub_eff");
+        public Rectangle[] WarpDoors = new Rectangle[6];
+
 
         public int tileSize = 32;
 
@@ -74,76 +80,8 @@ namespace Platformer_Prototype
         public BaseEngine(ContentManager getContent, Vector2 getScreenSize)
         {
             Content = getContent;
-            for (int i = 0; i < map.GetLength(1); i++)
-                for (int j = 0; j < map.GetLength(0); j++)
-                {
-                    tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, 600 - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
 
-                    //Player Start
-                    if (map[j, i] == '○')
-                        PlayerStart = new Vector2(tileDraw.X, tileDraw.Y);
-                    //Enemy Spawns//
-                    //Crawler
-                    if (map[j, i] == '☼')
-                    {
-                        Enemy CrawlerEnemy = new Enemy(getContent, "objects/enemies/snailss", Enemy.enemyType.CRAWLER, 24, 16);
-                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
-                        CrawlerEnemy.Position = EnemySpawn;
-                        CrawlerEnemy.isDead = false;
-                        CrawlerEnemy.runPlanes.X += CrawlerEnemy.Position.X;
-                        CrawlerEnemy.runPlanes.Y += CrawlerEnemy.Position.X;
-                        Enemies.Add(CrawlerEnemy);
-                    }
-                    //Walker
-                    if (map[j, i] == '►')
-                    {
-                        Enemy WalkerEnemy = new Enemy(getContent, "objects/enemies/slimess", Enemy.enemyType.WALKER, 46, 24);
-                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
-                        WalkerEnemy.Position = EnemySpawn;
-                        WalkerEnemy.isDead = false;
-                        WalkerEnemy.runPlanes.X += WalkerEnemy.Position.X;
-                        WalkerEnemy.runPlanes.Y += WalkerEnemy.Position.X;
-                        Enemies.Add(WalkerEnemy);
-                    }
-                    //Flyer
-                    if (map[j, i] == '◄')
-                    {
-                        Enemy FlyerEnemy = new Enemy(getContent, "objects/enemies/flyss", Enemy.enemyType.FLYER, 24, 16);
-                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
-                        FlyerEnemy.Position = EnemySpawn;
-                        FlyerEnemy.isDead = false;
-                        FlyerEnemy.runPlanes.X += FlyerEnemy.Position.X;
-                        FlyerEnemy.runPlanes.Y += FlyerEnemy.Position.X;
-                        Enemies.Add(FlyerEnemy);
-                    }
-
-                    //Platform Start
-                    if (map[j, i] == '♪')
-                    {
-                        Platform Hor = new Platform(getContent);
-                        Hor.Position = new Vector2(tileDraw.X, tileDraw.Y);
-                        Hor.Set(new Vector2(-64, 64), false,true);
-                        Hor.runPlanes.X += Hor.Position.X;
-                        Hor.runPlanes.Y += Hor.Position.X;
-                        Platforms.Add(Hor);
-                    }
-
-                    //Platform Start
-                    if (map[j, i] == '♫')
-                    {
-                        Platform Ver = new Platform(getContent);
-                        Ver.Position = new Vector2(tileDraw.X, tileDraw.Y);
-                        Ver.Set(new Vector2(-64, 64), false,false);
-                        Ver.runPlanes.X += Ver.Position.X;
-                        Ver.runPlanes.Y += Ver.Position.X;
-                        Platforms.Add(Ver);
-                    }
-                }
-
-
-
-
-            player = new Player(getContent, PlayerStart);
+            player = new Player(getContent);
             Camera.Initialize(player, this);
             WaterTop = new Sprite(getContent, "tiles/water0", 32, 32, 10, 1);
             WaterBase = new Sprite(getContent, "tiles/water1", 32, 32, 10, 1);
@@ -164,13 +102,156 @@ namespace Platformer_Prototype
             DrawLine(game1, sB, target.c, target.a);
         }
 
+        private void HubWorldData()
+        {
+            //Grasslands
+            WarpDoors[0] = new Rectangle(765 + (int)Camera.Position.X, 344 + (int)Camera.Position.Y, 32, 32);
+            if (player.Bounds.Intersects(WarpDoors[0]))
+            {
+                if (Input.KeyboardPressed(Keys.Enter))
+                {
+                    Global_GameState.ZoneState = Global_GameState.EZoneState.Grasslands;
+                    MapLoading = true;
+                }
+            }
+        }
+
+        private void LoadupMapEntities()
+        {
+            for (int i = 0; i < map.GetLength(1); i++)
+                for (int j = 0; j < map.GetLength(0); j++)
+                {
+                    tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, 600 - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
+                    
+                    //Player Start
+                    if (map[j, i] == '○')
+                    {
+                        PlayerStart = new Vector2(tileDraw.X, tileDraw.Y);
+                    }
+
+                    //Enemy Spawns//
+                    //Crawler
+                    if (map[j, i] == '☼')
+                    {
+                        CrawlerEnemy = new Enemy(Content, "objects/enemies/snailss", Enemy.enemyType.CRAWLER, 24, 16);
+                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        CrawlerEnemy.Position = EnemySpawn;
+                        CrawlerEnemy.isDead = false;
+                        CrawlerEnemy.runPlanes.X += CrawlerEnemy.Position.X;
+                        CrawlerEnemy.runPlanes.Y += CrawlerEnemy.Position.X;
+                        Enemies.Add(CrawlerEnemy);
+                    }
+                    //Walker
+                    if (map[j, i] == '►')
+                    {
+                        WalkerEnemy = new Enemy(Content, "objects/enemies/slimess", Enemy.enemyType.WALKER, 46, 24);
+                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        WalkerEnemy.Position = EnemySpawn;
+                        WalkerEnemy.isDead = false;
+                        WalkerEnemy.runPlanes.X += WalkerEnemy.Position.X;
+                        WalkerEnemy.runPlanes.Y += WalkerEnemy.Position.X;
+                        Enemies.Add(WalkerEnemy);
+                    }
+                    //Flyer
+                    if (map[j, i] == '◄')
+                    {
+                        FlyerEnemy = new Enemy(Content, "objects/enemies/flyss", Enemy.enemyType.FLYER, 24, 16);
+                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        FlyerEnemy.Position = EnemySpawn;
+                        FlyerEnemy.isDead = false;
+                        FlyerEnemy.runPlanes.X += FlyerEnemy.Position.X;
+                        FlyerEnemy.runPlanes.Y += FlyerEnemy.Position.X;
+                        Enemies.Add(FlyerEnemy);
+                    }
+
+                    //Platform Start
+                    if (map[j, i] == '♪')
+                    {
+                        Platform Hor = new Platform(Content);
+                        Hor.Position = new Vector2(tileDraw.X, tileDraw.Y);
+                        Hor.Set(new Vector2(-64, 64), false, true);
+                        Hor.runPlanes.X += Hor.Position.X;
+                        Hor.runPlanes.Y += Hor.Position.X;
+                        Platforms.Add(Hor);
+                    }
+
+                    //Platform Start
+                    if (map[j, i] == '♫')
+                    {
+                        Platform Ver = new Platform(Content);
+                        Ver.Position = new Vector2(tileDraw.X, tileDraw.Y);
+                        Ver.Set(new Vector2(-64, 64), false, false);
+                        Ver.runPlanes.X += Ver.Position.X;
+                        Ver.runPlanes.Y += Ver.Position.X;
+                        Platforms.Add(Ver);
+                    }
+                }
+        }
+
+        private void UnloadEntities()
+        {
+            Enemies.Clear();
+            Platforms.Clear();
+        }
+
+        private void ZoneSorter()
+        {
+            switch (Global_GameState.ZoneState)
+            {
+                case Global_GameState.EZoneState.HubWorld:
+                    {
+                        //Load Level Data
+                        map = MapLoader.LoadMapData("hub");
+                        BackMapTextures = MapLoader.LoadMapData("hub_back");
+                        ForeMapTextures = MapLoader.LoadMapData("hub_fore");
+                        MapEffectTextures = MapLoader.LoadMapData("hub_eff");
+                        //--------------------//
+
+                    }; break;
+                case Global_GameState.EZoneState.Grasslands:
+                    {
+                        //Load Level Data
+                        map = MapLoader.LoadMapData("grasslands");
+                        BackMapTextures = MapLoader.LoadMapData("grasslands_back");
+                        ForeMapTextures = MapLoader.LoadMapData("grasslands_fore");
+                        MapEffectTextures = MapLoader.LoadMapData("grasslands_eff");                      
+                        //--------------------//
+                 
+                    }; break;
+                case Global_GameState.EZoneState.Beach:
+                    {
+
+
+                    }; break;
+                case Global_GameState.EZoneState.Mines:
+                    {
+
+
+                    }; break;
+                case Global_GameState.EZoneState.SnowyMountains:
+                    {
+
+
+                    }; break;
+                case Global_GameState.EZoneState.Castle:
+                    {
+
+
+                    }; break;
+                case Global_GameState.EZoneState.LavaLand:
+                    {
+
+
+                    }; break;
+            }
+        }
+
         private void PlayerWarpIn()
         {
             PlayerWarpInTime++;
             if (PlayerWarpInTime >= 50)
             {
                 player.Update(game1, this);
-                //PlayerData();
                 PlayerWarpInTime = 50;
             }
 
@@ -180,16 +261,40 @@ namespace Platformer_Prototype
         public void Update(Game1 getGame1)
         {
             Textures.Update(this);
-            LoadMapTimer++;
-            if (LoadMapTimer <= 1)
+
+            //Warp to Hub World
+            for (int i = 0; i < map.GetLength(1); i++)
+                for (int j = map.GetLength(0) - 1; j > -1; j--)
+                {
+                    tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, 600 - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
+
+                    if (map[j, i] == '○')
+                    {
+
+                        if (Global_GameState.ZoneState != Global_GameState.EZoneState.HubWorld)
+                            if (player.Bounds.Intersects(tileDraw))
+                                if (Input.KeyboardPressed(Keys.Enter))
+                                {
+                                    Global_GameState.ZoneState = Global_GameState.EZoneState.HubWorld;
+                                    MapLoading = true;
+                                }
+                    }
+                }
+
+            if (MapLoading)
             {
-                map = MapLoader.LoadMapData("hub");
-                BackMapTextures = MapLoader.LoadMapData("hub_Back");
-                ForeMapTextures = MapLoader.LoadMapData("hub_fore");
-                MapEffectTextures = MapLoader.LoadMapData("hub_eff");
+                UnloadEntities();
+
+                ZoneSorter();
+
+                Camera.Position = Vector2.Zero;
+
+                LoadupMapEntities();
+                PlayerWarpInTime = 0;
+                player.Position = PlayerStart;
+
+                MapLoading = false;
             }
-            else
-                LoadMapTimer = 2;
 
             game1 = getGame1;
             Camera.Update(game1);
@@ -211,8 +316,14 @@ namespace Platformer_Prototype
             for (int i = 0; i < Platforms.Count; i++)
                 Platforms[i].Update(this);
 
-            //Player Update                          
-            PlayerWarpIn();
+            //Player Update 
+            PlayerWarpIn();             
+
+            //HubWorld Data
+            if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld)
+            {
+                HubWorldData();
+            }
         }
 
         public bool lineTest(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
@@ -554,23 +665,23 @@ namespace Platformer_Prototype
             for (int i = 0; i < Enemies.Count; i++)
             {
                 if (!Enemies[i].isDead)
-                    if (Enemies[i].Position.X + Camera.Position.X > 0 - 24 + 0 && Enemies[i].Position.X + Camera.Position.X  < game1.GraphicsDevice.Viewport.Width)
+                    if (Enemies[i].Position.X + Camera.Position.X > 0 - 24 + 0 && Enemies[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
                         if (Enemies[i].Position.Y + Camera.Position.Y > 0 - 24 + 0 && Enemies[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
-                    Enemies[i].Draw(sB);
+                            Enemies[i].Draw(sB);
             }
-            
 
-            for (int i = 0; i < Platforms.Count; i++)           
+
+            for (int i = 0; i < Platforms.Count; i++)
             {
                 if (Platforms[i].Position.X + Camera.Position.X > 0 - 32 + 0 && Platforms[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
                     if (Platforms[i].Position.Y + Camera.Position.Y > 0 - 32 + 0 && Platforms[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
-                    Platforms[i].Draw(sB);
+                        Platforms[i].Draw(sB);
             }
 
 
 
             //Hard Coded Texture Tiles// Water, Lava, Rain, Weather Effects
-           
+
             if (PlayerWarpInTime == 50)
                 player.Draw(sB);
 
@@ -580,8 +691,6 @@ namespace Platformer_Prototype
                 for (int j = map.GetLength(0) - 1; j > -1; j--)
                 {
                     tileDraw = new Rectangle((tileSize * i) + (int)Camera.Position.X, game1.GraphicsDevice.Viewport.Height - (tileSize * (map.GetLength(0) - j)) + (int)Camera.Position.Y, tileSize, tileSize);
-
-
 
                     //Draw Water Top Tile
                     if (MapEffectTextures[j, i] == '♠')
@@ -627,10 +736,19 @@ namespace Platformer_Prototype
 
                     //Draw Warp Pad
                     if (map[j, i] == '○')
+                    {
                         WarpPad.Draw(sB, new Vector2(tileDraw.X - 8, tileDraw.Y - 10), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
+                    }
                 }
 
             Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
+
+            //Draw Doorways
+            if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld)
+            foreach (Rectangle rect in WarpDoors)
+            {
+                sB.Draw(Textures._ITEM_WoodBox_Tex, rect, Color.Red);
+            }
         }
 
 

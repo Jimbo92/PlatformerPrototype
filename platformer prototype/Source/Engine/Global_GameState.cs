@@ -21,5 +21,18 @@ namespace Platformer_Prototype
         };
 
         static public EGameState GameState = EGameState.EDITOR;
+
+        public enum EZoneState
+        {
+            HubWorld,
+            Grasslands,
+            Beach,
+            Mines,
+            SnowyMountains,
+            Castle,
+            LavaLand,
+        };
+
+        static public EZoneState ZoneState = EZoneState.HubWorld;
     }
 }

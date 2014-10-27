@@ -55,9 +55,8 @@ namespace Platformer_Prototype
 
         //--------------------------------------------
 
-        public Player(ContentManager getContent, Vector2 getPlayerStart)
+        public Player(ContentManager getContent)
         {
-            Position = getPlayerStart;
             sprite = new Sprite(getContent, "objects/playerSS", Width, Height, 2, 8);
             capTex = getContent.Load<Texture2D>("objects/hat1");
         }
