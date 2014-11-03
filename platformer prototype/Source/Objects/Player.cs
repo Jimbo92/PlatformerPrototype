@@ -733,7 +733,7 @@ namespace Platformer_Prototype
               
                 if (Speed.Y > 1)
                 {
-                    capOffset += 1f;
+                    capOffset += 0.5f;
                     if (capOffset >= 15)
                         capOffset = 15;
                 }
@@ -741,7 +741,7 @@ namespace Platformer_Prototype
                 {
                     if (capOffset > 0)
                     {
-                        capOffset -= 1f;
+                        capOffset -= 2.5f;
                         if (capOffset <= 0)
                             capOffset = 0;
                     }
