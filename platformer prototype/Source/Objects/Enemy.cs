@@ -65,6 +65,8 @@ namespace Platformer_Prototype
         private float TextBubbleFadeValue;
         private Texture2D SpeechBubble_Tex;
         private Rectangle SpeechBubble_Rect;
+
+        public Color colour = Color.White;
        
         //--------------------------------------------
 
@@ -560,7 +562,7 @@ namespace Platformer_Prototype
         {
 
             //sB.Draw(Textures._OBJ_Ladder_Tex, Bounds, Color.Red);
-            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SprEff, Color.White);
+            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SprEff, colour);
 
             //Enemy talk test
             TextDisplayBounds = new Rectangle(Bounds.X - 156 / 2, Bounds.Y - 156 / 2, 156, 156);

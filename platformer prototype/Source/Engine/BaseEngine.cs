@@ -153,7 +153,7 @@ namespace Platformer_Prototype
                         CrawlerEnemy.isDead = false;
                         CrawlerEnemy.runPlanes.X += CrawlerEnemy.Position.X;
                         CrawlerEnemy.runPlanes.Y += CrawlerEnemy.Position.X;
-        
+                        Enemies.Add(CrawlerEnemy);
                     }
                     //Walker
                     if (map[j, i] == '►')
@@ -165,6 +165,16 @@ namespace Platformer_Prototype
                         WalkerEnemy.runPlanes.X += WalkerEnemy.Position.X;
                         WalkerEnemy.runPlanes.Y += WalkerEnemy.Position.X;
                         Enemies.Add(WalkerEnemy);
+                        
+                        //Slime Random Colours
+                        int RandColourValue = random.Next(4);
+                        switch (RandColourValue)
+                        {
+                            case 0: WalkerEnemy.colour = Color.LightYellow; break;
+                            case 1: WalkerEnemy.colour = Color.LightPink; break;
+                            case 2: WalkerEnemy.colour = Color.LightBlue; break;
+                            case 3: WalkerEnemy.colour = Color.LightGreen; break;
+                        }
                     }
                     //Flyer
                     if (map[j, i] == '◄')

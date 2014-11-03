@@ -215,16 +215,6 @@ namespace Platformer_Prototype
             }
 
 
-
-
-
-
-
-
-
-
-
-
             //Camera Mouse----------------
             if (CameraMode == CameraState.MOUSE)
             {
