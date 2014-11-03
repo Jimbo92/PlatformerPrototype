@@ -42,7 +42,12 @@ namespace Platformer_Prototype
         public Sprite LavaBase;
         public Sprite Torch;
         public Sprite WarpPad;
+        public Sprite WarpEffect;
+        public bool isWarping;
         public Rectangle tileDraw;
+
+        private Texture2D WarpFade_Tex;
+        private float FadeValue;
 
         private ContentManager Content;
 
@@ -89,8 +94,10 @@ namespace Platformer_Prototype
             LavaBase = new Sprite(getContent, "tiles/lava1", 32, 32, 10, 1);
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
             WarpPad = new Sprite(getContent, "objects/warppadss", 48, 48, 1, 10);
+            WarpEffect = new Sprite(getContent, "objects/warpeffectss", 96, 96, 5, 6);
             Crystal = new Item(Content, "objects/items/gemblue", 48, 48);
             WoodBox = new Item(Content, "objects/box", 32, 32);
+            WarpFade_Tex = getContent.Load<Texture2D>("editor/black");
 
             background = new Background(getContent, getScreenSize);
         }
@@ -110,8 +117,9 @@ namespace Platformer_Prototype
             {
                 if (Input.KeyboardPressed(Keys.Enter))
                 {
-                    Global_GameState.ZoneState = Global_GameState.EZoneState.Grasslands;
+                    WarpEffect.CurrentFrame = 1;
                     MapLoading = true;
+                    Global_GameState.ZoneState = Global_GameState.EZoneState.Grasslands;
                 }
             }
         }
@@ -248,14 +256,13 @@ namespace Platformer_Prototype
 
         private void PlayerWarpIn()
         {
+            isWarping = true;
             PlayerWarpInTime++;
             if (PlayerWarpInTime >= 50)
             {
                 player.Update(game1, this);
                 PlayerWarpInTime = 50;
             }
-
-            //Warp in Effect goes here//
         }
 
         public void Update(Game1 getGame1)
@@ -275,25 +282,45 @@ namespace Platformer_Prototype
                             if (player.Bounds.Intersects(tileDraw))
                                 if (Input.KeyboardPressed(Keys.Enter))
                                 {
-                                    Global_GameState.ZoneState = Global_GameState.EZoneState.HubWorld;
+                                    WarpEffect.CurrentFrame = 1;
                                     MapLoading = true;
+                                    Global_GameState.ZoneState = Global_GameState.EZoneState.HubWorld;
                                 }
                     }
                 }
 
             if (MapLoading)
             {
-                UnloadEntities();
+                //Fade
+                FadeValue += 0.025f;
+                if (FadeValue >= 1f)
+                    FadeValue = 1;
 
-                ZoneSorter();
+                if (FadeValue == 1)
+                {
+                    UnloadEntities();
 
-                Camera.Position = Vector2.Zero;
+                    ZoneSorter();
 
-                LoadupMapEntities();
-                PlayerWarpInTime = 0;
-                player.Position = PlayerStart;
+                    Camera.Position = Vector2.Zero;
 
-                MapLoading = false;
+                    LoadupMapEntities();
+                    PlayerWarpInTime = 0;
+                    player.Position = PlayerStart;
+
+                    MapLoading = false;
+                }
+
+                if (FadeValue > 0)
+                player.ControlsEnabled = false;
+            }
+            else
+            {
+                if (FadeValue > 0f)
+                    FadeValue -= 0.025f;
+
+                if (FadeValue <= 0)
+                    player.ControlsEnabled = true;
             }
 
             game1 = getGame1;
@@ -694,10 +721,10 @@ namespace Platformer_Prototype
 
                     //Draw Water Top Tile
                     if (MapEffectTextures[j, i] == '♠')
-                        WaterTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue);
+                        WaterTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue * 0.8f);
                     //Draw Water Base Tile
                     if (MapEffectTextures[j, i] == '•')
-                        WaterBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue);
+                        WaterBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.DeepSkyBlue * 0.8f);
                     //Draw Lava Top Tile
                     if (MapEffectTextures[j, i] == '◘')
                         LavaTop.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
@@ -731,6 +758,7 @@ namespace Platformer_Prototype
                             if (map[j, i] == '♀')
                                 map[j, i] = ' ';
                             WoodBox.sprite.destinationRectangle = Rectangle.Empty;
+                            player.Speed.Y = 0;
                         }
                     }
 
@@ -744,11 +772,25 @@ namespace Platformer_Prototype
             Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
 
             //Draw Doorways
-            if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld)
+            if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld && !MapLoading)
             foreach (Rectangle rect in WarpDoors)
             {
                 sB.Draw(Textures._ITEM_WoodBox_Tex, rect, Color.Red);
             }
+
+            //Warp Effect
+            if (isWarping)
+            {
+                if (WarpEffect.CurrentFrame > 0)
+                    WarpEffect.UpdateAnimation(0.8f);
+                else if (WarpEffect.CurrentFrame > 20)
+                    WarpEffect.CurrentFrame = 0;
+
+                WarpEffect.Draw(sB, new Vector2(player.Bounds.X + 15, player.Bounds.Y - 5), 0, SpriteEffects.None);
+            }
+
+            //Fade Effect
+            sB.Draw(WarpFade_Tex, new Rectangle(0, 0, 800, 600), Color.White * FadeValue);
         }
 
 

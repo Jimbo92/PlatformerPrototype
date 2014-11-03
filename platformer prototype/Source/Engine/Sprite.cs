@@ -31,6 +31,7 @@ namespace Platformer_Prototype
         public int Width;
         public int Height;
         public Rectangle CollisionBox = Rectangle.Empty;
+        public bool AnimFinnished = false;
 
         public Sprite(ContentManager getContent, string getTexture, int getWidth, int getHeight)
         {
@@ -56,6 +57,7 @@ namespace Platformer_Prototype
             CurrentFrame += getDelay;
             if (CurrentFrame >= TotalFrames)
             {
+                AnimFinnished = true;
                 CurrentFrame = 0;
             }
         }

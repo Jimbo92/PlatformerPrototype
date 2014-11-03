@@ -28,6 +28,7 @@ namespace Platformer_Prototype
 
         public bool noclip = false;
 
+        public bool ControlsEnabled = true;
 
         public Rectangle Bounds;
         public Vector2 Speed;
@@ -311,7 +312,7 @@ namespace Platformer_Prototype
                         {
                             e.isDead = true;
                             oneKill = true;
-                            Speed.Y = -7;
+                            Speed.Y = -4;
                             for (int i = 0; i < 20; i++)
                             {
                                 if (e.Bounds.Intersects(Bounds))
@@ -353,6 +354,204 @@ namespace Platformer_Prototype
             updateBounds(Camera.Position);
         }
 
+        public void Controls()
+        {
+            //Out of water
+            if (checks[1] == false)
+            {
+                if (!noclip)
+                    if (Input.KeyboardPress(Keys.W) || Input.KeyboardPress(Keys.Up))
+                    {
+                        bool returner = false;
+
+                        //Jump--------------
+
+                        if (!returner)
+                        {
+
+                            Position.Y += 1;
+                            updateBounds(Camera.Position);
+                            BEngine.updateHitboxes(Position, Bounds);
+
+                            if (checks[3] == true)
+                            {
+                                Speed.Y = -jump;
+                                returner = true;
+                            }
+
+                            foreach (Platform p in BEngine.Platforms)
+                            {
+                                p.updateBounds(Camera.Position);
+                                if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                                    if (p.Bounds.Intersects(Bounds))
+                                    {
+                                        Speed.Y = -jump;
+                                        returner = true;
+                                    }
+                            }
+
+                            for (int i = 0; i < BEngine.Canvas.Length; i++)
+                                if (Bounds.Intersects(BEngine.Canvas[i]))
+                                {
+                                    Speed.Y = -jump;
+                                    returner = true;
+                                }
+                            if (checkAllLines(BEngine.tan1) == true)
+                            {
+                                Speed.Y = -jump;
+                                returner = true;
+                            }
+                            if (checkAllLines(BEngine.tan2) == true)
+                            {
+                                Speed.Y = -jump;
+                                returner = true;
+                            }
+                            if (checkAllLines(BEngine.tan3) == true)
+                            {
+                                Speed.Y = -jump;
+                                returner = true;
+                            }
+                            if (checkAllLines(BEngine.tan4) == true)
+                            {
+                                Speed.Y = -jump;
+                                returner = true;
+                            }
+                            if (checkAllLines(BEngine.tan5) == true)
+                            {
+                                Speed.Y = -jump;
+                                returner = true;
+                            }
+                            if (checkAllLines(BEngine.tan6) == true)
+                            {
+                                Speed.Y = -jump;
+                                returner = true;
+                            }
+
+
+                            Position.Y -= 1;
+
+                        }
+                        //--------------------
+
+                        //Ladders----------------------------------------
+                        if (!returner)
+                        {
+                            if (checks[0] == true)
+                            {
+                                wallTimer = 0;
+                                Speed.Y = -4;
+                            }
+                        }
+
+                        //Wall jumping-----------
+                        wallTimer++;
+                        if (wallTimer > 8)
+                        {
+                            if (!returner)
+                            {
+                                if (Input.KeyboardPressed(Keys.W) || Input.KeyboardPress(Keys.Up))
+                                {
+                                    Position.X += 1;
+                                    updateBounds(Camera.Position);
+
+                                    for (int i = 0; i < BEngine.Canvas.Length; i++)
+                                        if (Bounds.Intersects(BEngine.Canvas[i]))
+                                        {
+                                            Rotation = -8;
+                                            Speed.X = -7f;
+                                            Speed.Y = -5f;
+                                            returner = true;
+                                        }
+
+                                    Position.X -= 1;
+
+                                    Position.X -= 1;
+                                    updateBounds(Camera.Position);
+                                    BEngine.updateHitboxes(Position, Bounds);
+
+                                    for (int i = 0; i < BEngine.Canvas.Length; i++)
+                                        if (Bounds.Intersects(BEngine.Canvas[i]))
+                                        {
+                                            Rotation = 8;
+                                            Speed.X = 7f;
+                                            Speed.Y = -5f;
+                                            returner = true;
+                                        }
+
+                                    Position.X += 1;
+                                }
+
+                            }
+                        }
+                        //--------------------------
+
+                    }
+                if (!noclip)
+                    if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
+                    {
+                        if (Speed.X > -3)
+                            Speed.X -= 0.25f;
+                        else
+                            Speed.X = -3;
+                    }
+
+                if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
+                {
+                    if (Speed.X < 3)
+                        Speed.X += 0.25f;
+                    else
+                        Speed.X = 3;
+                }
+
+                if ((Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right)) || noclip)
+                    if (Math.Abs(Speed.X) > 1)
+                        Speed.X *= 0.92f;
+                    else
+                        Speed.X = 0;
+            }
+            else
+            {
+                if (Input.KeyboardPress(Keys.W) || Input.KeyboardPress(Keys.Up))
+                {
+                    if (Speed.Y > -4)
+                        Speed.Y -= 0.6f;
+                    else
+                        Speed.Y = -4;
+                }
+                if (Input.KeyboardPress(Keys.S) || Input.KeyboardPress(Keys.Down))
+                {
+                    if (Speed.Y < 4)
+                        Speed.Y += 0.25f;
+                    else
+                        Speed.Y = 4;
+                }
+                if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
+                {
+                    if (Speed.X > -4)
+                        Speed.X -= 0.25f;
+                    else
+                        Speed.X = -4;
+                }
+
+                if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
+                {
+                    if (Speed.X < 4)
+                        Speed.X += 0.25f;
+                    else
+                        Speed.X = 4;
+                }
+
+                if (Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right))
+                    if (Math.Abs(Speed.X) > 1)
+                        Speed.X *= 0.92f;
+                    else
+                        Speed.X = 0;
+            }
+
+            Speed.X *= xFriction;
+            Speed.Y *= yFriction;
+        }
+
         public void Update(Game1 getGame1, BaseEngine getEngine)
         {
             BEngine = getEngine;
@@ -361,11 +560,14 @@ namespace Platformer_Prototype
             Collisions();
 
 
-            Position.X += platMod.X;
-
-                
+            Position.X += platMod.X;          
 
             Animations();
+
+            if (ControlsEnabled)
+                Controls();
+            else
+                Speed.X = 0;
 
             //cooldown(invincibility)
             if (cooldown > 0)
@@ -435,204 +637,6 @@ namespace Platformer_Prototype
                 if (BEngine.tileSize > 1)
                     BEngine.tileSize -= 1;
 
-            //Out of water
-            if (checks[1] == false)
-            {
-                if(!noclip)
-                if (Input.KeyboardPress(Keys.W) || Input.KeyboardPress(Keys.Up))
-                {
-                    bool returner = false;
-
-                    //Jump--------------
-
-                    if (!returner)
-                    {
-                       
-                        Position.Y += 1;
-                        updateBounds(Camera.Position);
-                        BEngine.updateHitboxes(Position, Bounds);
-
-                        if (checks[3] == true)
-                        {
-                            Speed.Y = -jump;
-                            returner = true;
-                        }
-
-                        foreach (Platform p in BEngine.Platforms)
-                        {
-                            p.updateBounds(Camera.Position);
-                            if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
-                            if (p.Bounds.Intersects(Bounds))
-                            {
-                                Speed.Y = -jump;
-                                returner = true;
-                            }
-                        }
-
-                        for (int i = 0; i < BEngine.Canvas.Length; i++)
-                            if (Bounds.Intersects(BEngine.Canvas[i]))
-                            {
-                                Speed.Y = -jump;
-                                returner = true;
-                            }
-                        if (checkAllLines(BEngine.tan1) == true)
-                        {
-                            Speed.Y = -jump;
-                            returner = true;
-                        }
-                        if (checkAllLines(BEngine.tan2) == true)
-                        {
-                            Speed.Y = -jump;
-                            returner = true;
-                        }
-                        if (checkAllLines(BEngine.tan3) == true)
-                        {
-                            Speed.Y = -jump;
-                            returner = true;
-                        }
-                        if (checkAllLines(BEngine.tan4) == true)
-                        {
-                            Speed.Y = -jump;
-                            returner = true;
-                        }
-                        if (checkAllLines(BEngine.tan5) == true)
-                        {
-                            Speed.Y = -jump;
-                            returner = true;
-                        }
-                        if (checkAllLines(BEngine.tan6) == true)
-                        {
-                            Speed.Y = -jump;
-                            returner = true;
-                        }
-
-
-                        Position.Y -= 1;
-
-                    }
-                    //--------------------
-
-                    //Ladders----------------------------------------
-                    if (!returner)
-                    {
-                        if (checks[0] == true)
-                        {
-                            wallTimer = 0;
-                            Speed.Y = -4;
-                        }
-                    }
-
-                    //Wall jumping-----------
-                    wallTimer++;
-                    if (wallTimer > 8)
-                    {
-                        if (!returner)
-                        {
-                            if (Input.KeyboardPressed(Keys.W) || Input.KeyboardPress(Keys.Up))
-                            {
-                            Position.X += 1;
-                            updateBounds(Camera.Position);
-
-                            for (int i = 0; i < BEngine.Canvas.Length; i++)
-                                if (Bounds.Intersects(BEngine.Canvas[i]))
-                                {
-                                    Rotation = -8;
-                                    Speed.X = -7f;
-                                    Speed.Y = -5f;
-                                    returner = true;
-                                }
-
-                            Position.X -= 1;
-
-                            Position.X -= 1;
-                            updateBounds(Camera.Position);
-                            BEngine.updateHitboxes(Position, Bounds);
-
-                            for (int i = 0; i < BEngine.Canvas.Length; i++)
-                                if (Bounds.Intersects(BEngine.Canvas[i]))
-                                {
-                                    Rotation = 8;
-                                    Speed.X = 7f;
-                                    Speed.Y = -5f;
-                                    returner = true;
-                                }
-
-                            Position.X += 1;
-                            }
-
-                        }
-                    }
-                    //--------------------------
-
-                  
-
-
-
-                }
-                if (!noclip)
-                    if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
-                    {
-                        if (Speed.X > -3)
-                            Speed.X -= 0.25f;
-                        else
-                            Speed.X = -3;
-                    }
-
-                if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
-                {
-                    if (Speed.X < 3)
-                        Speed.X += 0.25f;
-                    else
-                        Speed.X = 3;
-                }
-
-                if ((Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right)) || noclip)
-                    if (Math.Abs(Speed.X) > 1)
-                        Speed.X *= 0.92f;
-                    else
-                        Speed.X = 0;
-            }
-            else
-            {
-                if (Input.KeyboardPress(Keys.W) || Input.KeyboardPress(Keys.Up))
-                {
-                    if (Speed.Y > -4)
-                        Speed.Y -= 0.6f;
-                    else
-                        Speed.Y = -4;
-                }
-                if (Input.KeyboardPress(Keys.S) || Input.KeyboardPress(Keys.Down))
-                {
-                    if (Speed.Y < 4)
-                        Speed.Y += 0.25f;
-                    else
-                        Speed.Y = 4;
-                }
-                if (Input.KeyboardPress(Keys.A) || Input.KeyboardPress(Keys.Left))
-                {
-                    if (Speed.X > -4)
-                        Speed.X -= 0.25f;
-                    else
-                        Speed.X = -4;
-                }
-
-                if (Input.KeyboardPress(Keys.D) || Input.KeyboardPress(Keys.Right))
-                {
-                    if (Speed.X < 4)
-                        Speed.X += 0.25f;
-                    else
-                        Speed.X = 4;
-                }
-
-                if (Input.KeyboardRelease(Keys.A) && Input.KeyboardRelease(Keys.D) && Input.KeyboardRelease(Keys.Left) && Input.KeyboardRelease(Keys.Right))
-                    if (Math.Abs(Speed.X) > 1)
-                        Speed.X *= 0.92f;
-                    else
-                        Speed.X = 0;
-            }
-
-            Speed.X *= xFriction;
-            Speed.Y *= yFriction;
 
             
 
