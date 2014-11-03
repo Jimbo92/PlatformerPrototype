@@ -49,6 +49,8 @@ namespace Platformer_Prototype
         private Texture2D WarpFade_Tex;
         private float FadeValue;
 
+        private float TextFadeValue;
+
         private ContentManager Content;
 
         public List<Enemy> Enemies = new List<Enemy>(100);
@@ -298,6 +300,8 @@ namespace Platformer_Prototype
 
                 if (FadeValue == 1)
                 {
+                    TextFadeValue = 1;
+
                     UnloadEntities();
 
                     ZoneSorter();
@@ -321,6 +325,10 @@ namespace Platformer_Prototype
 
                 if (FadeValue <= 0)
                     player.ControlsEnabled = true;
+
+                TextFadeValue -= 0.008f;
+                if (TextFadeValue <= 0)
+                    TextFadeValue = 0;
             }
 
             game1 = getGame1;
@@ -689,15 +697,6 @@ namespace Platformer_Prototype
 
             Textures.DrawTriggerMapData(sB, map, tileSize, Vector2.Zero, game1);
 
-            for (int i = 0; i < Enemies.Count; i++)
-            {
-                if (!Enemies[i].isDead)
-                    if (Enemies[i].Position.X + Camera.Position.X > 0 - 24 + 0 && Enemies[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
-                        if (Enemies[i].Position.Y + Camera.Position.Y > 0 - 24 + 0 && Enemies[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
-                            Enemies[i].Draw(sB);
-            }
-
-
             for (int i = 0; i < Platforms.Count; i++)
             {
                 if (Platforms[i].Position.X + Camera.Position.X > 0 - 32 + 0 && Platforms[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
@@ -789,8 +788,20 @@ namespace Platformer_Prototype
                 WarpEffect.Draw(sB, new Vector2(player.Bounds.X + 15, player.Bounds.Y - 5), 0, SpriteEffects.None);
             }
 
+            //Enemies
+            for (int i = 0; i < Enemies.Count; i++)
+            {
+                if (!Enemies[i].isDead)
+                    if (Enemies[i].Position.X + Camera.Position.X > 0 - 24 + 0 && Enemies[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
+                        if (Enemies[i].Position.Y + Camera.Position.Y > 0 - 24 + 0 && Enemies[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
+                            Enemies[i].Draw(sB);
+            }
+
             //Fade Effect
             sB.Draw(WarpFade_Tex, new Rectangle(0, 0, 800, 600), Color.White * FadeValue);
+            //Level Title
+            sB.DrawString(game1.font, Global_GameState.ZoneState.ToString(), new Vector2(400, 100), Color.Silver * TextFadeValue, 0, game1.font.MeasureString(Global_GameState.ZoneState.ToString()) / 2, 2, SpriteEffects.None, 0);
+        
         }
 
 

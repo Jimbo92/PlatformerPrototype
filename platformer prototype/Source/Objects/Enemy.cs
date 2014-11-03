@@ -22,7 +22,7 @@ namespace Platformer_Prototype
         }
 
         public Sprite sprite;
-
+        public SpriteFont Font;
         public enemyType type;
 
         public Vector2 Position;
@@ -31,6 +31,8 @@ namespace Platformer_Prototype
         public bool isDead = true;
         public int Width = 24;
         public int Height = 24;
+
+        public Rectangle TextDisplayBounds;
 
 
         private BaseEngine BEngine;
@@ -60,6 +62,9 @@ namespace Platformer_Prototype
 
         private int AnimTimer;
         private SpriteEffects SprEff;
+        private float TextBubbleFadeValue;
+        private Texture2D SpeechBubble_Tex;
+        private Rectangle SpeechBubble_Rect;
        
         //--------------------------------------------
 
@@ -71,6 +76,8 @@ namespace Platformer_Prototype
             left = true;
             runPlanes = new Vector2(-50, 50);
             sprite = new Sprite(getContent, getTexture, getWidth, getHeight, 1, 3);
+            Font = getContent.Load<SpriteFont>("fonts/CopperplateGothicBold");
+            SpeechBubble_Tex = getContent.Load<Texture2D>("objects/speechbubblebase");
             type = e;
         }
 
@@ -555,6 +562,26 @@ namespace Platformer_Prototype
             //sB.Draw(Textures._OBJ_Ladder_Tex, Bounds, Color.Red);
             sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SprEff, Color.White);
 
+            //Enemy talk test
+            TextDisplayBounds = new Rectangle(Bounds.X - 156 / 2, Bounds.Y - 156 / 2, 156, 156);
+            string TextTalk = "Hello,\ni am an enemy.";
+            Vector2 TextBubbleSize = Font.MeasureString(TextTalk);
+            SpeechBubble_Rect = new Rectangle((Bounds.X - (int)TextBubbleSize.X / 2), (Bounds.Y - (int)TextBubbleSize.Y / 2) - 50, (int)TextBubbleSize.X - 5, (int)TextBubbleSize.Y);
+            sB.Draw(SpeechBubble_Tex, SpeechBubble_Rect, Color.White * TextBubbleFadeValue);
+            sB.DrawString(Font, TextTalk, new Vector2(SpeechBubble_Rect.X + 10, SpeechBubble_Rect.Y + 5), Color.White * TextBubbleFadeValue, 0, Vector2.Zero, 0.75f, SpriteEffects.None, 0);
+
+            if (BEngine.player.Bounds.Intersects(TextDisplayBounds))
+            {
+                TextBubbleFadeValue += 0.05f;
+                if (TextBubbleFadeValue >= 1)
+                    TextBubbleFadeValue = 1;
+            }
+            else
+            {
+                TextBubbleFadeValue -= 0.05f;
+                if (TextBubbleFadeValue <= 0)
+                    TextBubbleFadeValue = 0;
+            }
         }
 
         public void checkTollisionsX(Triangle target) {

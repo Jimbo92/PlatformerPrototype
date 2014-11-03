@@ -32,7 +32,7 @@ namespace Platformer_Prototype
         BaseEngine BEngine;
         Editor MEditor;
 
-        SpriteFont font;
+        public SpriteFont font;
 
         public static Vector2 ScreenSize;
 
