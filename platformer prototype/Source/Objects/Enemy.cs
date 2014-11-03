@@ -564,11 +564,11 @@ namespace Platformer_Prototype
 
             //Enemy talk test
             TextDisplayBounds = new Rectangle(Bounds.X - 156 / 2, Bounds.Y - 156 / 2, 156, 156);
-            string TextTalk = "Hello,\ni am an enemy.";
+            string TextTalk = "Hello";
             Vector2 TextBubbleSize = Font.MeasureString(TextTalk);
             SpeechBubble_Rect = new Rectangle((Bounds.X - (int)TextBubbleSize.X / 2), (Bounds.Y - (int)TextBubbleSize.Y / 2) - 50, (int)TextBubbleSize.X - 5, (int)TextBubbleSize.Y);
             sB.Draw(SpeechBubble_Tex, SpeechBubble_Rect, Color.White * TextBubbleFadeValue);
-            sB.DrawString(Font, TextTalk, new Vector2(SpeechBubble_Rect.X + 10, SpeechBubble_Rect.Y + 5), Color.White * TextBubbleFadeValue, 0, Vector2.Zero, 0.75f, SpriteEffects.None, 0);
+            sB.DrawString(Font, TextTalk, new Vector2(SpeechBubble_Rect.X + 5, SpeechBubble_Rect.Y + 5), Color.White * TextBubbleFadeValue, 0, Vector2.Zero, 0.75f, SpriteEffects.None, 0);
 
             if (BEngine.player.Bounds.Intersects(TextDisplayBounds))
             {
@@ -598,10 +598,6 @@ namespace Platformer_Prototype
 
                     Position.X += Math.Abs(Speed.X);
                     Position.Y -= Math.Abs(Speed.X);
-
-
-
-
                 }
 
                 if (Speed.X < 0) {
@@ -616,12 +612,6 @@ namespace Platformer_Prototype
                     Position.Y -= Math.Abs(Speed.X);
 
                 }
-
-
-
-
-
-
             }
         }
 

@@ -57,6 +57,8 @@ namespace Platformer_Prototype
 
         private SpriteEffects sprEffect;
 
+        private float capOffset;
+
         //--------------------------------------------
 
         public void feedback()
@@ -572,6 +574,9 @@ namespace Platformer_Prototype
 
             Collisions();
 
+            if (Camera.CameraMode == Camera.CameraState.WAYPOINTS)
+                ControlsEnabled = false;
+
 
             Position.X += platMod.X;          
 
@@ -724,17 +729,22 @@ namespace Platformer_Prototype
         {
 
                 sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), Vector2.Zero, MathHelper.ToRadians(Rotation), sprEffect, Color.White);
-                float capOffset;
-
-
+                
               
                 if (Speed.Y > 1)
                 {
-                    capOffset = Speed.Y * 2;
+                    capOffset += 1f;
+                    if (capOffset >= 15)
+                        capOffset = 15;
                 }
                 else
                 {
-                    capOffset = 0;
+                    if (capOffset > 0)
+                    {
+                        capOffset -= 1f;
+                        if (capOffset <= 0)
+                            capOffset = 0;
+                    }
                 }
                 sB.Draw(capTex, new Rectangle((int)Bounds.X + 5, (int)Bounds.Y - 10 - (int)capOffset, 20, 20), null, Color.White, MathHelper.ToRadians(Rotation), Vector2.Zero, sprEffect, 0);
             //Sprites

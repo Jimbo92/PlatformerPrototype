@@ -93,8 +93,7 @@ namespace Platformer_Prototype
                     Camera.nextDelay = 0;
                     Camera.task = -1;
 
-                    Camera.Flybuy(Desired);
-                   
+                    Camera.Flybuy(Desired);                                     
                 }
             }
 
