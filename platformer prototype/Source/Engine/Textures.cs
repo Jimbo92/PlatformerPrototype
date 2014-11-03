@@ -41,7 +41,8 @@ namespace Platformer_Prototype
         static public Texture2D _TILE_CastleSS_Tex;
         //Metal
         static public Texture2D _TILE_MetalSS_Tex;
-
+        //Zone testing
+        static public Texture2D _TILE_Zone_Tex;
 
         //Effects
         static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
@@ -88,6 +89,8 @@ namespace Platformer_Prototype
             //Metal
             _TILE_MetalSS_Tex = getContent.Load<Texture2D>("tiles/metal");
 
+            _TILE_Zone_Tex = getContent.Load<Texture2D>("debug/level");
+
 
             //Effects
             for (int i = 0; i < 3; i++)
@@ -110,6 +113,7 @@ namespace Platformer_Prototype
                 _DBG_Lava_Tex[i] = getContent.Load<Texture2D>("editor/lava" + i);
             }
             _DBG_Line_Tex = getContent.Load<Texture2D>("debug/lineTex");
+            _DBG_Line_Tex = getContent.Load<Texture2D>("debug/level");
             _DBG_WaterTop_Tex = getContent.Load<Texture2D>("editor/watertopeditor");
             _DBG_WaterBot_Tex = getContent.Load<Texture2D>("editor/waterbottomeditor");
         }

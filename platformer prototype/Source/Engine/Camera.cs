@@ -25,12 +25,93 @@ namespace Platformer_Prototype
 
         static public CameraState CameraMode = CameraState.FOLLOW;
 
+        public static int delay;
+        public static int nextDelay;
+        public static bool isControlled;
+        public static int task;
+
         static public Vector2 Position;
+        static public Vector2 Target;
+        public static List<Vector4> targets = new List<Vector4>();
         static Vector2 Speed = Vector2.Zero;
 
         static private Game1 game1;
         static private Player player;
         static public Rectangle MouseRect;
+
+        public static void Flybuy(List<Vector4> Waypoints)
+        {
+            targets.Clear();
+            for (int i = 0; i < Waypoints.Count; i++)
+            {
+                targets.Add(Waypoints[i]);
+            }
+
+      
+        }
+
+        public static void Flybuying()
+        {
+            if (isControlled)
+            {
+                
+                if (nextDelay > 0)
+                {
+                    nextDelay--;                  
+                }
+                else
+                {
+                    if (delay > 0)
+                    {
+                        delay--;
+                    }
+                    else
+                    {
+                        if (task != -1 && task < targets.Count)
+                        {
+                            nextDelay = (int)targets[task].Z;
+                        }
+                        task++;
+                        if (task < targets.Count + 1)
+                        {
+                            if (task < targets.Count)
+                            {
+                                Target = new Vector2(targets[task].X, targets[task].Y  );
+                                
+                                delay = (int)targets[task].W;
+                                Speed.X = -Target.X - Position.X;
+                                Speed.Y = Target.Y - Position.Y;
+                                int distance = (int)Math.Sqrt((Math.Abs(Speed.X) * Math.Abs(Speed.X)) + ( Math.Abs(Speed.Y) * Math.Abs(Speed.Y)));
+                                Speed /= delay;
+                             
+                            }
+                            else
+                            {
+                                Target = new Vector2(-(player.Position.X - game1.GraphicsDevice.Viewport.Width / 2 + player.Bounds.Width / 2),
+                                    -(player.Position.Y - game1.GraphicsDevice.Viewport.Height / 2 + player.Bounds.Height / 2));
+                                
+                                
+                                delay = 50;
+                                Speed.X = Target.X - Position.X;
+                                Speed.Y = Target.Y - Position.Y;
+                                Speed /= delay;
+                                
+                            }
+
+                           
+                           
+                        }
+                        else
+                        {
+                            isControlled = false;
+                        }
+                    }
+                }
+                
+               
+
+            }
+        }
 
         static public void Initialize(Player getPlayer, BaseEngine be)
         {
@@ -113,6 +194,37 @@ namespace Platformer_Prototype
                 Position.X += Speed.X;
                 Position.Y += Speed.Y;
             }
+
+
+
+            if (isControlled)
+            {
+                CameraMode = CameraState.WAYPOINTS;
+                Flybuying();
+            }
+
+            if (CameraMode == CameraState.WAYPOINTS)
+            {
+                if (nextDelay == 0)
+                {
+                    Position.X += Speed.X;
+                    Position.Y += Speed.Y;
+                }
+                if (Position.Y < 0)
+                    Position.Y = 0;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
             //Camera Mouse----------------
             if (CameraMode == CameraState.MOUSE)
             {

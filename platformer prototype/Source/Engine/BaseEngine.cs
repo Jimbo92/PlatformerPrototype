@@ -46,6 +46,8 @@ namespace Platformer_Prototype
         public bool isWarping;
         public Rectangle tileDraw;
 
+        public GoalManager gm = new GoalManager();
+
         private Texture2D WarpFade_Tex;
         private float FadeValue;
 
@@ -111,6 +113,8 @@ namespace Platformer_Prototype
             DrawLine(game1, sB, target.c, target.a);
         }
 
+   
+
         private void HubWorldData()
         {
             //Grasslands
@@ -149,7 +153,7 @@ namespace Platformer_Prototype
                         CrawlerEnemy.isDead = false;
                         CrawlerEnemy.runPlanes.X += CrawlerEnemy.Position.X;
                         CrawlerEnemy.runPlanes.Y += CrawlerEnemy.Position.X;
-                        Enemies.Add(CrawlerEnemy);
+        
                     }
                     //Walker
                     if (map[j, i] == '►')
@@ -304,6 +308,7 @@ namespace Platformer_Prototype
 
                     UnloadEntities();
 
+                    gm.Load();
                     ZoneSorter();
 
                     Camera.Position = Vector2.Zero;
@@ -333,7 +338,10 @@ namespace Platformer_Prototype
 
             game1 = getGame1;
             Camera.Update(game1);
-            Camera.CameraMode = Camera.CameraState.FOLLOW;
+            if (!Camera.isControlled)
+            {
+                Camera.CameraMode = Camera.CameraState.FOLLOW;
+            }
             //Animated Textures
             WaterTop.UpdateAnimation(0.15f);
             WaterBase.UpdateAnimation(0.15f);
@@ -352,13 +360,18 @@ namespace Platformer_Prototype
                 Platforms[i].Update(this);
 
             //Player Update 
-            PlayerWarpIn();             
+            PlayerWarpIn();
+
+            gm.Get(player);
+            gm.Update(player);
 
             //HubWorld Data
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld)
             {
                 HubWorldData();
             }
+
+
         }
 
         public bool lineTest(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
@@ -772,10 +785,10 @@ namespace Platformer_Prototype
 
             //Draw Doorways
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld && !MapLoading)
-            foreach (Rectangle rect in WarpDoors)
-            {
-                sB.Draw(Textures._ITEM_WoodBox_Tex, rect, Color.Red);
-            }
+                foreach (Rectangle rect in WarpDoors)
+                {
+                    sB.Draw(Textures._ITEM_WoodBox_Tex, rect, Color.Red);
+                }
 
             //Warp Effect
             if (isWarping)
@@ -795,6 +808,12 @@ namespace Platformer_Prototype
                     if (Enemies[i].Position.X + Camera.Position.X > 0 - 24 + 0 && Enemies[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
                         if (Enemies[i].Position.Y + Camera.Position.Y > 0 - 24 + 0 && Enemies[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
                             Enemies[i].Draw(sB);
+            }
+
+            for(int i = 0; i < gm.Zone.Count; i++)
+            {
+                Rectangle zBounds = new Rectangle(gm.Zone[i].X + (int)Camera.Position.X, gm.Zone[i].Y + (int)Camera.Position.Y, gm.Zone[i].Width, gm.Zone[i].Height);
+                sB.Draw(Textures._TILE_Zone_Tex, zBounds, Color.White);
             }
 
             //Fade Effect

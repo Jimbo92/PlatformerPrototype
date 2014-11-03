@@ -17,6 +17,9 @@ namespace Platformer_Prototype
         public Sprite sprite;
         public Texture2D capTex;
         public Vector2 Position;
+
+
+        
        
 
         public Vector2 tl = Vector2.Zero;
@@ -55,6 +58,13 @@ namespace Platformer_Prototype
         private SpriteEffects sprEffect;
 
         //--------------------------------------------
+
+        public void feedback()
+        {
+            Speed.Y = -10;
+        }
+
+
 
         public Player(ContentManager getContent)
         {
@@ -352,6 +362,9 @@ namespace Platformer_Prototype
 
             //=================================================
             updateBounds(Camera.Position);
+
+
+            
         }
 
         public void Controls()

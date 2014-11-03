@@ -140,6 +140,8 @@ namespace Platformer_Prototype
                     {
                         BEngine.Draw(spriteBatch);
 
+                        
+
                         if (DebugMode)
                         {
                             Color FPSColour;
@@ -157,6 +159,9 @@ namespace Platformer_Prototype
                         }
 
                         GUI.Draw(spriteBatch);
+                        Vector2 realMouse = new Vector2((int)(Mouse.GetState().X - Camera.Position.X), (int)(Mouse.GetState().Y - Camera.Position.Y));
+                        spriteBatch.DrawString(font, realMouse.ToString(), new Vector2(10, 90), Color.White);
+                        spriteBatch.DrawString(font, BEngine.player.Position.ToString(), new Vector2(10, 140), Color.White);
 
                     }; break;
                 case Global_GameState.EGameState.EDITOR:
