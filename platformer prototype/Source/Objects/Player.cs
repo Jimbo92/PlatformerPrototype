@@ -724,7 +724,19 @@ namespace Platformer_Prototype
         {
 
                 sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), Vector2.Zero, MathHelper.ToRadians(Rotation), sprEffect, Color.White);
-                sB.Draw(capTex, new Rectangle((int)Bounds.X + 5, (int)Bounds.Y - 10, 20, 20), null, Color.White, MathHelper.ToRadians(Rotation), Vector2.Zero, sprEffect, 0);
+                float capOffset;
+
+
+              
+                if (Speed.Y > 1)
+                {
+                    capOffset = Speed.Y * 2;
+                }
+                else
+                {
+                    capOffset = 0;
+                }
+                sB.Draw(capTex, new Rectangle((int)Bounds.X + 5, (int)Bounds.Y - 10 - (int)capOffset, 20, 20), null, Color.White, MathHelper.ToRadians(Rotation), Vector2.Zero, sprEffect, 0);
             //Sprites
         }
 
