@@ -223,7 +223,7 @@ namespace Platformer_Prototype
                         NPC_F.Add(SignNPC);
                     }
 
-                    //Platform Start
+                    //Platform hor Start
                     if (map[j, i] == '♪')
                     {
                         Platform Hor = new Platform(Content);
@@ -234,7 +234,7 @@ namespace Platformer_Prototype
                         Platforms.Add(Hor);
                     }
 
-                    //Platform Start
+                    //Platform ver Start
                     if (map[j, i] == '♫')
                     {
                         Platform Ver = new Platform(Content);
