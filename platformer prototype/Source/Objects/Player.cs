@@ -397,7 +397,7 @@ namespace Platformer_Prototype
                             foreach (Platform p in BEngine.Platforms)
                             {
                                 p.updateBounds(Camera.Position);
-                                if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                                if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 2)
                                     if (p.Bounds.Intersects(Bounds))
                                     {
                                         Speed.Y = -jump;
@@ -746,7 +746,9 @@ namespace Platformer_Prototype
                             capOffset = 0;
                     }
                 }
-                sB.Draw(capTex, new Rectangle((int)Bounds.X + 5, (int)Bounds.Y - 10 - (int)capOffset, 20, 20), null, Color.White, MathHelper.ToRadians(Rotation), Vector2.Zero, sprEffect, 0);
+              
+                    sB.Draw(capTex, new Rectangle((int)Bounds.X + 5, (int)Bounds.Y - 10 - (int)capOffset, 20, 20), null, Color.White, MathHelper.ToRadians(Rotation), Vector2.Zero, sprEffect, 0);
+              
             //Sprites
         }
 

@@ -17,6 +17,7 @@ namespace Platformer_Prototype
     class GoalManager
     {
         public List<Rectangle> Zone = new List<Rectangle>();
+        public List<string> Speech = new List<string>();
 
         public Player player = null;
 
@@ -28,6 +29,7 @@ namespace Platformer_Prototype
         public void Load()
         {
             Zone.Clear();
+            Speech.Clear();
 
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.Beach)
             {
@@ -47,6 +49,9 @@ namespace Platformer_Prototype
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld)
             {
                 Zone.Add(new Rectangle(1105, 382, 177, 117));
+                Speech.Add("Welcome to the Hub World!!");
+                Speech.Add("Hi there!\nI love your hat!");
+                Speech.Add("Lol give me your\nhat faggot");
             }
 
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.LavaLand)

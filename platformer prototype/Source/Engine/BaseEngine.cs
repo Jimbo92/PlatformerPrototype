@@ -67,6 +67,8 @@ namespace Platformer_Prototype
         NPC FriendNPC;
         NPC SignNPC;
 
+        public static int npc;
+
 
         Random random = new Random();
 
@@ -150,7 +152,7 @@ namespace Platformer_Prototype
                     //Crawler
                     if (map[j, i] == '☼')
                     {
-                        CrawlerEnemy = new NPC(Content, "objects/enemies/snailss", NPC.npcType.CRAWLER, 24, 16);
+                        CrawlerEnemy = new NPC(Content, "objects/enemies/snailss", NPC.npcType.CRAWLER, 24, 16,0);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         CrawlerEnemy.Position = NPCSpawn;
                         CrawlerEnemy.isDead = false;
@@ -161,7 +163,7 @@ namespace Platformer_Prototype
                     //Walker
                     if (map[j, i] == '►')
                     {
-                        WalkerEnemy = new NPC(Content, "objects/enemies/slimess", NPC.npcType.WALKER, 46, 24);
+                        WalkerEnemy = new NPC(Content, "objects/enemies/slimess", NPC.npcType.WALKER, 46, 24,0);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         WalkerEnemy.Position = NPCSpawn;
                         WalkerEnemy.isDead = false;
@@ -182,7 +184,7 @@ namespace Platformer_Prototype
                     //Flyer
                     if (map[j, i] == '◄')
                     {
-                        FlyerEnemy = new NPC(Content, "objects/enemies/flyss", NPC.npcType.FLYER, 24, 16);
+                        FlyerEnemy = new NPC(Content, "objects/enemies/flyss", NPC.npcType.FLYER, 24, 16,0);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         FlyerEnemy.Position = NPCSpawn;
                         FlyerEnemy.isDead = false;
@@ -193,7 +195,8 @@ namespace Platformer_Prototype
                     //Friendly
                     if (map[j, i] == '♂')
                     {
-                        FriendNPC = new NPC(Content, null, NPC.npcType.FRIENDLY, 28, 30);
+                        npc++;
+                        FriendNPC = new NPC(Content, null, NPC.npcType.FRIENDLY, 28, 30,npc);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         FriendNPC.Position = NPCSpawn;
                         FriendNPC.isDead = false;
@@ -215,7 +218,8 @@ namespace Platformer_Prototype
                     //Sign Text
                     if (map[j, i] == '↕')
                     {
-                        SignNPC = new NPC(Content, null, NPC.npcType.SIGN, 32, 32);
+                        npc++;
+                        SignNPC = new NPC(Content, null, NPC.npcType.SIGN, 32, 32,npc);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         SignNPC.Position = NPCSpawn;
                         SignNPC.isDead = false;
@@ -359,6 +363,7 @@ namespace Platformer_Prototype
 
                     Camera.Position = Vector2.Zero;
 
+                    npc = -1;
                     LoadupMapEntities();
                     PlayerWarpInTime = 0;
                     player.Position = PlayerStart;
@@ -399,12 +404,12 @@ namespace Platformer_Prototype
             //Enemy Update
             foreach (NPC e in NPC_E)
                 if (!e.isDead)
-                    e.Update(this);
+                    e.Update(this,gm);
 
             //Friendly NPC's Update
             foreach (NPC f in NPC_F)
                 if (!f.isDead)
-                    f.Update(this);
+                    f.Update(this,gm);
 
             for (int i = 0; i < Platforms.Count; i++)
                 Platforms[i].Update(this);
