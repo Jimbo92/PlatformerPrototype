@@ -44,7 +44,7 @@
     <Compile Include="Source\Engine\Item.cs" />
     <Compile Include="Source\Map Editor\TileIndex.cs" />
     <Compile Include="Source\Objects\Platform.cs" />
-    <Compile Include="Source\Objects\Enemy.cs" />
+    <Compile Include="Source\Objects\NPC.cs" />
     <Compile Include="Source\Engine\Game1.cs" />
     <Compile Include="Source\Engine\GUI.cs" />
     <Compile Include="Source\Ideas.cs" />
@@ -192,6 +192,9 @@
     <Content Include="Content\Objects\Enemies\SnailSS.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Objects\NPCFriendSS.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Objects\platform.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -241,6 +244,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Editor\TriggerPlatform1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\SignSS.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\SpeechBubbleBase.png">

@@ -12,13 +12,15 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace Platformer_Prototype
 {
-    class Enemy
+    class NPC
     {
         public enum enemyType
         {
             WALKER,
             FLYER,
             CRAWLER,
+            FRIENDLY,
+            SIGN,
         }
 
         public Sprite sprite;
@@ -65,26 +67,38 @@ namespace Platformer_Prototype
         private float TextBubbleFadeValue;
         private Texture2D SpeechBubble_Tex;
         private Rectangle SpeechBubble_Rect;
+        private bool isWalking;
 
         public Color colour = Color.White;
-       
+
+        public string TextTalk;
+
         //--------------------------------------------
 
-        public Enemy(ContentManager getContent, string getTexture, enemyType e, int getWidth, int getHeight)
+        public NPC(ContentManager getContent, string getTexture, enemyType e, int getWidth, int getHeight)
         {
+            type = e;
             Width = getWidth;
             Height = getHeight;
             Position = Vector2.Zero;
             left = true;
             runPlanes = new Vector2(-50, 50);
-            sprite = new Sprite(getContent, getTexture, getWidth, getHeight, 1, 3);
+
+            if (type != enemyType.FRIENDLY && type != enemyType.SIGN)
+                sprite = new Sprite(getContent, getTexture, getWidth, getHeight, 1, 3);
+            else if (type == enemyType.FRIENDLY)
+                sprite = new Sprite(getContent, "objects/NPCFriendSS", getWidth, getHeight, 2, 8);
+            else if (type == enemyType.SIGN)
+                sprite = new Sprite(getContent, "objects/SignSS", getWidth, getHeight, 1, 6);
+
             Font = getContent.Load<SpriteFont>("fonts/CopperplateGothicBold");
             SpeechBubble_Tex = getContent.Load<Texture2D>("objects/speechbubblebase");
-            type = e;
         }
 
         private void Animations()
         {
+            if (type != enemyType.FRIENDLY && type != enemyType.SIGN)
+            {
                 AnimTimer++;
                 if (AnimTimer < 10)
                     sprite.CurrentFrame = 0;
@@ -94,6 +108,40 @@ namespace Platformer_Prototype
 
                 if (AnimTimer > 20)
                     AnimTimer = 0;
+
+            }
+            if (type == enemyType.FRIENDLY)
+            {
+                if (Speed.X <= -1)
+                {
+                    SprEff = SpriteEffects.FlipHorizontally;
+                    isWalking = true;
+                }
+                else if (Speed.X >= 1)
+                {
+                    SprEff = SpriteEffects.None;
+                    isWalking = true;
+                }
+                else
+                    isWalking = false;
+
+                if (isWalking)
+                {
+                    sprite.CurrentFrame += 0.15f;
+                    if (sprite.CurrentFrame > 10)
+                        sprite.CurrentFrame = 0;
+                }
+                else
+                {
+                    SprEff = SpriteEffects.None;
+                    sprite.CurrentFrame = 14;
+                }
+            }
+            
+            if (type == enemyType.SIGN)
+            {
+                sprite.CurrentFrame = 1;
+            }
         }
 
         public void updateBounds(Vector2 Camera)
@@ -107,164 +155,164 @@ namespace Platformer_Prototype
 
         private void Collisions()
         {
-                            // Check X Collisions-----------------------------
-                //Will Check up to 6 Rectangles
+            // Check X Collisions-----------------------------
+            //Will Check up to 6 Rectangles
 
-                Position.X += (int)Speed.X;
-                updateBounds(Camera.Position);
-                BEngine.updateHitboxes(Position, Bounds);
-                foreach (Rectangle canvas in BEngine.Canvas)
-                    checkCollisionsX(canvas);
+            Position.X += (int)Speed.X;
+            updateBounds(Camera.Position);
+            BEngine.updateHitboxes(Position, Bounds);
+            foreach (Rectangle canvas in BEngine.Canvas)
+                checkCollisionsX(canvas);
 
-                //Will Check up to 6 Triangles
+            //Will Check up to 6 Triangles
 
-                updateBounds(Camera.Position);
-                BEngine.updateHitboxes(Position, Bounds);
-                checkTollisionsX(BEngine.tan1);
-                checkTollisionsX(BEngine.tan2);
-                checkTollisionsX(BEngine.tan3);
-                checkTollisionsX(BEngine.tan4);
-                checkTollisionsX(BEngine.tan5);
-                checkTollisionsX(BEngine.tan6);
+            updateBounds(Camera.Position);
+            BEngine.updateHitboxes(Position, Bounds);
+            checkTollisionsX(BEngine.tan1);
+            checkTollisionsX(BEngine.tan2);
+            checkTollisionsX(BEngine.tan3);
+            checkTollisionsX(BEngine.tan4);
+            checkTollisionsX(BEngine.tan5);
+            checkTollisionsX(BEngine.tan6);
 
 
-                // Check Y Collisions-----------------------------
-                //Will Check up to 6 Rectangles
+            // Check Y Collisions-----------------------------
+            //Will Check up to 6 Rectangles
 
-                Position.Y += (int)Speed.Y;
-                updateBounds(Camera.Position);
-                BEngine.updateHitboxes(Position, Bounds);
-                foreach (Rectangle canvas in BEngine.Canvas)
-                    checkCollisionsY(canvas);
+            Position.Y += (int)Speed.Y;
+            updateBounds(Camera.Position);
+            BEngine.updateHitboxes(Position, Bounds);
+            foreach (Rectangle canvas in BEngine.Canvas)
+                checkCollisionsY(canvas);
 
-                //Will Check up to 6 Triangles
+            //Will Check up to 6 Triangles
 
-                updateBounds(Camera.Position);
-                BEngine.updateHitboxes(Position, Bounds);
-                checkTollisionsY(BEngine.tan1);
-                checkTollisionsY(BEngine.tan2);
-                checkTollisionsY(BEngine.tan3);
-                checkTollisionsY(BEngine.tan4);
-                checkTollisionsY(BEngine.tan5);
-                checkTollisionsY(BEngine.tan6);
+            updateBounds(Camera.Position);
+            BEngine.updateHitboxes(Position, Bounds);
+            checkTollisionsY(BEngine.tan1);
+            checkTollisionsY(BEngine.tan2);
+            checkTollisionsY(BEngine.tan3);
+            checkTollisionsY(BEngine.tan4);
+            checkTollisionsY(BEngine.tan5);
+            checkTollisionsY(BEngine.tan6);
 
-                checks[0] = false;
-                updateBounds(Camera.Position);
-                BEngine.updateNoclips(Position, Bounds, '♠');
-                foreach (Rectangle noclips in BEngine.NoClip)
+            checks[0] = false;
+            updateBounds(Camera.Position);
+            BEngine.updateNoclips(Position, Bounds, '♠');
+            foreach (Rectangle noclips in BEngine.NoClip)
+            {
+                if (Bounds.Intersects(noclips))
                 {
-                    if (Bounds.Intersects(noclips))
-                    {
-                        checks[0] = true;
-                    }
-
+                    checks[0] = true;
                 }
 
-                checks[1] = false;
-                updateBounds(Camera.Position);
-                BEngine.updateNoclips(Position, Bounds, '♣');
-                foreach (Rectangle noclips in BEngine.NoClip)
-                {
-                    if (Bounds.Intersects(noclips))
-                    {
-                        checks[1] = true;
-                    }
+            }
 
+            checks[1] = false;
+            updateBounds(Camera.Position);
+            BEngine.updateNoclips(Position, Bounds, '♣');
+            foreach (Rectangle noclips in BEngine.NoClip)
+            {
+                if (Bounds.Intersects(noclips))
+                {
+                    checks[1] = true;
                 }
 
-                checks[2] = false;
-                updateBounds(Camera.Position);
-                BEngine.updateNoclips(Position, Bounds, '•');
-                foreach (Rectangle noclips in BEngine.NoClip)
-                {
-                    if (Bounds.Intersects(noclips))
-                    {
-                        checks[2] = true;
-                    }
+            }
 
+            checks[2] = false;
+            updateBounds(Camera.Position);
+            BEngine.updateNoclips(Position, Bounds, '•');
+            foreach (Rectangle noclips in BEngine.NoClip)
+            {
+                if (Bounds.Intersects(noclips))
+                {
+                    checks[2] = true;
                 }
 
-                checks[3] = false;
+            }
 
-                updateBounds(Camera.Position);
-                BEngine.updateNoclips(Position, Bounds, '◙');
-                foreach (Rectangle noclips in BEngine.NoClip)
-                {
-                    if (noclips.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
-                        if (Bounds.Intersects(noclips))
+            checks[3] = false;
+
+            updateBounds(Camera.Position);
+            BEngine.updateNoclips(Position, Bounds, '◙');
+            foreach (Rectangle noclips in BEngine.NoClip)
+            {
+                if (noclips.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                    if (Bounds.Intersects(noclips))
+                    {
+                        checks[3] = true;
+
+                        for (int i = 20; i > 0; i--)
                         {
-                            checks[3] = true;
-
-                            for (int i = 20; i > 0; i--)
+                            updateBounds(Camera.Position);
+                            BEngine.updateHitboxes(Position, Bounds);
+                            if (Bounds.Intersects(noclips))
                             {
-                                updateBounds(Camera.Position);
-                                BEngine.updateHitboxes(Position, Bounds);
-                                if (Bounds.Intersects(noclips))
-                                {
-                                    Position.Y--;
-                                }
+                                Position.Y--;
                             }
-
-                            Speed.Y = 0;
                         }
-                }
 
-                platMod = Vector2.Zero;
-                bool platX = false;
-                bool platY = false;
-              
-                    updateBounds(Camera.Position);
-                    Bounds.Y += 1;
+                        Speed.Y = 0;
+                    }
+            }
 
-                    foreach (Platform p in BEngine.Platforms)
+            platMod = Vector2.Zero;
+            bool platX = false;
+            bool platY = false;
+
+            updateBounds(Camera.Position);
+            Bounds.Y += 1;
+
+            foreach (Platform p in BEngine.Platforms)
+            {
+
+
+                p.updateBounds(Camera.Position);
+                if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                    if (Bounds.Intersects(p.Bounds))
                     {
+                        if (!platX)
+                        {
+                            platMod.X += (int)p.Speed.X;
+                            platX = true;
+                        }
+
+                        if (!platY)
+                        {
+                            platMod.Y += (int)p.Speed.Y;
+                            platY = true;
+                        }
 
 
-                        p.updateBounds(Camera.Position);
-                        if (p.Bounds.Y > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                        for (int i = 20; i > 0; i--)
+                        {
+                            updateBounds(Camera.Position);
+                            p.updateBounds(Camera.Position);
                             if (Bounds.Intersects(p.Bounds))
                             {
-                                if (!platX)
-                                {
-                                    platMod.X += (int)p.Speed.X;
-                                    platX = true;
-                                }
+                                Position.Y--;
 
-                                if (!platY)
-                                {
-                                    platMod.Y += (int)p.Speed.Y;
-                                    platY = true;
-                                }
-
-
-                                for (int i = 20; i > 0; i--)
-                                {
-                                    updateBounds(Camera.Position);
-                                    p.updateBounds(Camera.Position);
-                                    if (Bounds.Intersects(p.Bounds))
-                                    {
-                                        Position.Y--;
-              
-                                    }
-                                }
-
-                                Speed.Y = 0;
                             }
+                        }
 
+                        Speed.Y = 0;
                     }
-                    Bounds.Y -= 1;
 
-                
+            }
+            Bounds.Y -= 1;
 
-                if (checks[2] == true)
-                {
-                    isDead = true;
-                }
+
+
+            if (checks[2] == true)
+            {
+                isDead = true;
+            }
 
         }
 
         public void Update(BaseEngine getBEngine)
-        {          
+        {
             BEngine = getBEngine;
 
             Animations();
@@ -273,7 +321,7 @@ namespace Platformer_Prototype
 
             Position += platMod;
 
-            if (!controllable)
+            if (!controllable && type != enemyType.SIGN)
             {
                 if (Position.X < runPlanes.X)
                 {
@@ -291,10 +339,10 @@ namespace Platformer_Prototype
             }
             else
             {
-                jump = Input.KeyboardPress(Keys.I);
-                down = Input.KeyboardPress(Keys.K);
-                left = Input.KeyboardPress(Keys.J);
-                right = Input.KeyboardPress(Keys.L);
+                jump = false;
+                down = false;
+                left = false;
+                right = false;
             }
 
 
@@ -396,7 +444,7 @@ namespace Platformer_Prototype
                         foreach (Platform p in BEngine.Platforms)
                         {
                             p.updateBounds(Camera.Position);
-                            if(p.Bounds.Intersects(Bounds))
+                            if (p.Bounds.Intersects(Bounds))
                             {
                                 Speed.Y = -7;
                                 returner = true;
@@ -450,10 +498,10 @@ namespace Platformer_Prototype
                     }
 
                 }
-                
-//Continue here
 
-                
+                //Continue here
+
+
 
 
             }
@@ -512,7 +560,7 @@ namespace Platformer_Prototype
                     for (int i = 20; i > 0; i--)
                     {
                         updateBounds(Camera.Position);
-                        BEngine.updateHitboxes(Position, Bounds); 
+                        BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.X--;
                     }
@@ -540,7 +588,7 @@ namespace Platformer_Prototype
                     for (int i = 20; i > 0; i--)
                     {
                         updateBounds(Camera.Position);
-                        BEngine.updateHitboxes(Position, Bounds); 
+                        BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.Y--;
                     }
@@ -549,7 +597,7 @@ namespace Platformer_Prototype
                     for (int i = 20; i > 0; i--)
                     {
                         updateBounds(Camera.Position);
-                        BEngine.updateHitboxes(Position, Bounds); 
+                        BEngine.updateHitboxes(Position, Bounds);
                         if (Bounds.Intersects(target))
                             Position.Y++;
                     }
@@ -564,34 +612,40 @@ namespace Platformer_Prototype
             //sB.Draw(Textures._OBJ_Ladder_Tex, Bounds, Color.Red);
             sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SprEff, colour);
 
-            //Enemy talk test
-            TextDisplayBounds = new Rectangle(Bounds.X - 156 / 2, Bounds.Y - 156 / 2, 156, 156);
-            string TextTalk = "Hello";
-            Vector2 TextBubbleSize = Font.MeasureString(TextTalk);
-            SpeechBubble_Rect = new Rectangle((Bounds.X - (int)TextBubbleSize.X / 2), (Bounds.Y - (int)TextBubbleSize.Y / 2) - 50, (int)TextBubbleSize.X - 5, (int)TextBubbleSize.Y);
-            sB.Draw(SpeechBubble_Tex, SpeechBubble_Rect, Color.White * TextBubbleFadeValue);
-            sB.DrawString(Font, TextTalk, new Vector2(SpeechBubble_Rect.X + 5, SpeechBubble_Rect.Y + 5), Color.White * TextBubbleFadeValue, 0, Vector2.Zero, 0.75f, SpriteEffects.None, 0);
+            //Friendly NPC & Sign Text Bubble
+            if (type == enemyType.FRIENDLY || type == enemyType.SIGN)
+            {
+                TextDisplayBounds = new Rectangle(Bounds.X - 156 / 2, Bounds.Y - 156 / 2, 156, 156);                
+                Vector2 TextBubbleSize = Font.MeasureString(TextTalk);
+                SpeechBubble_Rect = new Rectangle((Bounds.X - (int)TextBubbleSize.X / 2) + 25, (Bounds.Y - (int)TextBubbleSize.Y / 2) - 25, (int)TextBubbleSize.X - 5, (int)TextBubbleSize.Y);
+                sB.Draw(SpeechBubble_Tex, SpeechBubble_Rect, Color.SlateGray * TextBubbleFadeValue);
+                sB.DrawString(Font, TextTalk, new Vector2(SpeechBubble_Rect.X + 5, SpeechBubble_Rect.Y + 5), Color.Silver * TextBubbleFadeValue, 0, Vector2.Zero, 0.75f, SpriteEffects.None, 0);
 
-            if (BEngine.player.Bounds.Intersects(TextDisplayBounds))
-            {
-                TextBubbleFadeValue += 0.05f;
-                if (TextBubbleFadeValue >= 1)
-                    TextBubbleFadeValue = 1;
-            }
-            else
-            {
-                TextBubbleFadeValue -= 0.05f;
-                if (TextBubbleFadeValue <= 0)
-                    TextBubbleFadeValue = 0;
+                if (BEngine.player.Bounds.Intersects(TextDisplayBounds))
+                {
+                    TextBubbleFadeValue += 0.05f;
+                    if (TextBubbleFadeValue >= 1)
+                        TextBubbleFadeValue = 1;
+                }
+                else
+                {
+                    TextBubbleFadeValue -= 0.05f;
+                    if (TextBubbleFadeValue <= 0)
+                        TextBubbleFadeValue = 0;
+                }
             }
         }
 
-        public void checkTollisionsX(Triangle target) {
-          
-            if (checkAllLines(target) == true) {
+        public void checkTollisionsX(Triangle target)
+        {
 
-                if (Speed.X > 0) {
-                    for (int i = 20; i > 0; i--) {
+            if (checkAllLines(target) == true)
+            {
+
+                if (Speed.X > 0)
+                {
+                    for (int i = 20; i > 0; i--)
+                    {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)
@@ -602,8 +656,10 @@ namespace Platformer_Prototype
                     Position.Y -= Math.Abs(Speed.X);
                 }
 
-                if (Speed.X < 0) {
-                    for (int i = 20; i > 0; i--) {
+                if (Speed.X < 0)
+                {
+                    for (int i = 20; i > 0; i--)
+                    {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)
@@ -617,23 +673,28 @@ namespace Platformer_Prototype
             }
         }
 
-        public void checkTollisionsY(Triangle target) {
-            if (checkAllLines(target) == true) {
+        public void checkTollisionsY(Triangle target)
+        {
+            if (checkAllLines(target) == true)
+            {
 
 
                 if (Speed.Y > 0)
-                    for (int i = 20; i > 0; i--) {
+                    for (int i = 20; i > 0; i--)
+                    {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
-                        if (checkAllLines(target) == true) {
+                        if (checkAllLines(target) == true)
+                        {
                             Position.Y--;
-                            
+
 
                         }
                     }
 
                 if (Speed.Y < 0)
-                    for (int i = 20; i > 0; i--) {
+                    for (int i = 20; i > 0; i--)
+                    {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
                         if (checkAllLines(target) == true)

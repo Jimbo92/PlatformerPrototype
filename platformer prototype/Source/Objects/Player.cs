@@ -316,7 +316,7 @@ namespace Platformer_Prototype
 
             bool oneKill = false;
             if (!noclip && cooldown == 0)
-                foreach (Enemy e in BEngine.Enemies)
+                foreach (NPC e in BEngine.NPC_E)
                 {
                     if (e.Bounds.Intersects(Bounds) && !e.isDead && !oneKill)
                     {

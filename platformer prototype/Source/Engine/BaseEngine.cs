@@ -55,14 +55,16 @@ namespace Platformer_Prototype
 
         private ContentManager Content;
 
-        public List<Enemy> Enemies = new List<Enemy>(100);
+        public List<NPC> NPC_E = new List<NPC>(100);
+        public List<NPC> NPC_F = new List<NPC>(100);
         public List<Platform> Platforms = new List<Platform>();
 
         public Vector2 EnemySpawn;
         //Enemy Types;
-        Enemy CrawlerEnemy;
-        Enemy WalkerEnemy;
-        Enemy FlyerEnemy;
+        NPC CrawlerEnemy;
+        NPC WalkerEnemy;
+        NPC FlyerEnemy;
+        NPC FriendNPC;
 
 
         Random random = new Random();
@@ -147,31 +149,31 @@ namespace Platformer_Prototype
                     //Crawler
                     if (map[j, i] == '☼')
                     {
-                        CrawlerEnemy = new Enemy(Content, "objects/enemies/snailss", Enemy.enemyType.CRAWLER, 24, 16);
+                        CrawlerEnemy = new NPC(Content, "objects/enemies/snailss", NPC.enemyType.CRAWLER, 24, 16);
                         EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         CrawlerEnemy.Position = EnemySpawn;
                         CrawlerEnemy.isDead = false;
                         CrawlerEnemy.runPlanes.X += CrawlerEnemy.Position.X;
                         CrawlerEnemy.runPlanes.Y += CrawlerEnemy.Position.X;
-                        Enemies.Add(CrawlerEnemy);
+                        NPC_E.Add(CrawlerEnemy);
                     }
                     //Walker
                     if (map[j, i] == '►')
                     {
-                        WalkerEnemy = new Enemy(Content, "objects/enemies/slimess", Enemy.enemyType.WALKER, 46, 24);
+                        WalkerEnemy = new NPC(Content, "objects/enemies/slimess", NPC.enemyType.WALKER, 46, 24);
                         EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         WalkerEnemy.Position = EnemySpawn;
                         WalkerEnemy.isDead = false;
                         WalkerEnemy.runPlanes.X += WalkerEnemy.Position.X;
                         WalkerEnemy.runPlanes.Y += WalkerEnemy.Position.X;
-                        Enemies.Add(WalkerEnemy);
+                        NPC_E.Add(WalkerEnemy);
                         
                         //Slime Random Colours
                         int RandColourValue = random.Next(4);
                         switch (RandColourValue)
                         {
                             case 0: WalkerEnemy.colour = Color.LightYellow; break;
-                            case 1: WalkerEnemy.colour = Color.LightPink; break;
+                            case 1: WalkerEnemy.colour = Color.Pink; break;
                             case 2: WalkerEnemy.colour = Color.LightBlue; break;
                             case 3: WalkerEnemy.colour = Color.LightGreen; break;
                         }
@@ -179,13 +181,35 @@ namespace Platformer_Prototype
                     //Flyer
                     if (map[j, i] == '◄')
                     {
-                        FlyerEnemy = new Enemy(Content, "objects/enemies/flyss", Enemy.enemyType.FLYER, 24, 16);
+                        FlyerEnemy = new NPC(Content, "objects/enemies/flyss", NPC.enemyType.FLYER, 24, 16);
                         EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         FlyerEnemy.Position = EnemySpawn;
                         FlyerEnemy.isDead = false;
                         FlyerEnemy.runPlanes.X += FlyerEnemy.Position.X;
                         FlyerEnemy.runPlanes.Y += FlyerEnemy.Position.X;
-                        Enemies.Add(FlyerEnemy);
+                        NPC_E.Add(FlyerEnemy);
+                    }
+                    //Friendly
+                    if (map[j, i] == '↕')
+                    {
+                        FriendNPC = new NPC(Content, null, NPC.enemyType.FRIENDLY, 28, 30);
+                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        FriendNPC.Position = EnemySpawn;
+                        FriendNPC.isDead = false;
+                        FriendNPC.runPlanes.X += FriendNPC.Position.X;
+                        FriendNPC.runPlanes.Y += FriendNPC.Position.X;
+                        FriendNPC.TextTalk = "I want\nyour hat!";
+                        NPC_F.Add(FriendNPC);
+                    }
+                    //Sign Text
+                    if (map[j, i] == '‼')
+                    {
+                        FriendNPC = new NPC(Content, null, NPC.enemyType.SIGN, 32, 32);
+                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        FriendNPC.Position = EnemySpawn;
+                        FriendNPC.isDead = false;
+                        FriendNPC.TextTalk = "This is\na sign lol";
+                        NPC_F.Add(FriendNPC);
                     }
 
                     //Platform Start
@@ -214,7 +238,8 @@ namespace Platformer_Prototype
 
         private void UnloadEntities()
         {
-            Enemies.Clear();
+            NPC_E.Clear();
+            NPC_F.Clear();
             Platforms.Clear();
         }
 
@@ -361,11 +386,15 @@ namespace Platformer_Prototype
             WarpPad.UpdateAnimation(0.3f);
 
             //Enemy Update
-            foreach (Enemy e in Enemies)
-            {
+            foreach (NPC e in NPC_E)
                 if (!e.isDead)
                     e.Update(this);
-            }
+
+            //Friendly NPC's Update
+            foreach (NPC f in NPC_F)
+                if (!f.isDead)
+                    f.Update(this);
+
             for (int i = 0; i < Platforms.Count; i++)
                 Platforms[i].Update(this);
 
@@ -812,12 +841,21 @@ namespace Platformer_Prototype
             }
 
             //Enemies
-            for (int i = 0; i < Enemies.Count; i++)
+            for (int i = 0; i < NPC_E.Count; i++)
             {
-                if (!Enemies[i].isDead)
-                    if (Enemies[i].Position.X + Camera.Position.X > 0 - 24 + 0 && Enemies[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
-                        if (Enemies[i].Position.Y + Camera.Position.Y > 0 - 24 + 0 && Enemies[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
-                            Enemies[i].Draw(sB);
+                if (!NPC_E[i].isDead)
+                    if (NPC_E[i].Position.X + Camera.Position.X > 0 - 24 + 0 && NPC_E[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
+                        if (NPC_E[i].Position.Y + Camera.Position.Y > 0 - 24 + 0 && NPC_E[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
+                            NPC_E[i].Draw(sB);
+            }
+
+            //Friendly NPC's
+            for (int i = 0; i < NPC_F.Count; i++)
+            {
+                if (!NPC_F[i].isDead)
+                    if (NPC_F[i].Position.X + Camera.Position.X > 0 - 24 + 0 && NPC_F[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
+                        if (NPC_F[i].Position.Y + Camera.Position.Y > 0 - 24 + 0 && NPC_F[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
+                            NPC_F[i].Draw(sB);
             }
 
             for(int i = 0; i < gm.Zone.Count; i++)

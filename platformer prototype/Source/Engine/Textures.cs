@@ -207,6 +207,12 @@ namespace Platformer_Prototype
                                 //Trigger Enemy Spawn Fly
                                 if (MapData[j, i] == '◄')
                                     sB.Draw(_DBG_ETrigger_Tex[2], tileDraw, Color.White);
+                                //Trigger Friendly Spawn
+                                if (MapData[j, i] == '↕')
+                                    sB.Draw(_DBG_ETrigger_Tex[2], tileDraw, Color.White);
+                                //Trigger Sign Text
+                                if (MapData[j, i] == '‼')
+                                    sB.Draw(_DBG_ETrigger_Tex[2], tileDraw, Color.White);
 
                             }
 
