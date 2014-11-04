@@ -314,6 +314,9 @@ namespace Platformer_Prototype
             Animations();
 
             Collisions();
+            
+            
+      
 
             if (type == npcType.SIGN || type == npcType.FRIENDLY)
                 TextTalk = gm.Speech[npcID];
