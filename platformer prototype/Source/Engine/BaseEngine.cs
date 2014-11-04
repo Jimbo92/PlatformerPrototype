@@ -118,7 +118,15 @@ namespace Platformer_Prototype
             DrawLine(game1, sB, target.c, target.a);
         }
 
-   
+
+        public void BGColours()
+        {
+            switch (Global_GameState.ZoneState)
+            {
+                case Global_GameState.EZoneState.Grasslands: game1.BGColour = Color.LightSkyBlue; break;
+                case Global_GameState.EZoneState.HubWorld: game1.BGColour = Color.LightSkyBlue; break;
+            }
+        }
 
         private void HubWorldData()
         {
@@ -362,6 +370,7 @@ namespace Platformer_Prototype
                     Camera.Position = Vector2.Zero;
 
                     npc = -1;
+                    BGColours();
                     LoadupMapEntities();
                     PlayerWarpInTime = 0;
                     player.Position = PlayerStart;

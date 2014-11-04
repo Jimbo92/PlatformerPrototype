@@ -25,11 +25,17 @@ namespace Platformer_Prototype
                 if (CurrentTile == '♣') return "Water Trigger";
                 if (CurrentTile == '♠') return "Ladder Trigger";
                 if (CurrentTile == '•') return "Lava Trigger";
+                if (CurrentTile == '◘') return "Crystal Trigger";
                 if (CurrentTile == '○') return "Player Start";
                 if (CurrentTile == '◙') return "Classic CB";
-                if (CurrentTile == '♂') return "Enemy Start";
+                if (CurrentTile == '♂') return "NPC Friendly Spawner";
+                if (CurrentTile == '♀') return "Breakable Box";
                 if (CurrentTile == '♪') return "Horizontal MB";
                 if (CurrentTile == '♫') return "Vertical MB";
+                if (CurrentTile == '☼') return "Enemy Spawn Crawler";
+                if (CurrentTile == '►') return "Enemy Spawn Walker";
+                if (CurrentTile == '◄') return "Enemy Spawn Fly";
+                if (CurrentTile == '↕') return "Sign With Text";
                 
 
             }

@@ -45,6 +45,9 @@ namespace Platformer_Prototype
         //Zone testing
         static public Texture2D _TILE_Zone_Tex;
 
+        //Foliage
+        static public Texture2D _OBJ_Grass_Tex;
+
         //Effects
         static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
 
@@ -92,6 +95,9 @@ namespace Platformer_Prototype
             _TILE_MetalSS_Tex = getContent.Load<Texture2D>("tiles/metal");
 
             _TILE_Zone_Tex = getContent.Load<Texture2D>("debug/level");
+
+            //Foliage
+            _OBJ_Grass_Tex = getContent.Load<Texture2D>("objects/foliage/plant");
 
 
             //Effects

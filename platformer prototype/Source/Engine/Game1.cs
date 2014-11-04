@@ -36,6 +36,8 @@ namespace Platformer_Prototype
 
         public static Vector2 ScreenSize;
 
+        public Color BGColour = Color.CornflowerBlue;
+
         public Game1()
             : base()
         {
@@ -126,12 +128,10 @@ namespace Platformer_Prototype
             Input.End();
             base.Update(gameTime);
         }
-       
-
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(BGColour);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
 
             switch (Global_GameState.GameState)
@@ -156,13 +156,11 @@ namespace Platformer_Prototype
                             spriteBatch.DrawString(font, "Camera: " + CameraMode, new Vector2(10, 30), Color.DodgerBlue);
                             spriteBatch.DrawString(font, "Platformer Prototype", new Vector2(10, 10), Color.Snow);
                             spriteBatch.DrawString(font, "FPS: " + frameRate.ToString(), new Vector2(ScreenSize.X - 180, 10), FPSColour);
+                            Vector2 realMouse = new Vector2((int)(Mouse.GetState().X - Camera.Position.X), (int)(Mouse.GetState().Y - Camera.Position.Y));
+                            spriteBatch.DrawString(font, "Mouse Pos: " + realMouse.ToString(), new Vector2(10, 90), Color.DodgerBlue);
                         }
 
                         GUI.Draw(spriteBatch);
-                        Vector2 realMouse = new Vector2((int)(Mouse.GetState().X - Camera.Position.X), (int)(Mouse.GetState().Y - Camera.Position.Y));
-                        spriteBatch.DrawString(font, realMouse.ToString(), new Vector2(10, 90), Color.White);
-                        spriteBatch.DrawString(font, BEngine.player.Position.ToString(), new Vector2(10, 140), Color.White);
-
                     }; break;
                 case Global_GameState.EGameState.EDITOR:
                     {
