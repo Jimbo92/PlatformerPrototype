@@ -59,12 +59,13 @@ namespace Platformer_Prototype
         public List<NPC> NPC_F = new List<NPC>(100);
         public List<Platform> Platforms = new List<Platform>();
 
-        public Vector2 EnemySpawn;
+        public Vector2 NPCSpawn;
         //Enemy Types;
         NPC CrawlerEnemy;
         NPC WalkerEnemy;
         NPC FlyerEnemy;
         NPC FriendNPC;
+        NPC SignNPC;
 
 
         Random random = new Random();
@@ -149,9 +150,9 @@ namespace Platformer_Prototype
                     //Crawler
                     if (map[j, i] == '☼')
                     {
-                        CrawlerEnemy = new NPC(Content, "objects/enemies/snailss", NPC.enemyType.CRAWLER, 24, 16);
-                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
-                        CrawlerEnemy.Position = EnemySpawn;
+                        CrawlerEnemy = new NPC(Content, "objects/enemies/snailss", NPC.npcType.CRAWLER, 24, 16);
+                        NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        CrawlerEnemy.Position = NPCSpawn;
                         CrawlerEnemy.isDead = false;
                         CrawlerEnemy.runPlanes.X += CrawlerEnemy.Position.X;
                         CrawlerEnemy.runPlanes.Y += CrawlerEnemy.Position.X;
@@ -160,9 +161,9 @@ namespace Platformer_Prototype
                     //Walker
                     if (map[j, i] == '►')
                     {
-                        WalkerEnemy = new NPC(Content, "objects/enemies/slimess", NPC.enemyType.WALKER, 46, 24);
-                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
-                        WalkerEnemy.Position = EnemySpawn;
+                        WalkerEnemy = new NPC(Content, "objects/enemies/slimess", NPC.npcType.WALKER, 46, 24);
+                        NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        WalkerEnemy.Position = NPCSpawn;
                         WalkerEnemy.isDead = false;
                         WalkerEnemy.runPlanes.X += WalkerEnemy.Position.X;
                         WalkerEnemy.runPlanes.Y += WalkerEnemy.Position.X;
@@ -181,35 +182,45 @@ namespace Platformer_Prototype
                     //Flyer
                     if (map[j, i] == '◄')
                     {
-                        FlyerEnemy = new NPC(Content, "objects/enemies/flyss", NPC.enemyType.FLYER, 24, 16);
-                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
-                        FlyerEnemy.Position = EnemySpawn;
+                        FlyerEnemy = new NPC(Content, "objects/enemies/flyss", NPC.npcType.FLYER, 24, 16);
+                        NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        FlyerEnemy.Position = NPCSpawn;
                         FlyerEnemy.isDead = false;
                         FlyerEnemy.runPlanes.X += FlyerEnemy.Position.X;
                         FlyerEnemy.runPlanes.Y += FlyerEnemy.Position.X;
                         NPC_E.Add(FlyerEnemy);
                     }
                     //Friendly
-                    if (map[j, i] == '↕')
+                    if (map[j, i] == '♂')
                     {
-                        FriendNPC = new NPC(Content, null, NPC.enemyType.FRIENDLY, 28, 30);
-                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
-                        FriendNPC.Position = EnemySpawn;
+                        FriendNPC = new NPC(Content, null, NPC.npcType.FRIENDLY, 28, 30);
+                        NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        FriendNPC.Position = NPCSpawn;
                         FriendNPC.isDead = false;
                         FriendNPC.runPlanes.X += FriendNPC.Position.X;
                         FriendNPC.runPlanes.Y += FriendNPC.Position.X;
                         FriendNPC.TextTalk = "I want\nyour hat!";
                         NPC_F.Add(FriendNPC);
+
+                        //Friendly Random Colours
+                        int RandColourValue = random.Next(4);
+                        switch (RandColourValue)
+                        {
+                            case 0: FriendNPC.colour = Color.LightYellow; break;
+                            case 1: FriendNPC.colour = Color.Pink; break;
+                            case 2: FriendNPC.colour = Color.LightBlue; break;
+                            case 3: FriendNPC.colour = Color.LightGreen; break;
+                        }
                     }
                     //Sign Text
-                    if (map[j, i] == '‼')
+                    if (map[j, i] == '↕')
                     {
-                        FriendNPC = new NPC(Content, null, NPC.enemyType.SIGN, 32, 32);
-                        EnemySpawn = new Vector2(tileDraw.X, tileDraw.Y);
-                        FriendNPC.Position = EnemySpawn;
-                        FriendNPC.isDead = false;
-                        FriendNPC.TextTalk = "This is\na sign lol";
-                        NPC_F.Add(FriendNPC);
+                        SignNPC = new NPC(Content, null, NPC.npcType.SIGN, 32, 32);
+                        NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        SignNPC.Position = NPCSpawn;
+                        SignNPC.isDead = false;
+                        SignNPC.TextTalk = "This is\na sign lol";
+                        NPC_F.Add(SignNPC);
                     }
 
                     //Platform Start

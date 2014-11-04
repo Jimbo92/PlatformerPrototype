@@ -14,7 +14,7 @@ namespace Platformer_Prototype
 {
     class NPC
     {
-        public enum enemyType
+        public enum npcType
         {
             WALKER,
             FLYER,
@@ -25,7 +25,7 @@ namespace Platformer_Prototype
 
         public Sprite sprite;
         public SpriteFont Font;
-        public enemyType type;
+        public npcType type;
 
         public Vector2 Position;
         public Rectangle Bounds;
@@ -75,7 +75,7 @@ namespace Platformer_Prototype
 
         //--------------------------------------------
 
-        public NPC(ContentManager getContent, string getTexture, enemyType e, int getWidth, int getHeight)
+        public NPC(ContentManager getContent, string getTexture, npcType e, int getWidth, int getHeight)
         {
             type = e;
             Width = getWidth;
@@ -84,12 +84,10 @@ namespace Platformer_Prototype
             left = true;
             runPlanes = new Vector2(-50, 50);
 
-            if (type != enemyType.FRIENDLY && type != enemyType.SIGN)
+            if (type != npcType.FRIENDLY && type != npcType.SIGN)
                 sprite = new Sprite(getContent, getTexture, getWidth, getHeight, 1, 3);
-            else if (type == enemyType.FRIENDLY)
+            else if (type == npcType.FRIENDLY)
                 sprite = new Sprite(getContent, "objects/NPCFriendSS", getWidth, getHeight, 2, 8);
-            else if (type == enemyType.SIGN)
-                sprite = new Sprite(getContent, "objects/SignSS", getWidth, getHeight, 1, 6);
 
             Font = getContent.Load<SpriteFont>("fonts/CopperplateGothicBold");
             SpeechBubble_Tex = getContent.Load<Texture2D>("objects/speechbubblebase");
@@ -97,7 +95,7 @@ namespace Platformer_Prototype
 
         private void Animations()
         {
-            if (type != enemyType.FRIENDLY && type != enemyType.SIGN)
+            if (type != npcType.FRIENDLY && type != npcType.SIGN)
             {
                 AnimTimer++;
                 if (AnimTimer < 10)
@@ -110,7 +108,7 @@ namespace Platformer_Prototype
                     AnimTimer = 0;
 
             }
-            if (type == enemyType.FRIENDLY)
+            if (type == npcType.FRIENDLY)
             {
                 if (Speed.X <= -1)
                 {
@@ -136,12 +134,7 @@ namespace Platformer_Prototype
                     SprEff = SpriteEffects.None;
                     sprite.CurrentFrame = 14;
                 }
-            }
-            
-            if (type == enemyType.SIGN)
-            {
-                sprite.CurrentFrame = 1;
-            }
+            }          
         }
 
         public void updateBounds(Vector2 Camera)
@@ -321,7 +314,7 @@ namespace Platformer_Prototype
 
             Position += platMod;
 
-            if (!controllable && type != enemyType.SIGN)
+            if (!controllable && type != npcType.SIGN)
             {
                 if (Position.X < runPlanes.X)
                 {
@@ -347,7 +340,7 @@ namespace Platformer_Prototype
 
 
             //Gravity--------------
-            if (type != enemyType.FLYER)
+            if (type != npcType.FLYER)
             {
                 bool Checked = false;
                 if (!Checked)
@@ -610,10 +603,11 @@ namespace Platformer_Prototype
         {
 
             //sB.Draw(Textures._OBJ_Ladder_Tex, Bounds, Color.Red);
-            sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SprEff, colour);
+            if (type != npcType.SIGN)
+                sprite.Draw(sB, new Vector2(Bounds.X, Bounds.Y), new Vector2(0, 0), 0, SprEff, colour);
 
             //Friendly NPC & Sign Text Bubble
-            if (type == enemyType.FRIENDLY || type == enemyType.SIGN)
+            if (type == npcType.FRIENDLY || type == npcType.SIGN)
             {
                 TextDisplayBounds = new Rectangle(Bounds.X - 156 / 2, Bounds.Y - 156 / 2, 156, 156);                
                 Vector2 TextBubbleSize = Font.MeasureString(TextTalk);

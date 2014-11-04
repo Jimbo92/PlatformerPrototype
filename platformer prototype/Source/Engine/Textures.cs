@@ -27,6 +27,7 @@ namespace Platformer_Prototype
         static public Texture2D _ITEM_Crystal_Tex;
         static public Texture2D _ITEM_WoodBox_Tex;
         static public Texture2D[] _OBJ_Platforms_Tex = new Texture2D[2];
+        static public Texture2D _OBJ_SignSS_Tex;
 
         //Map Textures
         //Grass
@@ -49,7 +50,7 @@ namespace Platformer_Prototype
 
         //Debug Textures
         static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[8];
-        static public Texture2D[] _DBG_ETrigger_Tex = new Texture2D[3];
+        static public Texture2D[] _DBG_ETrigger_Tex = new Texture2D[4];
         static public Texture2D[] _DBG_Lava_Tex = new Texture2D[2];
         static public Texture2D _DBG_WaterTop_Tex;
         static public Texture2D _DBG_WaterBot_Tex;
@@ -72,7 +73,8 @@ namespace Platformer_Prototype
             {
                 _OBJ_Platforms_Tex[i] = getContent.Load<Texture2D>("editor/triggerplatform" + i);
             }
-
+            //Signs
+            _OBJ_SignSS_Tex = getContent.Load<Texture2D>("objects/signss");
 
 
             //Map Textures
@@ -104,7 +106,7 @@ namespace Platformer_Prototype
             {
                 _DBG_Trigger_Tex[i] = getContent.Load<Texture2D>("editor/trigger" + i);
             }
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 _DBG_ETrigger_Tex[i] = getContent.Load<Texture2D>("editor/etrigger" + i);
             }
@@ -186,9 +188,9 @@ namespace Platformer_Prototype
                                 //Trigger One way platforms
                                 if (MapData[j, i] == '◙')
                                     sB.Draw(_DBG_Trigger_Tex[7], tileDraw, Color.White);
-                                //Trigger Enemy Spawner
-                                //if (MapData[j, i] == '♂')
-                                //    sB.Draw(_DBG_Trigger_Tex[6], tileDraw, Color.White);
+                                //Trigger Friendly Spawn
+                                if (MapData[j, i] == '♂')
+                                    sB.Draw(_DBG_ETrigger_Tex[3], tileDraw, Color.White);
                                 //Trigger Wood Box
                                 if (MapData[j, i] == '♀')
                                     sB.Draw(_ITEM_WoodBox_Tex, tileDraw, Color.White);
@@ -207,14 +209,12 @@ namespace Platformer_Prototype
                                 //Trigger Enemy Spawn Fly
                                 if (MapData[j, i] == '◄')
                                     sB.Draw(_DBG_ETrigger_Tex[2], tileDraw, Color.White);
-                                //Trigger Friendly Spawn
-                                if (MapData[j, i] == '↕')
-                                    sB.Draw(_DBG_ETrigger_Tex[2], tileDraw, Color.White);
-                                //Trigger Sign Text
-                                if (MapData[j, i] == '‼')
-                                    sB.Draw(_DBG_ETrigger_Tex[2], tileDraw, Color.White);
 
                             }
+
+                            //Trigger Sign Text
+                            if (MapData[j, i] == '↕')
+                                SpriteSheetDraw(sB, _OBJ_SignSS_Tex, tileDraw, Color.White, 6, 1, 1);
 
                             //Trigger Ladder Block
                             if (MapData[j, i] == '♠')
