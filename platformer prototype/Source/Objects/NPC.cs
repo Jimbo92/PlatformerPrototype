@@ -314,8 +314,9 @@ namespace Platformer_Prototype
             Animations();
 
             Collisions();
-            
-            TextTalk = gm.Speech[npcID];
+
+            if (type == npcType.SIGN || type == npcType.FRIENDLY)
+                TextTalk = gm.Speech[npcID];
 
             Position += platMod;
 

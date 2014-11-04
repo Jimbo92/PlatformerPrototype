@@ -439,6 +439,19 @@ namespace Platformer_Prototype
                             if (MapData[j, i] == 'R') SpriteSheetDraw(sB, _TILE_MetalSS_Tex, tileDraw, Color.Gray, 5, 7, 6);
 
 
+                            //Objects//
+                            //Sign Blank
+                            if (MapData[j, i] == 'S') SpriteSheetDraw(sB, _OBJ_SignSS_Tex, tileDraw, Color.White, 6, 1, 0);
+                            //Sign Exit
+                            if (MapData[j, i] == 'T') SpriteSheetDraw(sB, _OBJ_SignSS_Tex, tileDraw, Color.White, 6, 1, 2);
+                            //Sign Warning
+                            if (MapData[j, i] == 'U') SpriteSheetDraw(sB, _OBJ_SignSS_Tex, tileDraw, Color.White, 6, 1, 3);
+                            //Sign Left
+                            if (MapData[j, i] == 'V') SpriteSheetDraw(sB, _OBJ_SignSS_Tex, tileDraw, Color.White, 6, 1, 4);
+                            //Sign Right
+                            if (MapData[j, i] == 'W') SpriteSheetDraw(sB, _OBJ_SignSS_Tex, tileDraw, Color.White, 6, 1, 5);
+
+
                             //Foliage                            
                             
                         }

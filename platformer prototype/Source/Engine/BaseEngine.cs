@@ -196,13 +196,12 @@ namespace Platformer_Prototype
                     if (map[j, i] == '♂')
                     {
                         npc++;
-                        FriendNPC = new NPC(Content, null, NPC.npcType.FRIENDLY, 28, 30,npc);
+                        FriendNPC = new NPC(Content, null, NPC.npcType.FRIENDLY, 28, 30, npc);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         FriendNPC.Position = NPCSpawn;
                         FriendNPC.isDead = false;
                         FriendNPC.runPlanes.X += FriendNPC.Position.X;
                         FriendNPC.runPlanes.Y += FriendNPC.Position.X;
-                        FriendNPC.TextTalk = "I want\nyour hat!";
                         NPC_F.Add(FriendNPC);
 
                         //Friendly Random Colours
@@ -219,11 +218,10 @@ namespace Platformer_Prototype
                     if (map[j, i] == '↕')
                     {
                         npc++;
-                        SignNPC = new NPC(Content, null, NPC.npcType.SIGN, 32, 32,npc);
+                        SignNPC = new NPC(Content, null, NPC.npcType.SIGN, 32, 32, npc);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         SignNPC.Position = NPCSpawn;
                         SignNPC.isDead = false;
-                        SignNPC.TextTalk = "This is\na sign lol";
                         NPC_F.Add(SignNPC);
                     }
 
@@ -244,8 +242,8 @@ namespace Platformer_Prototype
                         Platform Ver = new Platform(Content);
                         Ver.Position = new Vector2(tileDraw.X, tileDraw.Y);
                         Ver.Set(new Vector2(-64, 64), false, false);
-                        Ver.runPlanes.X += Ver.Position.X;
-                        Ver.runPlanes.Y += Ver.Position.X;
+                        Ver.runPlanes.X += Ver.Position.Y;
+                        Ver.runPlanes.Y += Ver.Position.Y;
                         Platforms.Add(Ver);
                     }
                 }
