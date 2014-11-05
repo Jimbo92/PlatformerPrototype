@@ -27,6 +27,8 @@ namespace Platformer_Prototype
         public SpriteFont Font;
         public npcType type;
 
+        private GoalManager gm;
+
         public Vector2 Position;
         public Rectangle Bounds;
         public Vector2 Speed;
@@ -307,10 +309,10 @@ namespace Platformer_Prototype
 
         }
 
-        public void Update(BaseEngine getBEngine,GoalManager gm)
+        public void Update(BaseEngine getBEngine,GoalManager g)
         {
             BEngine = getBEngine;
-
+            gm = g;
             Animations();
 
             Collisions();
@@ -318,7 +320,7 @@ namespace Platformer_Prototype
             
       
 
-            if (type == npcType.SIGN || type == npcType.FRIENDLY)
+            if (type == npcType.SIGN || type == npcType.FRIENDLY && npcID < gm.Speech.Count)
                 TextTalk = gm.Speech[npcID];
 
             Position += platMod;
@@ -624,7 +626,7 @@ namespace Platformer_Prototype
                 sB.Draw(SpeechBubble_Tex, SpeechBubble_Rect, Color.SlateGray * TextBubbleFadeValue);
                 sB.DrawString(Font, TextTalk, new Vector2(SpeechBubble_Rect.X + 5, SpeechBubble_Rect.Y + 5), Color.Silver * TextBubbleFadeValue, 0, Vector2.Zero, 0.75f, SpriteEffects.None, 0);
 
-                if (BEngine.player.Bounds.Intersects(TextDisplayBounds))
+                if (BEngine.player.Bounds.Intersects(TextDisplayBounds) && gm.Speech[npcID] != "(none)")
                 {
                     TextBubbleFadeValue += 0.05f;
                     if (TextBubbleFadeValue >= 1)

@@ -141,6 +141,15 @@ namespace Platformer_Prototype
                     Global_GameState.ZoneState = Global_GameState.EZoneState.Grasslands;
                 }
             }
+            //Grasslands
+            WarpDoors[1] = new Rectangle(324 + (int)Camera.Position.X, 504 + (int)Camera.Position.Y, 32, 32);
+            if (player.Bounds.Intersects(WarpDoors[1])) {
+                if (Input.KeyboardPressed(Keys.Enter)) {
+                    WarpEffect.CurrentFrame = 1;
+                    MapLoading = true;
+                    Global_GameState.ZoneState = Global_GameState.EZoneState.Beach;
+                }
+            }
         }
 
         private void LoadupMapEntities()
@@ -290,7 +299,12 @@ namespace Platformer_Prototype
                     }; break;
                 case Global_GameState.EZoneState.Beach:
                     {
-
+                        //Load Level Data
+                        map = MapLoader.LoadMapData("beach");
+                        BackMapTextures = MapLoader.LoadMapData("beach_back");
+                        ForeMapTextures = MapLoader.LoadMapData("beach_fore");
+                        MapEffectTextures = MapLoader.LoadMapData("beach_eff");
+                        //--------------------//
 
                     }; break;
                 case Global_GameState.EZoneState.Mines:

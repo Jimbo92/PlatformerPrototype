@@ -47,6 +47,7 @@ namespace Platformer_Prototype
 
         public int Width = 30;
         public int Height = 32;
+        public bool horCollide;
 
         private BaseEngine BEngine;
         private Game1 game1;
@@ -123,6 +124,9 @@ namespace Platformer_Prototype
 
         public void Collisions()
         {
+
+            horCollide = false;
+            
             // Check for Map boundries-----------------
             if (Position.Y > game1.GraphicsDevice.Viewport.Height)
             {
@@ -474,7 +478,7 @@ namespace Platformer_Prototype
                                         {
                                             Rotation = -8;
                                             Speed.X = -7f;
-                                            Speed.Y = -5f;
+                                            Speed.Y = -5f / yFriction;
                                             returner = true;
                                         }
 
@@ -489,7 +493,7 @@ namespace Platformer_Prototype
                                         {
                                             Rotation = 8;
                                             Speed.X = 7f;
-                                            Speed.Y = -5f;
+                                            Speed.Y = -5f / yFriction;
                                             returner = true;
                                         }
 
@@ -594,6 +598,11 @@ namespace Platformer_Prototype
             //Gravity--------------
 
             bool Checked = false;
+            if (horCollide && checks[0] == false && checks[1] == false) {
+                yFriction = 0.65f;
+                Checked = true;
+            }
+
             if (!Checked)
             {
                 if (checks[0] == true)
@@ -637,6 +646,8 @@ namespace Platformer_Prototype
                     Speed.Y = 2;
             }
 
+       
+
             //---------------------
         
        
@@ -665,7 +676,7 @@ namespace Platformer_Prototype
 
             if (Bounds.Intersects(target))
             {
-
+                horCollide = true;
                 if (Speed.X > 0) {
                     for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
