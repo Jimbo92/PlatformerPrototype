@@ -30,7 +30,7 @@ namespace Platformer_Prototype
             for (int i = 0; i < 5; i++)
             {
                 backgroundNear[i] = new Sprite(getContent, "backgrounds/bg_grasslands", 828, 358);
-                background[i] = new Sprite(getContent, "backgrounds/bg_grasslands", 1024, 600);
+                background[i] = new Sprite(getContent, "backgrounds/bg_grasslands", 1023, 512);
                 Clouds[i] = new Sprite(getContent, "backgrounds/cloud1", 128, 71);
             }
         }
@@ -39,7 +39,7 @@ namespace Platformer_Prototype
         public void Draw(SpriteBatch sB)
         {
             for (int i = 0; i < 5; i++)
-                background[i].Draw(sB, new Vector2((background[i].Texture.Width * i) + Camera.Position.X / 4, Camera.Position.Y / 4), Vector2.Zero, 0, SpriteEffects.None, Color.Green * 0.2f);
+                background[i].Draw(sB, new Vector2((background[i].Texture.Width * i) + Camera.Position.X / 4, Camera.Position.Y / 4 + 100), Vector2.Zero, 0, SpriteEffects.None, Color.Green * 0.2f);
 
             Sun.Draw(sB, new Vector2(100, 100 + Camera.Position.Y / 8), 0, SpriteEffects.None);
 

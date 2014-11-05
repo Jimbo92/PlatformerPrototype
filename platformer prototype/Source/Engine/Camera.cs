@@ -38,6 +38,7 @@ namespace Platformer_Prototype
         static private Game1 game1;
         static private Player player;
         static public Rectangle MouseRect;
+        static private BaseEngine Bengine;
 
         public static void Flybuy(List<Vector4> Waypoints)
         {
@@ -115,6 +116,7 @@ namespace Platformer_Prototype
 
         static public void Initialize(Player getPlayer, BaseEngine be)
         {
+            Bengine = be;
             player = getPlayer;
             Position = new Vector2(-(be.PlayerStart.X - 400), be.PlayerStart.Y + 138); ;
         }
@@ -153,6 +155,9 @@ namespace Platformer_Prototype
                     Position.Y = 0;
                 if (Position.X > 0)
                     Position.X = 0;
+                
+                if (Position.X < -(Bengine.map.GetLength(1) * 32) + 800 - 1)
+                    Position.X = -(Bengine.map.GetLength(1) * 32) + 800 - 1;
 
 
 
@@ -205,6 +210,13 @@ namespace Platformer_Prototype
 
             if (CameraMode == CameraState.WAYPOINTS)
             {
+                if (Input.KeyboardPressed(Keys.Enter))
+                {
+                    CameraMode = CameraState.FOLLOW;
+                    isControlled = false;
+                }
+
+
                 if (nextDelay == 0)
                 {
                     Position.X += Speed.X;
@@ -256,3 +268,4 @@ namespace Platformer_Prototype
         }
     }
 }
+

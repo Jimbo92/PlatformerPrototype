@@ -258,7 +258,7 @@ namespace Platformer_Prototype
                     {
                         Platform Ver = new Platform(Content);
                         Ver.Position = new Vector2(tileDraw.X, tileDraw.Y);
-                        Ver.Set(new Vector2(-64, 64), false, false);
+                        Ver.Set(new Vector2(-50, 50), false, false);
                         Ver.runPlanes.X += Ver.Position.Y;
                         Ver.runPlanes.Y += Ver.Position.Y;
                         Platforms.Add(Ver);
