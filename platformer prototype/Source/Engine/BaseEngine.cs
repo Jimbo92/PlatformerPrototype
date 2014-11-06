@@ -81,6 +81,7 @@ namespace Platformer_Prototype
         public char[,] ForeMapTextures = MapLoader.LoadMapData("hub_fore");
         public char[,] MapEffectTextures = MapLoader.LoadMapData("hub_eff");
         public Rectangle[] WarpDoors = new Rectangle[6];
+        private int[] RequiredCrystals = new int[6];
 
 
         public int tileSize = 32;
@@ -88,6 +89,8 @@ namespace Platformer_Prototype
         //Items
         private Item Crystal;
         public Item WoodBox;
+
+
 
         //-----------------------------------------------------
 
@@ -104,11 +107,16 @@ namespace Platformer_Prototype
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
             WarpPad = new Sprite(getContent, "objects/warppadss", 48, 48, 1, 10);
             WarpEffect = new Sprite(getContent, "objects/warpeffectss", 96, 96, 5, 6);
-            Crystal = new Item(Content, "objects/items/gemblue", 48, 48);
+            Crystal = new Item(Content, "objects/items/gemblue", 32, 32);
             WoodBox = new Item(Content, "objects/box", 32, 32);
             WarpFade_Tex = getContent.Load<Texture2D>("editor/black");
 
             background = new Background(getContent, getScreenSize);
+
+
+            //Warp Door Data
+            RequiredCrystals[0] = 1;
+            RequiredCrystals[1] = 3;
         }
 
         public void drawTriangle(SpriteBatch sB, Triangle target)
@@ -123,8 +131,8 @@ namespace Platformer_Prototype
         {
             switch (Global_GameState.ZoneState)
             {
-                case Global_GameState.EZoneState.Grasslands: game1.BGColour = Color.LightSkyBlue; break;
-                case Global_GameState.EZoneState.HubWorld: game1.BGColour = Color.LightSkyBlue; break;
+                case Global_GameState.EZoneState.Grasslands: game1.BGColour = Color.SkyBlue; break;
+                case Global_GameState.EZoneState.HubWorld: game1.BGColour = Color.SkyBlue; break;
             }
         }
 
@@ -133,22 +141,26 @@ namespace Platformer_Prototype
             //Grasslands
             WarpDoors[0] = new Rectangle(765 + (int)Camera.Position.X, 344 + (int)Camera.Position.Y, 32, 32);
             if (player.Bounds.Intersects(WarpDoors[0]))
-            {
-                if (Input.KeyboardPressed(Keys.Enter))
-                {
-                    WarpEffect.CurrentFrame = 1;
-                    MapLoading = true;
-                    Global_GameState.ZoneState = Global_GameState.EZoneState.Grasslands;
-                }
+            {             
+                if (GUI.NumOfCrystals >= 1)
+                    if (Input.KeyboardPressed(Keys.Enter))
+                    {
+                        WarpEffect.CurrentFrame = 1;
+                        MapLoading = true;
+                        Global_GameState.ZoneState = Global_GameState.EZoneState.Grasslands;
+                    }
             }
-            //Grasslands
-            WarpDoors[1] = new Rectangle(324 + (int)Camera.Position.X, 504 + (int)Camera.Position.Y, 32, 32);
-            if (player.Bounds.Intersects(WarpDoors[1])) {
-                if (Input.KeyboardPressed(Keys.Enter)) {
-                    WarpEffect.CurrentFrame = 1;
-                    MapLoading = true;
-                    Global_GameState.ZoneState = Global_GameState.EZoneState.Beach;
-                }
+            //Beach
+            WarpDoors[1] = new Rectangle(275 + (int)Camera.Position.X, 504 + (int)Camera.Position.Y, 32, 32);
+            if (player.Bounds.Intersects(WarpDoors[1]))
+            {                
+                if (GUI.NumOfCrystals >= 3)
+                    if (Input.KeyboardPressed(Keys.Enter))
+                    {
+                        WarpEffect.CurrentFrame = 1;
+                        MapLoading = true;
+                        Global_GameState.ZoneState = Global_GameState.EZoneState.Beach;
+                    }
             }
         }
 
@@ -793,7 +805,27 @@ namespace Platformer_Prototype
                         Platforms[i].Draw(sB);
             }
 
+            //Draw Doorways
+            if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld && !MapLoading)
+            {
+                foreach (Rectangle rect in WarpDoors)
+                {
+                    sB.Draw(Textures._OBJ_Door_Tex[0], rect, Color.White);
+                    sB.Draw(Textures._OBJ_Door_Tex[1], new Rectangle(rect.X, rect.Y - 32, rect.Width, rect.Height), Color.White);
+                }
 
+                Color TextColour;
+
+                for (int i = 0; i < 6; i++)
+                {
+                    if (GUI.NumOfCrystals >= RequiredCrystals[i])
+                        TextColour = Color.Gold;
+                    else
+                        TextColour = Color.DarkRed;
+
+                    sB.DrawString(game1.font, RequiredCrystals[i].ToString(), new Vector2(WarpDoors[i].X + 22, WarpDoors[i].Y + 5), TextColour, 0, game1.font.MeasureString(RequiredCrystals[i].ToString()), .75f, SpriteEffects.None, 0);
+                }
+            }
 
             //Hard Coded Texture Tiles// Water, Lava, Rain, Weather Effects
 
@@ -858,13 +890,6 @@ namespace Platformer_Prototype
                 }
 
             Textures.DrawForegroundMapTextures(sB, ForeMapTextures, tileSize, Vector2.Zero, game1);
-
-            //Draw Doorways
-            if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld && !MapLoading)
-                foreach (Rectangle rect in WarpDoors)
-                {
-                    sB.Draw(Textures._ITEM_WoodBox_Tex, rect, Color.Red);
-                }
 
             //Warp Effect
             if (isWarping)

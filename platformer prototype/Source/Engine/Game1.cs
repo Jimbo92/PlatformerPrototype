@@ -84,6 +84,9 @@ namespace Platformer_Prototype
             if (Input.KeyboardPressed(Keys.Escape))
                 Exit();
 
+            if (Global_GameState.GameState == Global_GameState.EGameState.EDITOR)
+                BGColour = Color.CornflowerBlue;
+
             if (Input.KeyboardPressed(Keys.F4))
             {
                 if (!graphics.IsFullScreen)
@@ -139,8 +142,6 @@ namespace Platformer_Prototype
                 case Global_GameState.EGameState.PLAY:
                     {
                         BEngine.Draw(spriteBatch);
-
-                        
 
                         if (DebugMode)
                         {

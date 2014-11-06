@@ -28,6 +28,7 @@ namespace Platformer_Prototype
         static public Texture2D _ITEM_WoodBox_Tex;
         static public Texture2D[] _OBJ_Platforms_Tex = new Texture2D[2];
         static public Texture2D _OBJ_SignSS_Tex;
+        static public Texture2D[] _OBJ_Door_Tex = new Texture2D[4];
 
         //Map Textures
         //Grass
@@ -78,6 +79,11 @@ namespace Platformer_Prototype
             }
             //Signs
             _OBJ_SignSS_Tex = getContent.Load<Texture2D>("objects/signss");
+            //Doors
+            for (int i = 0; i < 4; i++)
+            {
+                _OBJ_Door_Tex[i] = getContent.Load<Texture2D>("objects/doors/door" + i);
+            }
 
 
             //Map Textures
