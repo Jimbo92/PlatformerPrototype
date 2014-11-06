@@ -36,6 +36,7 @@ namespace Platformer_Prototype
                 if (CurrentTile == '►') return "Enemy Spawn Walker";
                 if (CurrentTile == '◄') return "Enemy Spawn Fly";
                 if (CurrentTile == '↕') return "Sign With Text";
+                if (CurrentTile == '‼') return "Switch Trigger";
                 
 
             }
