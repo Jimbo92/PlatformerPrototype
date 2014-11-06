@@ -29,6 +29,7 @@ namespace Platformer_Prototype
         static public Texture2D[] _OBJ_Platforms_Tex = new Texture2D[2];
         static public Texture2D _OBJ_SignSS_Tex;
         static public Texture2D[] _OBJ_Door_Tex = new Texture2D[4];
+        static public Texture2D[] _OBJ_Switch_Tex = new Texture2D[2];
 
         //Map Textures
         //Grass
@@ -76,6 +77,7 @@ namespace Platformer_Prototype
             for (int i = 0; i < 2; i++)
             {
                 _OBJ_Platforms_Tex[i] = getContent.Load<Texture2D>("editor/triggerplatform" + i);
+                _OBJ_Switch_Tex[i] = getContent.Load<Texture2D>("objects/switch/switch" + i);
             }
             //Signs
             _OBJ_SignSS_Tex = getContent.Load<Texture2D>("objects/signss");
@@ -221,6 +223,9 @@ namespace Platformer_Prototype
                                 //Trigger Enemy Spawn Fly
                                 if (MapData[j, i] == '◄')
                                     sB.Draw(_DBG_ETrigger_Tex[2], tileDraw, Color.White);
+                                //Trigger Switch
+                                if (MapData[j, i] == '‼')
+                                    sB.Draw(_OBJ_Switch_Tex[0], tileDraw, Color.White);
 
                             }
 

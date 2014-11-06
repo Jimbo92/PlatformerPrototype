@@ -58,6 +58,7 @@ namespace Platformer_Prototype
         public List<NPC> NPC_E = new List<NPC>(100);
         public List<NPC> NPC_F = new List<NPC>(100);
         public List<Platform> Platforms = new List<Platform>();
+        public List<Lever> Switches = new List<Lever>();
 
         public Vector2 NPCSpawn;
         //Enemy Types;
@@ -277,6 +278,14 @@ namespace Platformer_Prototype
                         Ver.runPlanes.Y += Ver.Position.Y;
                         Platforms.Add(Ver);
                     }
+
+                    //Switch Spawn
+                    if (map[j, i] == '‼')
+                    {
+                        Lever Switch = new Lever();
+                        Switch.Rect = tileDraw;
+                        Switches.Add(Switch);
+                    }
                 }
         }
 
@@ -285,6 +294,7 @@ namespace Platformer_Prototype
             NPC_E.Clear();
             NPC_F.Clear();
             Platforms.Clear();
+            Switches.Clear();
         }
 
         private void ZoneSorter()
@@ -465,6 +475,11 @@ namespace Platformer_Prototype
             if (DrawDoors)
             HubWorldData();
 
+            //Update Switches
+            foreach (Lever lever in Switches)
+            {
+                lever.Update(this);
+            }
 
         }
 
@@ -809,6 +824,18 @@ namespace Platformer_Prototype
                 if (Platforms[i].Position.X + Camera.Position.X > 0 - 32 + 0 && Platforms[i].Position.X + Camera.Position.X < game1.GraphicsDevice.Viewport.Width)
                     if (Platforms[i].Position.Y + Camera.Position.Y > 0 - 32 + 0 && Platforms[i].Position.Y + Camera.Position.Y < game1.GraphicsDevice.Viewport.Height)
                         Platforms[i].Draw(sB);
+            }
+
+            //Draw Switches
+            foreach (Lever lever in Switches)
+            {
+                lever.Draw(sB);
+
+                if (player.Bounds.Intersects(new Rectangle(lever.Rect.X + (int)Camera.Position.X, lever.Rect.Y + (int)Camera.Position.Y, 32, 32)))
+                {
+                    if (Input.KeyboardPressed(Keys.Enter))
+                    lever.isOn = true;
+                }
             }
 
             //Draw Doorways
