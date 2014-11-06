@@ -90,6 +90,8 @@ namespace Platformer_Prototype
         private Item Crystal;
         public Item WoodBox;
 
+        private bool DrawDoors;
+
 
 
         //-----------------------------------------------------
@@ -397,6 +399,12 @@ namespace Platformer_Prototype
 
                     npc = -1;
                     BGColours();
+
+                    if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld)
+                        DrawDoors = true;
+                    else
+                        DrawDoors = false;
+
                     LoadupMapEntities();
                     PlayerWarpInTime = 0;
                     player.Position = PlayerStart;
@@ -454,10 +462,8 @@ namespace Platformer_Prototype
             gm.Update(player);
 
             //HubWorld Data
-            if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld)
-            {
-                HubWorldData();
-            }
+            if (DrawDoors)
+            HubWorldData();
 
 
         }
@@ -806,7 +812,7 @@ namespace Platformer_Prototype
             }
 
             //Draw Doorways
-            if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld && !MapLoading)
+            if (DrawDoors)
             {
                 foreach (Rectangle rect in WarpDoors)
                 {

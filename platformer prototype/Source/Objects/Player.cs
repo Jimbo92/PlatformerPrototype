@@ -41,7 +41,7 @@ namespace Platformer_Prototype
 
         public float xFriction = 1;
         public float yFriction = 1;
-        int jump = 7;
+        float jump = 6f;
 
         public float Rotation = 0;
 
@@ -468,7 +468,7 @@ namespace Platformer_Prototype
                         {
                             if (!returner)
                             {
-                                if (Input.KeyboardPressed(Keys.W) || Input.KeyboardPress(Keys.Up))
+                                if (Input.KeyboardPressed(Keys.W) || Input.KeyboardPressed(Keys.Up))
                                 {
                                     Position.X += 1;
                                     updateBounds(Camera.Position);
@@ -477,8 +477,8 @@ namespace Platformer_Prototype
                                         if (Bounds.Intersects(BEngine.Canvas[i]))
                                         {
                                             Rotation = -8;
-                                            Speed.X = -7f;
-                                            Speed.Y = -5f / yFriction;
+                                            Speed.X = -5f;
+                                            Speed.Y = -jump / yFriction;
                                             returner = true;
                                         }
 
@@ -492,8 +492,8 @@ namespace Platformer_Prototype
                                         if (Bounds.Intersects(BEngine.Canvas[i]))
                                         {
                                             Rotation = 8;
-                                            Speed.X = 7f;
-                                            Speed.Y = -5f / yFriction;
+                                            Speed.X = 5f;
+                                            Speed.Y = -jump / yFriction;
                                             returner = true;
                                         }
 
@@ -766,7 +766,6 @@ namespace Platformer_Prototype
 
         public void checkTollisionsX(Triangle target)
         {
-            jump = 7;
             if (checkAllLines(target) == true)
             {        
            

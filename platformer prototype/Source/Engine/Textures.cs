@@ -359,7 +359,7 @@ namespace Platformer_Prototype
                             if (MapData[j, i] == '+') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 1);
                             //------//Sand No Top Foreback//------//
                             //Sand Solid Mid NoTop
-                            if (MapData[j, i] == '-') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 19);
+                            if (MapData[j, i] == '-') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 30);
                             //------------//Sand Background//---------//
                             //Sand Solid Mid NoTop Behind
                             if (MapData[j, i] == '.') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.Gray, 6, 7, 19);
