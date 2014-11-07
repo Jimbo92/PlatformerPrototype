@@ -41,7 +41,7 @@
     <Compile Include="Source\Engine\Global_GameState.cs" />
     <Compile Include="Source\Engine\GoalManager.cs" />
     <Compile Include="Source\Engine\HubWorld.cs" />
-    <Compile Include="Source\Engine\Item.cs" />
+    <Compile Include="Source\Objects\Item.cs" />
     <Compile Include="Source\Map Editor\TileIndex.cs" />
     <Compile Include="Source\Objects\Door.cs" />
     <Compile Include="Source\Objects\Lever.cs" />

@@ -20,7 +20,6 @@ namespace Platformer_Prototype
         public Vector2 Speed;
         public int Width = 32;
         public int Height = 32;
-
         public bool hor;
 
 
@@ -134,13 +133,13 @@ namespace Platformer_Prototype
              }
 
                 if (left)
-                    Speed.X = -1;
+                    Speed.X = -0.75f;
                 if (right)
-                    Speed.X = 1;
+                    Speed.X = 0.75f;
                 if (up)
-                    Speed.Y = -1;
+                    Speed.Y = -0.75f;
                 if (down)
-                    Speed.Y = 1;
+                    Speed.Y = 0.75f;
        
         }
 

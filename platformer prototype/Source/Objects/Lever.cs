@@ -18,6 +18,7 @@ namespace Platformer_Prototype
         public Texture2D Tex;
         public bool isOn = false;
         public int id;
+        private Color Colour;
 
         public void Update(BaseEngine getBengine)
         {
@@ -33,12 +34,21 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
+            if (id == 1)
+                Colour = Color.LightBlue;
+            if (id == 2)
+                Colour = Color.LightGreen;
+            if (id == 3)
+                Colour = Color.Orange;
+            if (id == 4)
+                Colour = Color.LightYellow;
+
             if (isOn)
                 Tex = Textures._OBJ_Switch_Tex[1];
             else
                 Tex = Textures._OBJ_Switch_Tex[0];
 
-            sB.Draw(Tex, new Rectangle(Rect.X + (int)Camera.Position.X, Rect.Y + (int)Camera.Position.Y, Rect.Width, Rect.Height), Color.White);
+            sB.Draw(Tex, new Rectangle(Rect.X + (int)Camera.Position.X, Rect.Y + (int)Camera.Position.Y, Rect.Width, Rect.Height), Colour);
         }
 
     }

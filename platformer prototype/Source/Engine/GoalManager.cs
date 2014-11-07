@@ -44,10 +44,10 @@ namespace Platformer_Prototype
                 Speech.Add("Arrrrrrr! Use this\nto get back up the Cloney!");
                 Speech.Add("Arrrrrrr! give me your\nhat ,maggot");
 
-                bind[0] = 1;
-                bind[1] = 2;
-                bind[2] = 2;
-                bind[3] = 1;
+                bind[0] = 2;
+                bind[1] = 1;
+                bind[2] = 1;
+                bind[3] = 2;
                               
             }
 

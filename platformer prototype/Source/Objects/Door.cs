@@ -14,17 +14,7 @@ using Microsoft.Xna.Framework.GamerServices;
 namespace Platformer_Prototype
 {
     class Door
-    {
-        public enum color
-        {
-            blue = 1,
-            green = 2,
-            red = 3,
-            yellow = 4,
-        }
-        public color Shade;
-
-       
+    {   
         public Rectangle rect;
         public Texture2D texture;
         public bool open;
@@ -33,38 +23,31 @@ namespace Platformer_Prototype
         public void Update(BaseEngine getBengine)
         {
             foreach (Lever l in getBengine.Switches)
-            {
                 if (l.id == id)
-                {
-                    
                     open = l.isOn;
-                }
-             
-            }
-
         }
 
         public bool checkDoors(BaseEngine getBengine)
-        {
-           
+        {     
             if (getBengine.player.Bounds.Intersects(new Rectangle(rect.X + (int)Camera.Position.X, rect.Y + (int)Camera.Position.Y, 32, 32)) && !open)
-            {
-     
                 return true;
-            }
             else
-            {
                 return false;
-            }
         }
 
         public void Draw(SpriteBatch sB)
         {
-            if (!open)
-            {      
-                texture = Textures._OBJ_Lock_Tex[(int)Shade];
+            if (id == 1)
+                texture = Textures._OBJ_Lock_Tex[0];
+            if (id == 2)
+                texture = Textures._OBJ_Lock_Tex[1];
+            if (id == 3)
+                texture = Textures._OBJ_Lock_Tex[2];
+            if (id == 4)
+                texture = Textures._OBJ_Lock_Tex[3];
+
+            if (!open)                 
                 sB.Draw(texture, new Rectangle(rect.X + (int)Camera.Position.X, rect.Y + (int)Camera.Position.Y, rect.Width, rect.Height), Color.White);
-            }
         }
     }
 }

@@ -60,6 +60,9 @@ namespace Platformer_Prototype
 
         private float capOffset;
 
+        private bool platX = false;
+        private bool platY = false;
+
         //--------------------------------------------
 
         public void feedback()
@@ -262,8 +265,6 @@ namespace Platformer_Prototype
                 }
             }
 
-            bool platX = false;
-            bool platY = false;
             platMod = Vector2.Zero;
             if (!noclip)
             {
@@ -279,7 +280,6 @@ namespace Platformer_Prototype
                     {
                             if (Bounds.Intersects(p.Bounds))
                             {
-
                                 if (platX == false)
                                 {
                                     platMod.X += (int)p.Speed.X;
@@ -288,9 +288,11 @@ namespace Platformer_Prototype
 
                                 if (platY == false)
                                 {
+                                    
                                     platMod.Y += (int)p.Speed.Y;
                                     platY = true;
                                 }
+
 
 
 

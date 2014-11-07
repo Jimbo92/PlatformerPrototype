@@ -333,7 +333,6 @@ namespace Platformer_Prototype
                         l++;
                         Door Lock = new Door();
                         Lock.rect = tileDraw;
-                        Lock.Shade = Door.color.blue;
                         Lock.id = gm.bind[l - 1]; 
                         Doors.Add(Lock);
 
