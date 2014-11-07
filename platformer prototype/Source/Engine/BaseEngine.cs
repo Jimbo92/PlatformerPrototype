@@ -66,6 +66,7 @@ namespace Platformer_Prototype
         NPC CrawlerEnemy;
         NPC WalkerEnemy;
         NPC FlyerEnemy;
+        NPC FishEnemy;
         NPC FriendNPC;
         NPC SignNPC;
 
@@ -261,6 +262,15 @@ namespace Platformer_Prototype
                         FlyerEnemy.runPlanes.X += FlyerEnemy.Position.X;
                         FlyerEnemy.runPlanes.Y += FlyerEnemy.Position.X;
                         NPC_E.Add(FlyerEnemy);
+                    }
+                    //Fish
+                    if (map[j, i] == '§')
+                    {
+                        FishEnemy = new NPC(Content, "objects/enemies/flyss", NPC.npcType.FISH, 24, 16, 0);
+                        NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
+                        FishEnemy.Position = NPCSpawn;
+                        FishEnemy.isDead = false;
+                        NPC_E.Add(FishEnemy);
                     }
                     //Friendly
                     if (map[j, i] == '♂')

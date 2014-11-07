@@ -37,14 +37,9 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch sB)
         {
-            if (id == 1)
-                texture = Textures._OBJ_Lock_Tex[0];
-            if (id == 2)
-                texture = Textures._OBJ_Lock_Tex[1];
-            if (id == 3)
-                texture = Textures._OBJ_Lock_Tex[2];
-            if (id == 4)
-                texture = Textures._OBJ_Lock_Tex[3];
+            for (int i = 1; i < 5; i++)
+                if (id == i)
+                    texture = Textures._OBJ_Lock_Tex[i -1];
 
             if (!open)                 
                 sB.Draw(texture, new Rectangle(rect.X + (int)Camera.Position.X, rect.Y + (int)Camera.Position.Y, rect.Width, rect.Height), Color.White);

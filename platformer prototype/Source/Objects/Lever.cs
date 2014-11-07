@@ -35,13 +35,13 @@ namespace Platformer_Prototype
         public void Draw(SpriteBatch sB)
         {
             if (id == 1)
-                Colour = Color.LightBlue;
+                Colour = Color.CornflowerBlue;
             if (id == 2)
-                Colour = Color.LightGreen;
+                Colour = Color.LawnGreen;
             if (id == 3)
                 Colour = Color.Orange;
             if (id == 4)
-                Colour = Color.LightYellow;
+                Colour = Color.Yellow;
 
             if (isOn)
                 Tex = Textures._OBJ_Switch_Tex[1];

@@ -56,7 +56,7 @@ namespace Platformer_Prototype
         static public Texture2D[] _TILE_Shade_Effect = new Texture2D[3];
 
         //Debug Textures
-        static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[8];
+        static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[9];
         static public Texture2D[] _DBG_ETrigger_Tex = new Texture2D[4];
         static public Texture2D[] _DBG_Lava_Tex = new Texture2D[2];
         static public Texture2D _DBG_WaterTop_Tex;
@@ -132,7 +132,7 @@ namespace Platformer_Prototype
 
 
             //Debug Textures & Editor
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 9; i++)
             {
                 _DBG_Trigger_Tex[i] = getContent.Load<Texture2D>("editor/trigger" + i);
             }
@@ -248,6 +248,9 @@ namespace Platformer_Prototype
                                 //Trigger Switch
                                 if (MapData[j, i] == '‼')
                                     sB.Draw(_OBJ_Switch_Tex[0], tileDraw, Color.White);
+                                //Trigger Switch
+                                if (MapData[j, i] == '¶')
+                                    sB.Draw(_DBG_Trigger_Tex[8], tileDraw, Color.White);
 
                             }
 

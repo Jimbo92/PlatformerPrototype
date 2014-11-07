@@ -19,6 +19,7 @@ namespace Platformer_Prototype
             WALKER,
             FLYER,
             CRAWLER,
+            FISH,
             FRIENDLY,
             SIGN,
         }
@@ -35,6 +36,8 @@ namespace Platformer_Prototype
         public bool isDead = true;
         public int Width = 24;
         public int Height = 24;
+
+        public Rectangle CheckBox;
 
         public Rectangle TextDisplayBounds;
 
@@ -72,6 +75,7 @@ namespace Platformer_Prototype
         private Texture2D SpeechBubble_Tex;
         private Rectangle SpeechBubble_Rect;
         private bool isWalking;
+        private int DartTimer = 30;
 
         public Color colour = Color.White;
 
@@ -107,6 +111,15 @@ namespace Platformer_Prototype
                     sprite.CurrentFrame = 0;
                 else
                     sprite.CurrentFrame = 1;
+
+                if (Speed.X >= -1)
+                {
+                    SprEff = SpriteEffects.FlipHorizontally;
+                }
+                else if (Speed.X <= 1)
+                {
+                    SprEff = SpriteEffects.None;
+                }
 
 
                 if (AnimTimer > 20)
@@ -316,29 +329,60 @@ namespace Platformer_Prototype
             Animations();
 
             Collisions();
-            
-            
-      
+                      
 
             if (type == npcType.SIGN || type == npcType.FRIENDLY && npcID < gm.Speech.Count)
                 TextTalk = gm.Speech[npcID];
 
             Position += platMod;
 
-            if (!controllable && type != npcType.SIGN)
+            if (!controllable && type != npcType.SIGN && type != npcType.FISH)
             {
                 if (Position.X < runPlanes.X)
                 {
                     right = true;
                     left = false;
-                    SprEff = SpriteEffects.FlipHorizontally;
                 }
 
                 if (Position.X > runPlanes.Y)
                 {
                     right = false;
                     left = true;
-                    SprEff = SpriteEffects.None;
+                }
+            }
+            else if (type == npcType.FISH)
+            {
+                CheckBox = new Rectangle(Bounds.X - 64, Bounds.Y - 64, 128, 128);
+
+                if (BEngine.player.Bounds.Intersects(CheckBox))
+                {
+                    Vector2 Dir = BEngine.player.Position - Position;
+                    Dir.Normalize();
+                    Speed += Dir * 0.1f;
+                }
+                else
+                {
+                   Random rand = new Random();
+                   
+                   DartTimer--;
+                   if (DartTimer <= 0)
+                   {
+                       int randvalue = rand.Next(10);
+                   
+                       if (randvalue == 0)
+                           Speed.X += 1.25f;
+                       else if (randvalue == 1)
+                           Speed.X -= 1.25f;
+                       else if (randvalue == 2)
+                           Speed.Y += 1.25f;
+                       else if (randvalue == 3)
+                           Speed.Y -= 1.25f;
+                       else if (randvalue >= 4)
+                           Speed = Vector2.Zero;
+                   
+                       DartTimer = 30;
+                   }
+
                 }
             }
             else
@@ -351,7 +395,7 @@ namespace Platformer_Prototype
 
 
             //Gravity--------------
-            if (type != npcType.FLYER)
+            if (type != npcType.FLYER && type != npcType.FISH)
             {
                 bool Checked = false;
                 if (!Checked)
@@ -399,7 +443,7 @@ namespace Platformer_Prototype
             }
 
             //---------------------
-
+            if (type != npcType.FISH)
             if (checks[1] == false)
             {
                 if (left == true)
