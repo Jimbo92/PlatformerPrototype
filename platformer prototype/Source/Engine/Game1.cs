@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using System.IO;
 #endregion
 
 // To-do List
@@ -54,6 +55,13 @@ namespace Platformer_Prototype
             //Sets Mouse cursor invisible
             IsMouseVisible = false;
 
+            //Check if Old Temp Exists and delete
+            if (Directory.Exists(Directory.GetCurrentDirectory() + "/maps/Temp"))
+                Directory.Delete(Directory.GetCurrentDirectory() + "/maps/Temp", true);
+            //Creates a new temp directory
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/maps/Temp"))
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/maps/Temp");
+
             base.Initialize();
         }
 
@@ -82,7 +90,12 @@ namespace Platformer_Prototype
             Input.Begin();
             //Code Bellow This//
             if (Input.KeyboardPressed(Keys.Escape))
+            {
+                if (Directory.Exists(Directory.GetCurrentDirectory() + "/maps/Temp"))
+                    Directory.Delete(Directory.GetCurrentDirectory() + "/maps/Temp", true);
+
                 Exit();
+            }
 
             if (Global_GameState.GameState == Global_GameState.EGameState.EDITOR)
                 BGColour = Color.CornflowerBlue;

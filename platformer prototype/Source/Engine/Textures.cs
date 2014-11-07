@@ -61,9 +61,17 @@ namespace Platformer_Prototype
         static public Texture2D _DBG_WaterBot_Tex;
         static public Texture2D _DBG_Line_Tex;
 
+        //Background Textures
+        //Grasslands
+        static public Texture2D _BG_GrassLands_Tex;
+        //Beach
+        static public Texture2D _BG_Beach_Tex;
+
         static private BaseEngine Bengine;
         static private int SelectorOffset = 40;
         static private Rectangle tileDraw = new Rectangle();
+
+
 
 
 
@@ -132,6 +140,12 @@ namespace Platformer_Prototype
             _DBG_Line_Tex = getContent.Load<Texture2D>("debug/level");
             _DBG_WaterTop_Tex = getContent.Load<Texture2D>("editor/watertopeditor");
             _DBG_WaterBot_Tex = getContent.Load<Texture2D>("editor/waterbottomeditor");
+
+            //Backgrounds
+            //Grasslands
+            _BG_GrassLands_Tex = getContent.Load<Texture2D>("backgrounds/bg_grasslands");
+            //Beach
+            _BG_Beach_Tex = getContent.Load<Texture2D>("backgrounds/bg_beach");
         }
 
         static public void Update(BaseEngine getBengine)

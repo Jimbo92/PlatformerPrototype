@@ -77,10 +77,10 @@ namespace Platformer_Prototype
 
         public bool MapLoading = true;
         public int LoadMapTimer = 2;
-        public char[,] map = MapLoader.LoadMapData("hub");
-        public char[,] BackMapTextures = MapLoader.LoadMapData("hub_back");
-        public char[,] ForeMapTextures = MapLoader.LoadMapData("hub_fore");
-        public char[,] MapEffectTextures = MapLoader.LoadMapData("hub_eff");
+        public char[,] map = MapLoader.LoadMapData("hubworld");
+        public char[,] BackMapTextures = MapLoader.LoadMapData("hubworld_back");
+        public char[,] ForeMapTextures = MapLoader.LoadMapData("hubworld_fore");
+        public char[,] MapEffectTextures = MapLoader.LoadMapData("hubworld_eff");
         public Rectangle[] WarpDoors = new Rectangle[6];
         private int[] RequiredCrystals = new int[6];
 
@@ -88,8 +88,8 @@ namespace Platformer_Prototype
         public int tileSize = 32;
 
         //Items
-        private Item Crystal;
         public Item WoodBox;
+        public Item Crystal;
 
         private bool DrawDoors;
 
@@ -110,8 +110,8 @@ namespace Platformer_Prototype
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
             WarpPad = new Sprite(getContent, "objects/warppadss", 48, 48, 1, 10);
             WarpEffect = new Sprite(getContent, "objects/warpeffectss", 96, 96, 5, 6);
-            Crystal = new Item(Content, "objects/items/gemblue", 32, 32);
             WoodBox = new Item(Content, "objects/box", 32, 32);
+            Crystal = new Item(Content, "objects/items/gemblue", 32, 32);
             WarpFade_Tex = getContent.Load<Texture2D>("editor/black");
 
             background = new Background(getContent, getScreenSize);
@@ -134,8 +134,21 @@ namespace Platformer_Prototype
         {
             switch (Global_GameState.ZoneState)
             {
-                case Global_GameState.EZoneState.Grasslands: game1.BGColour = Color.SkyBlue; break;
-                case Global_GameState.EZoneState.HubWorld: game1.BGColour = Color.SkyBlue; break;
+                case Global_GameState.EZoneState.Grasslands:
+                    {
+                        game1.BGColour = Color.DeepSkyBlue;
+                        background.Background_Tex = Textures._BG_GrassLands_Tex;
+                    }; break;
+                case Global_GameState.EZoneState.Beach:
+                    {
+                        game1.BGColour = Color.LightSkyBlue;
+                        background.Background_Tex = Textures._BG_Beach_Tex;
+                    }; break;
+                case Global_GameState.EZoneState.HubWorld:
+                    {
+                        game1.BGColour = Color.SkyBlue;
+                        background.Background_Tex = Textures._BG_GrassLands_Tex;
+                    }; break;
             }
         }
 
@@ -150,6 +163,7 @@ namespace Platformer_Prototype
                     {
                         WarpEffect.CurrentFrame = 1;
                         MapLoading = true;
+                        ItemSave();
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Grasslands;
                     }
             }
@@ -162,9 +176,30 @@ namespace Platformer_Prototype
                     {
                         WarpEffect.CurrentFrame = 1;
                         MapLoading = true;
+                        ItemSave();
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Beach;
                     }
             }
+        }
+
+        //Saves an ingame temp file
+        private void ItemSave()
+        {
+            StreamWriter sw = new StreamWriter(Directory.GetCurrentDirectory() + "/maps/Temp/" + Global_GameState.ZoneState.ToString() + "_Temp.txt");
+            for (int i = 0; i < map.GetLength(0); i++)
+            {
+                char[] linelist = new char[map.GetLength(1)];
+                for (int j = 0; j < linelist.GetLength(0); j++)
+                {
+                    linelist[j] = map[i, j];
+                    char line = linelist[j];
+                    sw.Write(line);
+                    if (j != linelist.GetLength(0) - 1)
+                        sw.Write(",");
+                }
+                sw.WriteLine();
+            }
+            sw.Close();
         }
 
         private void LoadupMapEntities()
@@ -299,59 +334,16 @@ namespace Platformer_Prototype
 
         private void ZoneSorter()
         {
-            switch (Global_GameState.ZoneState)
-            {
-                case Global_GameState.EZoneState.HubWorld:
-                    {
-                        //Load Level Data
-                        map = MapLoader.LoadMapData("hub");
-                        BackMapTextures = MapLoader.LoadMapData("hub_back");
-                        ForeMapTextures = MapLoader.LoadMapData("hub_fore");
-                        MapEffectTextures = MapLoader.LoadMapData("hub_eff");
-                        //--------------------//
+            //Load Level Data
+            if (!File.Exists(Directory.GetCurrentDirectory() + "/maps/Temp/" + Global_GameState.ZoneState.ToString() + "_Temp.txt"))
+                map = MapLoader.LoadMapData(Global_GameState.ZoneState.ToString());
+            else
+                map = MapLoader.LoadMapData("Temp/" + Global_GameState.ZoneState.ToString() + "_Temp");
 
-                    }; break;
-                case Global_GameState.EZoneState.Grasslands:
-                    {
-                        //Load Level Data
-                        map = MapLoader.LoadMapData("grasslands");
-                        BackMapTextures = MapLoader.LoadMapData("grasslands_back");
-                        ForeMapTextures = MapLoader.LoadMapData("grasslands_fore");
-                        MapEffectTextures = MapLoader.LoadMapData("grasslands_eff");                      
-                        //--------------------//
-                 
-                    }; break;
-                case Global_GameState.EZoneState.Beach:
-                    {
-                        //Load Level Data
-                        map = MapLoader.LoadMapData("beach");
-                        BackMapTextures = MapLoader.LoadMapData("beach_back");
-                        ForeMapTextures = MapLoader.LoadMapData("beach_fore");
-                        MapEffectTextures = MapLoader.LoadMapData("beach_eff");
-                        //--------------------//
-
-                    }; break;
-                case Global_GameState.EZoneState.Mines:
-                    {
-
-
-                    }; break;
-                case Global_GameState.EZoneState.SnowyMountains:
-                    {
-
-
-                    }; break;
-                case Global_GameState.EZoneState.Castle:
-                    {
-
-
-                    }; break;
-                case Global_GameState.EZoneState.LavaLand:
-                    {
-
-
-                    }; break;
-            }
+            BackMapTextures = MapLoader.LoadMapData(Global_GameState.ZoneState.ToString() + "_back");
+            ForeMapTextures = MapLoader.LoadMapData(Global_GameState.ZoneState.ToString() + "_fore");
+            MapEffectTextures = MapLoader.LoadMapData(Global_GameState.ZoneState.ToString() + "_eff");
+            //--------------------//
         }
 
         private void PlayerWarpIn()
@@ -384,6 +376,7 @@ namespace Platformer_Prototype
                                 {
                                     WarpEffect.CurrentFrame = 1;
                                     MapLoading = true;
+                                    ItemSave();
                                     Global_GameState.ZoneState = Global_GameState.EZoneState.HubWorld;
                                 }
                     }
@@ -812,7 +805,6 @@ namespace Platformer_Prototype
         {
             background.Draw(sB);
 
-
             Textures.TextureType = Textures.ETextureType.INGAME;
 
             Textures.DrawBackgroundMapTextures(sB, BackMapTextures, tileSize, Vector2.Zero, game1);
@@ -886,6 +878,7 @@ namespace Platformer_Prototype
                         LavaBase.Draw(sB, new Vector2(tileDraw.X, tileDraw.Y), new Vector2(0, 0), 0, SpriteEffects.None, Color.White);
 
                     //----------//Objects//---------//
+
                     //Crystal Item
                     if (map[j, i] == '◘')
                         Crystal.Draw(sB, this);
@@ -910,7 +903,7 @@ namespace Platformer_Prototype
                         {
                             if (map[j, i] == '♀')
                                 map[j, i] = ' ';
-                            WoodBox.sprite.destinationRectangle = Rectangle.Empty;
+                            WoodBox.sprite.CollisionBox = Rectangle.Empty;
                             player.Speed.Y = 0;
                         }
                     }
