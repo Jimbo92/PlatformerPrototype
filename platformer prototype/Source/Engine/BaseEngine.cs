@@ -59,6 +59,7 @@ namespace Platformer_Prototype
         public List<NPC> NPC_F = new List<NPC>(100);
         public List<Platform> Platforms = new List<Platform>();
         public List<Lever> Switches = new List<Lever>();
+        public List<Door> Doors = new List<Door>();
 
         public Vector2 NPCSpawn;
         //Enemy Types;
@@ -204,6 +205,8 @@ namespace Platformer_Prototype
 
         private void LoadupMapEntities()
         {
+            int l = 0;
+            int s = 0;
             for (int i = 0; i < map.GetLength(1); i++)
                 for (int j = 0; j < map.GetLength(0); j++)
                 {
@@ -317,10 +320,25 @@ namespace Platformer_Prototype
                     //Switch Spawn
                     if (map[j, i] == '‼')
                     {
+                        s++;
                         Lever Switch = new Lever();
                         Switch.Rect = tileDraw;
+                        Switch.id = s; 
                         Switches.Add(Switch);
+                       
                     }
+                    //Lock Spawner
+                    if (map[j, i] == '¶')
+                    {
+                        l++;
+                        Door Lock = new Door();
+                        Lock.rect = tileDraw;
+                        Lock.Shade = Door.color.blue;
+                        Lock.id = gm.bind[l - 1]; 
+                        Doors.Add(Lock);
+
+                    }
+                   
                 }
         }
 
@@ -330,6 +348,7 @@ namespace Platformer_Prototype
             NPC_F.Clear();
             Platforms.Clear();
             Switches.Clear();
+            Doors.Clear();
         }
 
         private void ZoneSorter()
@@ -472,6 +491,12 @@ namespace Platformer_Prototype
             foreach (Lever lever in Switches)
             {
                 lever.Update(this);
+            }
+
+            //Update Doors
+            foreach (Door d in Doors)
+            {
+                d.Update(this);
             }
 
         }
@@ -828,6 +853,11 @@ namespace Platformer_Prototype
                     if (Input.KeyboardPressed(Keys.Enter))
                     lever.isOn = true;
                 }
+            }
+
+            foreach (Door d in Doors)
+            {
+                d.Draw(sB);
             }
 
             //Draw Doorways

@@ -387,10 +387,21 @@ namespace Platformer_Prototype
 
                         if (!returner)
                         {
-
+                           
                             Position.Y += 1;
                             updateBounds(Camera.Position);
                             BEngine.updateHitboxes(Position, Bounds);
+                            bool one = false;
+                            foreach (Door d in BEngine.Doors)
+                            {
+                                if (d.checkDoors(BEngine) == true)
+                                    one = true;
+                            }
+                            if (one)
+                            {
+                                Speed.Y = -jump;
+                                returner = true;
+                            }
 
                             if (checks[3] == true)
                             {
@@ -673,15 +684,26 @@ namespace Platformer_Prototype
 
         public void checkCollisionsX(Rectangle target)
         {
-
-            if (Bounds.Intersects(target))
+            bool one = false;
+            foreach (Door d in BEngine.Doors)
+            {
+               if(d.checkDoors(BEngine) == true)
+                   one = true; 
+            }
+            if (Bounds.Intersects(target) || one)
             {
                 horCollide = true;
                 if (Speed.X > 0) {
                     for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
-                        if (Bounds.Intersects(target))
+                        one = false;
+                        foreach (Door d in BEngine.Doors)
+                        {
+                            if (d.checkDoors(BEngine) == true)
+                                one = true; 
+                        }
+                        if (Bounds.Intersects(target) || one)
                             Position.X--;
                     }
                   
@@ -692,7 +714,13 @@ namespace Platformer_Prototype
                     for (int i = 20; i > 0; i--) {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
-                        if (Bounds.Intersects(target))
+                        one = false;
+                        foreach (Door d in BEngine.Doors)
+                        {
+                            if (d.checkDoors(BEngine) == true)
+                                one = true; 
+                        }
+                        if (Bounds.Intersects(target) || one)
                             Position.X++;
 
                     }
@@ -707,7 +735,14 @@ namespace Platformer_Prototype
 
         public void checkCollisionsY(Rectangle target)
         {
-            if (Bounds.Intersects(target))
+            bool one = false;
+           
+            foreach (Door d in BEngine.Doors)
+            {
+                if (d.checkDoors(BEngine) == true)
+                    one = true;
+            }
+            if (Bounds.Intersects(target) || one)
             {
 
                 if (Speed.Y > 0)
@@ -715,7 +750,13 @@ namespace Platformer_Prototype
                     {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
-                        if (Bounds.Intersects(target))
+                        one = false;
+                        foreach (Door d in BEngine.Doors)
+                        {
+                            if (d.checkDoors(BEngine) == true)
+                                one = true;
+                        }
+                        if (Bounds.Intersects(target) || one)
                         {
                             Position.Y--;
                             wallTimer = 0;
@@ -728,7 +769,13 @@ namespace Platformer_Prototype
                     {
                         updateBounds(Camera.Position);
                         BEngine.updateHitboxes(Position, Bounds);
-                        if (Bounds.Intersects(target))
+                        one = false;
+                        foreach (Door d in BEngine.Doors)
+                        {
+                            if (d.checkDoors(BEngine) == true)
+                                one = true;
+                        }
+                        if (Bounds.Intersects(target) || one)
                             Position.Y++;
                     }
 

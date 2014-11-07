@@ -17,13 +17,17 @@ namespace Platformer_Prototype
         public Rectangle Rect;
         public Texture2D Tex;
         public bool isOn = false;
+        public int id;
 
         public void Update(BaseEngine getBengine)
         {
             if (getBengine.player.Bounds.Intersects(new Rectangle(Rect.X + (int)Camera.Position.X, Rect.Y + (int)Camera.Position.Y, 32, 32)))
             {
                 if (Input.KeyboardPressed(Keys.Enter))
-                    isOn = true;
+                    if (!isOn)
+                        isOn = true;
+                    else
+                        isOn = false;
             }
         }
 

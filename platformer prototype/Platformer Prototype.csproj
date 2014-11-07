@@ -43,6 +43,7 @@
     <Compile Include="Source\Engine\HubWorld.cs" />
     <Compile Include="Source\Engine\Item.cs" />
     <Compile Include="Source\Map Editor\TileIndex.cs" />
+    <Compile Include="Source\Objects\Door.cs" />
     <Compile Include="Source\Objects\Lever.cs" />
     <Compile Include="Source\Objects\Platform.cs" />
     <Compile Include="Source\Objects\NPC.cs" />
@@ -197,6 +198,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\Doors\door3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\Doors\lock1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\Doors\lock2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\Doors\lock3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Objects\Doors\lock4.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\Enemies\FlySS.png">

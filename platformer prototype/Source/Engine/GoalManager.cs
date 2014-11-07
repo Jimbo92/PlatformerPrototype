@@ -18,6 +18,7 @@ namespace Platformer_Prototype
     {
         public List<Rectangle> Zone = new List<Rectangle>();
         public List<string> Speech = new List<string>();
+        public int[] bind = new int[20];
 
         public Player player = null;
 
@@ -30,6 +31,11 @@ namespace Platformer_Prototype
         {
             Zone.Clear();
             Speech.Clear();
+   
+            for (int i = 0; i < bind.GetLength(0); i++)
+            {
+                bind[i] = 0;
+            }
 
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.Beach)
             {
@@ -37,6 +43,12 @@ namespace Platformer_Prototype
                 Speech.Add("Cloney Cliff \nHome of the floating gem");
                 Speech.Add("Arrrrrrr! Use this\nto get back up the Cloney!");
                 Speech.Add("Arrrrrrr! give me your\nhat ,maggot");
+
+                bind[0] = 1;
+                bind[1] = 2;
+                bind[2] = 2;
+                bind[3] = 1;
+                              
             }
 
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.Castle)

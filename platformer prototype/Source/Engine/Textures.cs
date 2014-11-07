@@ -31,6 +31,8 @@ namespace Platformer_Prototype
         static public Texture2D[] _OBJ_Door_Tex = new Texture2D[4];
         static public Texture2D[] _OBJ_Switch_Tex = new Texture2D[2];
 
+        static public Texture2D[] _OBJ_Lock_Tex = new Texture2D[4];
+
         //Map Textures
         //Grass
         static public Texture2D _TILE_GrassSS_Tex;
@@ -94,6 +96,12 @@ namespace Platformer_Prototype
             {
                 _OBJ_Door_Tex[i] = getContent.Load<Texture2D>("objects/doors/door" + i);
             }
+            //Gates
+            for (int i = 0; i < 4; i++)
+            {
+                _OBJ_Lock_Tex[i] = getContent.Load<Texture2D>("objects/doors/lock" + (i + 1));
+            }
+
 
 
             //Map Textures
