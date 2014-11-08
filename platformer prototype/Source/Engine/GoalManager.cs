@@ -20,11 +20,11 @@ namespace Platformer_Prototype
         public List<string> Speech = new List<string>();
         public int[] bind = new int[20];
 
-        public Player player = null;
+        public BaseEngine engine = null;
 
-        public void Get(Player Gplayer)
+        public void Get(BaseEngine Ge)
         {
-            Gplayer = player;
+            engine = Ge;
         }
 
         public void Load()
@@ -36,6 +36,17 @@ namespace Platformer_Prototype
             {
                 bind[i] = 0;
             }
+
+            if (Global_GameState.ZoneState == Global_GameState.EZoneState.Challenge)
+            {
+                //383 476 and 639 476
+                Speech.Add("Climb the ladder for a reward!");
+                Speech.Add("The passcode is 1 0 1");
+                Zone.Add(new Rectangle(478, 214, 32, 32));
+                Zone.Add(new Rectangle(383, 476, 32, 32));
+                Zone.Add(new Rectangle(639, 476, 32, 32));
+            }
+
 
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.Beach)
             {
@@ -51,11 +62,7 @@ namespace Platformer_Prototype
                               
             }
 
-            if (Global_GameState.ZoneState == Global_GameState.EZoneState.Castle)
-            {
-
-            }
-
+       
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.Grasslands)
             {
             }
@@ -87,6 +94,49 @@ namespace Platformer_Prototype
 
         }
 
+
+        public void ChaCheck()
+        {
+            int three = 0;
+            foreach (Lever l in engine.Switches)
+            {
+                if (l.id == 1 && l.isOn)
+                {
+                    three ++;
+                }
+                if (l.id == 2 && !l.isOn)
+                {
+                    three++;
+                }
+                if (l.id == 3 && l.isOn)
+                {
+                    three++;
+                }
+
+
+            }
+
+            if (three == 3)
+            {
+                Zone[2] = Rectangle.Empty;
+            }
+        }
+        
+        public void ChaGoal(int i)
+        {
+            if (i == 0)
+            {
+                Zone[i] = Rectangle.Empty;
+                Zone[1] = Rectangle.Empty;
+            }
+
+         
+        }
+
+        public void HubCheck()      
+        {
+
+        }
         public void HubGoal(int i)
         {
             if (i == 0)
@@ -123,41 +173,54 @@ namespace Platformer_Prototype
 
 
 
+        public void GrassLandsCheck()
+        {
 
+        }
         public void GrassLandsGoal(int i)
         {
         }
 
+        public void BeachCheck()
+        {
 
+        }
         public void BeachGoal(int i) 
         {
             if (i == 0) {
-                player.Speed.Y = -20;
-                player.Speed.X = -20;
+                engine.player.Speed.Y = -20;
+                engine.player.Speed.X = -20;
                 Speech[1] = "Man, you flew like thee\nEagle. How bout some scrumpy?";
             }
         }
    
 
 
-        public void Update(Player Gplayer)
+        public void Update()
         {
-            player = Gplayer;
+            
 
             for (int i = 0; i < Zone.Count; i++ )
             {
                 Rectangle zBounds = new Rectangle(Zone[i].X + (int)Camera.Position.X, Zone[i].Y + (int)Camera.Position.Y, Zone[i].Width, Zone[i].Height);
-                if (zBounds.Intersects(player.Bounds))
+                if (zBounds.Intersects(engine.player.Bounds))
                 {
                     switch (Global_GameState.ZoneState)
                     {
+                        case Global_GameState.EZoneState.Challenge: ChaGoal(i); break;
                         case Global_GameState.EZoneState.HubWorld: HubGoal(i); break;
                         case Global_GameState.EZoneState.Grasslands: GrassLandsGoal(i); break;
                         case Global_GameState.EZoneState.Beach: BeachGoal(i); break;
                     }
                 }
             }
-
+            switch (Global_GameState.ZoneState)
+            {
+                case Global_GameState.EZoneState.Challenge: ChaCheck(); break;
+                case Global_GameState.EZoneState.HubWorld: HubCheck(); break;
+                case Global_GameState.EZoneState.Grasslands: GrassLandsCheck(); break;
+                case Global_GameState.EZoneState.Beach: BeachCheck(); break;
+            }
             
         }
 

@@ -264,7 +264,8 @@ namespace Platformer_Prototype
 
                 }
             }
-
+            platX = false;
+            platY = false;
             platMod = Vector2.Zero;
             if (!noclip)
             {
@@ -276,20 +277,21 @@ namespace Platformer_Prototype
                    
 
                     p.updateBounds(Camera.Position);
-                    if (p.Bounds.Y + Speed.Y + 1 > Bounds.Y + Bounds.Height - Speed.Y - 1)
+                    if (p.Bounds.Y + Speed.Y + 2 > Bounds.Y + Bounds.Height - Speed.Y - 2)
                     {
                             if (Bounds.Intersects(p.Bounds))
                             {
+                             
                                 if (platX == false)
                                 {
-                                    platMod.X += (int)p.Speed.X;
+                                    platMod.X += p.Speed.X;
                                     platX = true;
                                 }
 
                                 if (platY == false)
                                 {
                                     
-                                    platMod.Y += (int)p.Speed.Y;
+                                    platMod.Y += p.Speed.Y;
                                     platY = true;
                                 }
 
@@ -302,6 +304,7 @@ namespace Platformer_Prototype
                                     p.updateBounds(Camera.Position);
                                     if (Bounds.Intersects(p.Bounds))
                                     {
+                                        
                                         Position.Y--;
                                         wallTimer = 0;
                                         Rotation = 0;
@@ -593,8 +596,8 @@ namespace Platformer_Prototype
 
             if (Camera.CameraMode == Camera.CameraState.WAYPOINTS)
                 ControlsEnabled = false;
-
-
+          
+           
             Position.X += platMod.X;          
 
             Animations();

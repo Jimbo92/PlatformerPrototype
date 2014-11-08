@@ -31,6 +31,7 @@ namespace Platformer_Prototype
             SnowyMountains,
             Castle,
             LavaLand,
+            Challenge,
         };
 
         static public EZoneState ZoneState = EZoneState.HubWorld;

@@ -179,7 +179,8 @@ namespace Platformer_Prototype
                         WarpEffect.CurrentFrame = 1;
                         MapLoading = true;
                         ItemSave();
-                        Global_GameState.ZoneState = Global_GameState.EZoneState.Beach;
+                        //0-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+                        Global_GameState.ZoneState = Global_GameState.EZoneState.Challenge;
                     }
             }
         }
@@ -494,8 +495,8 @@ namespace Platformer_Prototype
             //Player Update 
             PlayerWarpIn();
 
-            gm.Get(player);
-            gm.Update(player);
+            gm.Get(this);
+            gm.Update();
 
             //HubWorld Data
             if (DrawDoors)
@@ -923,11 +924,21 @@ namespace Platformer_Prototype
 
                     //----------//Objects//---------//
 
+                    bool isZoned = false;
+                    for (int x = 0; x < gm.Zone.Count; x++)
+                    {
+                        Rectangle zBounds = new Rectangle(gm.Zone[x].X + (int)Camera.Position.X, gm.Zone[x].Y + (int)Camera.Position.Y, gm.Zone[x].Width, gm.Zone[x].Height);
+                        if (tileDraw.Intersects(zBounds))
+                        {
+                            isZoned = true;
+                        }
+                    }
+
                     //Crystal Item
-                    if (map[j, i] == '◘')
+                    if (map[j, i] == '◘' && !isZoned)
                         Crystal.Draw(sB, this);
                     //Crystal Collision
-                    if (player.Bounds.Intersects(Crystal.sprite.destinationRectangle))
+                    if (player.Bounds.Intersects(Crystal.sprite.destinationRectangle) && !isZoned)
                     {
                         if (map[j, i] == '◘')
                             map[j, i] = ' ';
@@ -993,7 +1004,7 @@ namespace Platformer_Prototype
             for(int i = 0; i < gm.Zone.Count; i++)
             {
                 Rectangle zBounds = new Rectangle(gm.Zone[i].X + (int)Camera.Position.X, gm.Zone[i].Y + (int)Camera.Position.Y, gm.Zone[i].Width, gm.Zone[i].Height);
-                sB.Draw(Textures._TILE_Zone_Tex, zBounds, Color.White);
+                //sB.Draw(Textures._TILE_Zone_Tex, zBounds, Color.White);
             }
 
             //Fade Effect
