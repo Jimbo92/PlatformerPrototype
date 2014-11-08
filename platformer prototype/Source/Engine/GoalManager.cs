@@ -42,9 +42,11 @@ namespace Platformer_Prototype
                 //383 476 and 639 476
                 Speech.Add("Climb the ladder for a reward!");
                 Speech.Add("The passcode is 1 0 1");
+                Speech.Add("Help! some pesky flies\n have invaded my farm!");
                 Zone.Add(new Rectangle(478, 214, 32, 32));
                 Zone.Add(new Rectangle(383, 476, 32, 32));
                 Zone.Add(new Rectangle(639, 476, 32, 32));
+                Zone.Add(new Rectangle(255, 471, 32, 32));
             }
 
 
@@ -97,7 +99,24 @@ namespace Platformer_Prototype
 
         public void ChaCheck()
         {
+            
             int three = 0;
+            int three2 = 0;
+            foreach (NPC e in engine.NPC_E)
+            {
+                if (e.enemyID == 3 && e.isDead)
+                {
+                    three2++;
+                }
+                if (e.enemyID == 4 && e.isDead)
+                {
+                    three2++;
+                }
+                if (e.enemyID == 5 && e.isDead)
+                {
+                    three2++;
+                }
+            }
             foreach (Lever l in engine.Switches)
             {
                 if (l.id == 1 && l.isOn)
@@ -116,9 +135,24 @@ namespace Platformer_Prototype
 
             }
 
-            if (three == 3)
+            if (three == 3 && !Zone[2].IsEmpty)
             {
                 Zone[2] = Rectangle.Empty;
+            }
+            if (three2 == 3 && !Zone[3].IsEmpty)
+            {
+                Zone[3] = Rectangle.Empty;
+                Speech[2] = "Wow your Amazing!!\n Thanks!!";
+
+                List<Vector4> Desired = new List<Vector4>();
+                Desired.Add(new Vector4(0, 0, 60, 120));
+
+                Camera.isControlled = true;
+                Camera.delay = 0;
+                Camera.nextDelay = 0;
+                Camera.task = -1;
+
+                Camera.Flybuy(Desired);
             }
         }
         

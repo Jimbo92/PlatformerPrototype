@@ -27,6 +27,7 @@ namespace Platformer_Prototype
         public Sprite sprite;
         public SpriteFont Font;
         public npcType type;
+        public int enemyID;
 
         private GoalManager gm;
 
@@ -105,7 +106,12 @@ namespace Platformer_Prototype
 
             Font = getContent.Load<SpriteFont>("fonts/CopperplateGothicBold");
             SpeechBubble_Tex = getContent.Load<Texture2D>("objects/speechbubblebase");
-            npcID = id;
+
+            if (type == npcType.FRIENDLY || type == npcType.SIGN)
+                npcID = id;
+            else
+                enemyID = id;
+            
         }
 
         private void Animations()

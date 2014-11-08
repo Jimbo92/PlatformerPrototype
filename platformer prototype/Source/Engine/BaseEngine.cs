@@ -209,6 +209,7 @@ namespace Platformer_Prototype
         {
             int l = 0;
             int s = 0;
+            int e = 0;
             for (int i = 0; i < map.GetLength(1); i++)
                 for (int j = 0; j < map.GetLength(0); j++)
                 {
@@ -224,7 +225,8 @@ namespace Platformer_Prototype
                     //Crawler
                     if (map[j, i] == '☼')
                     {
-                        CrawlerEnemy = new NPC(Content, "objects/enemies/snailss", NPC.npcType.CRAWLER, 24, 16,0);
+                        e++;
+                        CrawlerEnemy = new NPC(Content, "objects/enemies/snailss", NPC.npcType.CRAWLER, 24, 16,e);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         CrawlerEnemy.Position = NPCSpawn;
                         CrawlerEnemy.isDead = false;
@@ -235,7 +237,8 @@ namespace Platformer_Prototype
                     //Walker
                     if (map[j, i] == '►')
                     {
-                        WalkerEnemy = new NPC(Content, "objects/enemies/slimess", NPC.npcType.WALKER, 46, 24,0);
+                        e++;
+                        WalkerEnemy = new NPC(Content, "objects/enemies/slimess", NPC.npcType.WALKER, 46, 24,e);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         WalkerEnemy.Position = NPCSpawn;
                         WalkerEnemy.isDead = false;
@@ -256,7 +259,8 @@ namespace Platformer_Prototype
                     //Flyer
                     if (map[j, i] == '◄')
                     {
-                        FlyerEnemy = new NPC(Content, "objects/enemies/flyss", NPC.npcType.FLYER, 24, 16,0);
+                        e++;
+                        FlyerEnemy = new NPC(Content, "objects/enemies/flyss", NPC.npcType.FLYER, 24, 16,e);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         FlyerEnemy.Position = NPCSpawn;
                         FlyerEnemy.isDead = false;
@@ -267,7 +271,8 @@ namespace Platformer_Prototype
                     //Fish
                     if (map[j, i] == '§')
                     {
-                        FishEnemy = new NPC(Content, "objects/enemies/fishss", NPC.npcType.FISH, 24, 16, 0);
+                        e++;
+                        FishEnemy = new NPC(Content, "objects/enemies/fishss", NPC.npcType.FISH, 24, 16, e);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         FishEnemy.Position = NPCSpawn;
                         FishEnemy.returnTo = (int)NPCSpawn.Y;

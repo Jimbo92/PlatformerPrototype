@@ -206,6 +206,8 @@ namespace Platformer_Prototype
             {
                 CameraMode = CameraState.WAYPOINTS;
                 Flybuying();
+                if (Position.X < -(Bengine.map.GetLength(1) * 32) + 800 - 1)
+                    Position.X = -(Bengine.map.GetLength(1) * 32) + 800 - 1;
             }
 
             if (CameraMode == CameraState.WAYPOINTS)
