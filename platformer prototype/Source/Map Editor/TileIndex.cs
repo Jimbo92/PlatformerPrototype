@@ -38,6 +38,7 @@ namespace Platformer_Prototype
                 if (CurrentTile == '↕') return "Sign With Text";
                 if (CurrentTile == '‼') return "Switch Trigger";
                 if (CurrentTile == '¶') return "Lock Trigger";
+                if (CurrentTile == '§') return "Enemy Spawn Fish";
                 
 
             }

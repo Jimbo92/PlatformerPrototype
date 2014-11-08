@@ -57,7 +57,7 @@ namespace Platformer_Prototype
 
         //Debug Textures
         static public Texture2D[] _DBG_Trigger_Tex = new Texture2D[9];
-        static public Texture2D[] _DBG_ETrigger_Tex = new Texture2D[4];
+        static public Texture2D[] _DBG_ETrigger_Tex = new Texture2D[5];
         static public Texture2D[] _DBG_Lava_Tex = new Texture2D[2];
         static public Texture2D _DBG_WaterTop_Tex;
         static public Texture2D _DBG_WaterBot_Tex;
@@ -136,7 +136,7 @@ namespace Platformer_Prototype
             {
                 _DBG_Trigger_Tex[i] = getContent.Load<Texture2D>("editor/trigger" + i);
             }
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 _DBG_ETrigger_Tex[i] = getContent.Load<Texture2D>("editor/etrigger" + i);
             }
@@ -148,6 +148,7 @@ namespace Platformer_Prototype
             _DBG_Line_Tex = getContent.Load<Texture2D>("debug/level");
             _DBG_WaterTop_Tex = getContent.Load<Texture2D>("editor/watertopeditor");
             _DBG_WaterBot_Tex = getContent.Load<Texture2D>("editor/waterbottomeditor");
+            
 
             //Backgrounds
             //Grasslands
@@ -251,6 +252,9 @@ namespace Platformer_Prototype
                                 //Trigger Switch
                                 if (MapData[j, i] == '¶')
                                     sB.Draw(_DBG_Trigger_Tex[8], tileDraw, Color.White);
+
+                                if (MapData[j, i] == '§')
+                                    sB.Draw(_DBG_ETrigger_Tex[4], tileDraw, Color.White);
 
                             }
 

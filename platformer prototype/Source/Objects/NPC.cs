@@ -60,6 +60,7 @@ namespace Platformer_Prototype
         bool left = false;
         bool right = false;
         bool down = false;
+        public int returnTo;
 
         int npcID;
 
@@ -75,7 +76,7 @@ namespace Platformer_Prototype
         private Texture2D SpeechBubble_Tex;
         private Rectangle SpeechBubble_Rect;
         private bool isWalking;
-        private int DartTimer = 30;
+ 
 
         public Color colour = Color.White;
 
@@ -89,13 +90,18 @@ namespace Platformer_Prototype
             Width = getWidth;
             Height = getHeight;
             Position = Vector2.Zero;
+            
             left = true;
             runPlanes = new Vector2(-50, 50);
 
             if (type != npcType.FRIENDLY && type != npcType.SIGN)
+                if(type != npcType.FISH)
                 sprite = new Sprite(getContent, getTexture, getWidth, getHeight, 1, 3);
+                else
+                    sprite = new Sprite(getContent, getTexture, getWidth, getHeight, 1, 2);
             else if (type == npcType.FRIENDLY)
                 sprite = new Sprite(getContent, "objects/NPCFriendSS", getWidth, getHeight, 2, 8);
+
 
             Font = getContent.Load<SpriteFont>("fonts/CopperplateGothicBold");
             SpeechBubble_Tex = getContent.Load<Texture2D>("objects/speechbubblebase");
@@ -328,6 +334,167 @@ namespace Platformer_Prototype
             gm = g;
             Animations();
 
+
+            if (type == npcType.FISH)
+            {
+
+                if (checks[1] == false)
+                {
+                    if (Speed.Y < 12)
+                        Speed.Y += 0.2f;
+                    else
+                        Speed.Y = 12;
+
+
+                    Position.Y += 1;
+                    updateBounds(Camera.Position);
+                    BEngine.updateHitboxes(Position, Bounds);
+                    Random rand = new Random();
+                  
+
+                    for (int i = 0; i < BEngine.Canvas.Length; i++)
+                        if (Bounds.Intersects(BEngine.Canvas[i]))
+                        {
+                            Speed.Y = -2;
+                            Speed.X = rand.Next(-2, 2);
+                        }
+
+                    foreach (Platform p in BEngine.Platforms)
+                    {
+                        p.updateBounds(Camera.Position);
+                        if (p.Bounds.Intersects(Bounds))
+                        {
+                            Speed.Y = -2;
+                            Speed.X = rand.Next(-2, 2);
+                        }
+                    }
+                    if (checkAllLines(BEngine.tan1) == true)
+                    {
+                        Speed.Y = -2;
+                        Speed.X = rand.Next(-2, 2);
+                    }
+                    if (checkAllLines(BEngine.tan2) == true)
+                    {
+                        Speed.Y = -2;
+                        Speed.X = rand.Next(-2, 2);
+                    }
+                    if (checkAllLines(BEngine.tan3) == true)
+                    {
+                        Speed.Y = -2;
+                        Speed.X = rand.Next(-2, 2);
+                    }
+                    if (checkAllLines(BEngine.tan4) == true)
+                    {
+                        Speed.Y = -2;
+                        Speed.X = rand.Next(-2, 2);
+                    }
+                    if (checkAllLines(BEngine.tan5) == true)
+                    {
+                        Speed.Y = -2;
+                        Speed.X = rand.Next(-2, 2);
+                    }
+                    if (checkAllLines(BEngine.tan6) == true)
+                    {
+                        Speed.Y = -2;
+                        Speed.X = rand.Next(-2, 2);
+                    }
+
+
+                    Position.Y -= 1;
+                }
+
+                if (checks[1] == true)
+                {
+                    xFriction = 0.92f;
+                    yFriction = 0.95f;
+                   
+                }
+                else
+                {
+                    xFriction = 1;
+                    yFriction = 1;
+                }
+
+                if (checks[1] == true)
+                {
+                    CheckBox = new Rectangle(Bounds.X - 64, Bounds.Y - 64, 128, 128);
+                    
+
+                    if (BEngine.player.Bounds.Intersects(CheckBox))
+                    {
+
+                        Vector2 Dir = BEngine.player.Position - Position;
+                        Dir.Normalize();
+                        if (Speed.X + Speed.Y < 4)
+                            Speed += Dir * 0.25f;
+                    }
+                    else
+                    {
+                     
+                        if (Position.X < runPlanes.X)
+                        {
+                            right = true;
+                            left = false;
+                        }
+
+                        if (Position.X > runPlanes.Y)
+                        {
+                            right = false;
+                            left = true;
+                        }
+
+                
+                            down = (Position.Y > returnTo - 10);
+                        
+
+
+                     
+                            jump = (Position.Y < returnTo + 10);
+                        
+
+                        if (left == true)
+                            if (Speed.X > -1.5f)
+                                Speed.X -= 0.25f;
+                            else
+                                Speed.X = -1.5f;
+
+                        if (right == true)
+                            if (Speed.X < 1.5f)
+                                Speed.X += 0.25f;
+                            else
+                                Speed.X = 1.5f;
+
+                        if (!left && !right)
+                            if (Math.Abs(Speed.X) > 0.1f)
+                                Speed.X *= 0.92f;
+                            else
+                                Speed.X = 0;
+
+                        if (down == true)
+                            if (Speed.Y > -1.5f)
+                                Speed.Y -= 0.25f;
+                            else
+                                Speed.Y = -1.5f;
+
+                        if (jump == true)
+                            if (Speed.Y < 1.5f)
+                                Speed.Y += 0.25f;
+                            else
+                                Speed.Y = 1.5f;
+
+                        if (!down && !jump)
+                            if (Math.Abs(Speed.Y) > 0.1f)
+                                Speed.Y *= 0.92f;
+                            else
+                                Speed.Y = 0;
+
+                    }
+                }
+            }
+           
+
+
+
             Collisions();
                       
 
@@ -350,48 +517,13 @@ namespace Platformer_Prototype
                     left = true;
                 }
             }
-            else if (type == npcType.FISH)
-            {
-                CheckBox = new Rectangle(Bounds.X - 64, Bounds.Y - 64, 128, 128);
 
-                if (BEngine.player.Bounds.Intersects(CheckBox))
-                {
-                    Vector2 Dir = BEngine.player.Position - Position;
-                    Dir.Normalize();
-                    Speed += Dir * 0.1f;
-                }
-                else
-                {
-                   Random rand = new Random();
-                   
-                   DartTimer--;
-                   if (DartTimer <= 0)
-                   {
-                       int randvalue = rand.Next(10);
-                   
-                       if (randvalue == 0)
-                           Speed.X += 1.25f;
-                       else if (randvalue == 1)
-                           Speed.X -= 1.25f;
-                       else if (randvalue == 2)
-                           Speed.Y += 1.25f;
-                       else if (randvalue == 3)
-                           Speed.Y -= 1.25f;
-                       else if (randvalue >= 4)
-                           Speed = Vector2.Zero;
-                   
-                       DartTimer = 30;
-                   }
-
-                }
-            }
-            else
+            if (type == npcType.SIGN)
             {
-                jump = false;
-                down = false;
-                left = false;
                 right = false;
+                left = false;
             }
+            
 
 
             //Gravity--------------
@@ -443,8 +575,8 @@ namespace Platformer_Prototype
             }
 
             //---------------------
-            if (type != npcType.FISH)
-            if (checks[1] == false)
+        if(type != npcType.FISH)
+            if (checks[1] == false )
             {
                 if (left == true)
                     if (Speed.X > -1.5f)

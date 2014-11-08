@@ -266,11 +266,16 @@ namespace Platformer_Prototype
                     //Fish
                     if (map[j, i] == '§')
                     {
-                        FishEnemy = new NPC(Content, "objects/enemies/flyss", NPC.npcType.FISH, 24, 16, 0);
+                        FishEnemy = new NPC(Content, "objects/enemies/fishss", NPC.npcType.FISH, 24, 16, 0);
                         NPCSpawn = new Vector2(tileDraw.X, tileDraw.Y);
                         FishEnemy.Position = NPCSpawn;
+                        FishEnemy.returnTo = (int)NPCSpawn.Y;
                         FishEnemy.isDead = false;
+                        FishEnemy.runPlanes.X += FishEnemy.Position.X;
+                        FishEnemy.runPlanes.Y += FishEnemy.Position.X;
                         NPC_E.Add(FishEnemy);
+                        map[j, i] = '♣';
+                        MapEffectTextures[j, i] = '•';
                     }
                     //Friendly
                     if (map[j, i] == '♂')
