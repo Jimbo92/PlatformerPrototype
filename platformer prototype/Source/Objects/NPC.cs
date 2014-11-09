@@ -502,10 +502,13 @@ namespace Platformer_Prototype
 
 
             Collisions();
-                      
 
-            if (type == npcType.SIGN || type == npcType.FRIENDLY && npcID < gm.Speech.Count)
+
+            if (type == npcType.SIGN || type == npcType.FRIENDLY )
+            {
+                if(npcID < gm.Speech.Count)
                 TextTalk = gm.Speech[npcID];
+            }
 
             Position += platMod;
 

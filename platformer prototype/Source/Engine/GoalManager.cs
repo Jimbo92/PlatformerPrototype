@@ -53,6 +53,7 @@ namespace Platformer_Prototype
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.Beach)
             {
                 Zone.Add(new Rectangle(2816, 316, 32, 32));
+                Zone.Add(new Rectangle(2860, 341, 64, 32));
                 Speech.Add("Cloney Cliff \nHome of the floating gem");
                 Speech.Add("Arrrrrrr! Use this\nto get back up the Cloney!");
                 Speech.Add("Arrrrrrr! give me your\nhat ,maggot");
@@ -67,16 +68,17 @@ namespace Platformer_Prototype
        
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.Grasslands)
             {
+                Speech.Add("Help! some pesky flies\n have invaded my farm!");
+                Speech.Add("Warning,\ndo not enter");
+                Zone.Add(new Rectangle(664, 208, 32, 32));
             }
 
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.HubWorld)
             {
-                Zone.Add(new Rectangle(1105, 382, 25, 25));
-                Zone.Add(new Rectangle(2756, 39, 120, 52));
+                Zone.Add(new Rectangle(1105, 382, 25, 100));
                 Speech.Add("Welcome to the Hub!");
                 Speech.Add("Hi there!\nI love your hat!");
                 Speech.Add("Lol give me your\nhat faggot");
-                Speech.Add("I bet that you cannot\n get up there!!");
             }
 
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.LavaLand)
@@ -197,19 +199,35 @@ namespace Platformer_Prototype
 
                 Speech[0] = "Enjoyed exploring?? why not\ntry and defeat one of\nthe many worlds!!";
             }
-            if (i == 1)
-            {
-                Zone[i] = Rectangle.Empty;
-                Speech[1] = "Holy cow you did it!\n you deserve some sorta reward";
-             
-            }
+
         }
 
 
 
         public void GrassLandsCheck()
         {
+              int three = 0;
 
+              foreach (NPC e in engine.NPC_E)
+              {
+                  if (e.enemyID == 4 && e.isDead)
+                  {
+                      three++;
+                  }
+                  if (e.enemyID == 5 && e.isDead)
+                  {
+                      three++;
+                  }
+                  if (e.enemyID == 6 && e.isDead)
+                  {
+                      three++;
+                  }
+              }
+              if (three == 3 && !Zone[0].IsEmpty)
+              {
+                  Zone[0] = Rectangle.Empty;
+                  Speech[0] = "Wow thanks!\n i think i might have\n left a gem on that cliff\nback there..."; 
+              }
         }
         public void GrassLandsGoal(int i)
         {
@@ -225,6 +243,20 @@ namespace Platformer_Prototype
                 engine.player.Speed.Y = -20;
                 engine.player.Speed.X = -20;
                 Speech[1] = "Man, you flew like thee\nEagle. How bout some scrumpy?";
+            }
+
+            if (i == 1)
+            {
+                Zone[i] = Rectangle.Empty;
+                List<Vector4> Desired = new List<Vector4>();
+                Desired.Add(new Vector4(2350, 360, 60, 60));
+
+                Camera.isControlled = true;
+                Camera.delay = 0;
+                Camera.nextDelay = 0;
+                Camera.task = -1;
+
+                Camera.Flybuy(Desired);
             }
         }
    

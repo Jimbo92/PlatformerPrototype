@@ -180,7 +180,7 @@ namespace Platformer_Prototype
                         MapLoading = true;
                         ItemSave();
                         //0-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-                        Global_GameState.ZoneState = Global_GameState.EZoneState.Challenge;
+                        Global_GameState.ZoneState = Global_GameState.EZoneState.Beach;
                     }
             }
         }
