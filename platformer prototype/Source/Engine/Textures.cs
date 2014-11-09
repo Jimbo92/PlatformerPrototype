@@ -25,6 +25,7 @@ namespace Platformer_Prototype
         //Object Textures
         static public Texture2D _OBJ_Ladder_Tex;
         static public Texture2D _ITEM_Crystal_Tex;
+        static public Texture2D _ITEM_Coin_Tex;
         static public Texture2D _ITEM_WoodBox_Tex;
         static public Texture2D[] _OBJ_Platforms_Tex = new Texture2D[2];
         static public Texture2D _OBJ_SignSS_Tex;
@@ -82,7 +83,8 @@ namespace Platformer_Prototype
             //Object Textures
             _OBJ_Ladder_Tex = getContent.Load<Texture2D>("tiles/Ladder");
             //_OBJ_Grass_Tex = getContent.Load<Texture2D>("objects/grass4");
-            _ITEM_Crystal_Tex = getContent.Load<Texture2D>("objects/items/gemblue");
+            _ITEM_Crystal_Tex = getContent.Load<Texture2D>("objects/HUD/hud_gem_blue");
+            _ITEM_Coin_Tex = getContent.Load<Texture2D>("objects/HUD/hud_coins");
             _ITEM_WoodBox_Tex = getContent.Load<Texture2D>("objects/box");
             for (int i = 0; i < 2; i++)
             {
@@ -252,9 +254,12 @@ namespace Platformer_Prototype
                                 //Trigger Switch
                                 if (MapData[j, i] == '¶')
                                     sB.Draw(_DBG_Trigger_Tex[8], tileDraw, Color.White);
-
+                                //Trigger Fish Spawn
                                 if (MapData[j, i] == '§')
                                     sB.Draw(_DBG_ETrigger_Tex[4], tileDraw, Color.White);
+                                //Trigger Coin Item
+                                if (MapData[j, i] == '▬')
+                                    sB.Draw(_ITEM_Coin_Tex, tileDraw, Color.White);
 
                             }
 

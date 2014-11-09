@@ -24,18 +24,34 @@ namespace Platformer_Prototype
         public static bool isHit = false;
         public static bool ShowHealthBar = true;
 
-        private static float HealthBarYPos = 20;
+        private static float HealthBarYPos = 30;
         private static int HealthBarTimer;
         //------------------------------------------------//
-        //-------------------Crystals----------------------//
-        public static Texture2D Crystal_Tex;
+        //-------------------Oxygen----------------------//
+        public static Sprite[] OxOn = new Sprite[5];
+        public static Sprite[] OxOff = new Sprite[5];
 
+        public static int PlayerOxPoints = 5;
+        public static bool ShowOxygenBar = false;
+
+        private static float OxygenBarYPos = -34;
+        private static int OxygenBarTimer;
+        //------------------------------------------------//
+        //-------------------Crystals----------------------//
         public static int NumOfCrystals = 0;
         public static bool ShowCrystalBar = true;
         public static bool CrystalPickUp = false;
 
-        private static float CrystalBarYPos = 20;
+        private static float CrystalBarYPos = 30;
         public static int CrystalBarTimer;
+        //------------------------------------------------//
+        //-------------------Coins----------------------//
+        public static int NumOfCoins = 0;
+        public static bool ShowCoinBar = true;
+        public static bool CoinPickUp = false;
+
+        private static float CoinBarYPos = 30;
+        public static int CoinBarTimer;
         //------------------------------------------------//
 
 
@@ -48,11 +64,11 @@ namespace Platformer_Prototype
             //Health Stuff//
             for (int i = 0; i < 5; i++)
             {
-                HPOn[i] = new Sprite(getContent, "objects/hud_heartFull", 53, 45);
-                HPOff[i] = new Sprite(getContent, "objects/hud_heartEmpty", 53, 45);
+                HPOn[i] = new Sprite(getContent, "objects/hud/hud_heartFull", 53, 45);
+                HPOff[i] = new Sprite(getContent, "objects/hud/hud_heartEmpty", 53, 45);
+                OxOn[i] = new Sprite(getContent, "objects/hud/bubbleon", 53, 45);
+                OxOff[i] = new Sprite(getContent, "objects/hud/bubbleoff", 53, 45);
             }
-            //Crystals//
-            Crystal_Tex = getContent.Load<Texture2D>("objects/items/gemblue");
 
             //Crosshair
             Crosshair = new Sprite(getContent, "objects/crosshairss", 98, 98, 1, 3);
@@ -61,31 +77,36 @@ namespace Platformer_Prototype
         public static void Update()
         {
             //Health Stuff//
-            if (Input.KeyboardPressed(Keys.P))
-            {
-                ShowHealthBar = true;
-                isHit = true;
-            }
             if (PlayerHitPoints < 0)
                 PlayerHitPoints = 5;
             if (ShowHealthBar)
                 HealthBarAnimation();
 
+            //Oxygen Stuff//
+            if (PlayerOxPoints < 0)
+                PlayerOxPoints = 5;
+            if (ShowOxygenBar)
+            {
+                OxygenBarYPos = 75;
+                OxygenBarTimer = 0;
+            }
+            else
+                OxygenBarAnimation();
+
             //Crystals//
-            //if (Input.KeyboardPressed(Keys.C))
-            //{
-            //    ShowCrystalBar = true;
-            //    CrystalPickUp = true;
-            //    CrystalBarTimer = 0;
-            //}
             if (ShowCrystalBar)
                 CrystalBarAnimation();
+
+            //Coins//
+            if (ShowCoinBar)
+                CoinBarAnimation();
 
             //Invent
             if (Input.KeyboardPressed(Keys.I))
             {
                 ShowCrystalBar = true;
                 ShowHealthBar = true;
+                ShowCoinBar = true;
             }
 
             //Crosshair
@@ -115,6 +136,29 @@ namespace Platformer_Prototype
             }
         }
 
+        public static void CoinBarAnimation()
+        {
+            CoinBarTimer++;
+            if (CoinBarTimer < 100)
+                CoinBarYPos = 30;
+            else if (CoinBarTimer > 145 && CoinBarTimer < 155)
+                CoinBarYPos += .5f;
+            else if (CoinBarTimer > 160 && CoinBarTimer < 175)
+                CoinBarYPos -= 4;
+
+            if (CoinPickUp)
+                NumOfCoins++;
+            if (CoinBarTimer > 0)
+                CoinPickUp = false;
+
+            if (CoinBarTimer >= 175)
+            {
+                ShowCoinBar = false;
+                CoinBarYPos = -30;
+                CoinBarTimer = 0;
+            }
+        }
+
         private static void HealthBarAnimation()
         {
             HealthBarTimer++;
@@ -138,6 +182,20 @@ namespace Platformer_Prototype
             }
         }
 
+        private static void OxygenBarAnimation()
+        {
+            OxygenBarTimer++;
+            if (OxygenBarTimer > 145 && OxygenBarTimer < 155)
+                OxygenBarYPos += .5f;
+            else if (OxygenBarTimer > 160 && OxygenBarTimer < 221)
+                OxygenBarYPos -= 4;
+
+            if (OxygenBarTimer >= 221)
+            {
+                OxygenBarYPos = -34;
+            }
+        }
+
         public static void Draw(SpriteBatch sB)
         {
             //Health Stuff//
@@ -146,9 +204,19 @@ namespace Platformer_Prototype
             for (int i = 0; i < PlayerHitPoints; i++)
                 HPOn[i].Draw(sB, new Vector2((53 * i) + 30, HealthBarYPos), 0, SpriteEffects.None);
 
+            //Oxygen Stuff//
+            for (int i = 0; i < 5; i++)
+                OxOff[i].Draw(sB, new Vector2((53 * i) + 30, OxygenBarYPos), 0, SpriteEffects.None);
+            for (int i = 0; i < PlayerOxPoints; i++)
+                OxOn[i].Draw(sB, new Vector2((53 * i) + 30, OxygenBarYPos), 0, SpriteEffects.None);
+
             //Crystals
-            sB.Draw(Crystal_Tex, new Vector2(718, CrystalBarYPos - 23), Color.White);
-            sB.DrawString(Font, NumOfCrystals.ToString(), new Vector2(700, CrystalBarYPos), Color.Snow);
+            sB.Draw(Textures._ITEM_Crystal_Tex, new Vector2(718, CrystalBarYPos - 23), Color.White);
+            sB.DrawString(Font, NumOfCrystals.ToString(), new Vector2(698, CrystalBarYPos - 11), Color.Snow);
+
+            //Coins
+            sB.Draw(Textures._ITEM_Coin_Tex, new Rectangle(618, (int)CoinBarYPos - 23, 32, 32), Color.White);
+            sB.DrawString(Font, NumOfCoins.ToString(), new Vector2(598, CoinBarYPos - 11), Color.Snow);
             
             //Draw Crosshair Last//
             Crosshair.Draw(sB, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 0, 0);

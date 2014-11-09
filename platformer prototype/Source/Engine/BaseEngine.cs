@@ -92,6 +92,7 @@ namespace Platformer_Prototype
         //Items
         public Item WoodBox;
         public Item Crystal;
+        public Item Coin;
 
         private bool DrawDoors;
 
@@ -112,8 +113,9 @@ namespace Platformer_Prototype
             Torch = new Sprite(getContent, "objects/torchss", 32, 32, 1, 8);
             WarpPad = new Sprite(getContent, "objects/warppadss", 48, 48, 1, 10);
             WarpEffect = new Sprite(getContent, "objects/warpeffectss", 96, 96, 5, 6);
-            WoodBox = new Item(Content, "objects/box", 32, 32);
-            Crystal = new Item(Content, "objects/items/gemblue", 32, 32);
+            WoodBox = new Item(Content, "objects/box", 32, 32, Item.EItemType.Breakable);
+            Crystal = new Item(Content, "objects/items/gemblue", 32, 32, Item.EItemType.Crystal);
+            Coin = new Item(Content, "objects/items/coingold", 32, 32, Item.EItemType.Coin);
             WarpFade_Tex = getContent.Load<Texture2D>("editor/black");
 
             background = new Background(getContent, getScreenSize);
@@ -483,6 +485,9 @@ namespace Platformer_Prototype
             LavaBase.UpdateAnimation(0.15f);
             Torch.UpdateAnimation(0.5f);
             WarpPad.UpdateAnimation(0.3f);
+            //Item Updates
+            Coin.Update();
+            Crystal.Update();
 
             //Enemy Update
             foreach (NPC e in NPC_E)
@@ -898,7 +903,7 @@ namespace Platformer_Prototype
                     else
                         TextColour = Color.DarkRed;
 
-                    sB.DrawString(game1.font, RequiredCrystals[i].ToString(), new Vector2(WarpDoors[i].X + 22, WarpDoors[i].Y + 5), TextColour, 0, game1.font.MeasureString(RequiredCrystals[i].ToString()), .75f, SpriteEffects.None, 0);
+                    sB.DrawString(game1.font, RequiredCrystals[i].ToString(), new Vector2(WarpDoors[i].X + 24, WarpDoors[i].Y + 5), TextColour, 0, game1.font.MeasureString(RequiredCrystals[i].ToString()), .75f, SpriteEffects.None, 0);
                 }
             }
 
@@ -939,6 +944,22 @@ namespace Platformer_Prototype
                         }
                     }
 
+                    //Items                    
+
+                    //Coin Item
+                    if (map[j, i] == '▬' && !isZoned)
+                        Coin.Draw(sB, this);
+                    //Coin Collision
+                    if (player.Bounds.Intersects(Coin.sprite.destinationRectangle) && !isZoned)
+                    {
+                        if (map[j, i] == '▬')
+                            map[j, i] = ' ';
+                        Coin.sprite.destinationRectangle = Rectangle.Empty;
+                        GUI.CoinPickUp = true;
+                        GUI.ShowCoinBar = true;
+                        GUI.CoinBarTimer = 0;
+                    }
+
                     //Crystal Item
                     if (map[j, i] == '◘' && !isZoned)
                         Crystal.Draw(sB, this);
@@ -961,8 +982,16 @@ namespace Platformer_Prototype
                     {
                         if (player.Bounds.Y - 32 > WoodBox.Position.Y)
                         {
+                            Random Rand = new Random();
+                            int RandValue = Rand.Next(3);
+
                             if (map[j, i] == '♀')
+                            {
+                                if (RandValue == 1)
+                                map[j, i] = '▬';
+                                else
                                 map[j, i] = ' ';
+                            }
                             WoodBox.sprite.CollisionBox = Rectangle.Empty;
                             player.Speed.Y = 0;
                         }

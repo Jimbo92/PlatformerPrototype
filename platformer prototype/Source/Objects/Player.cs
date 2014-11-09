@@ -213,7 +213,10 @@ namespace Platformer_Prototype
                     if (Bounds.Intersects(noclips))
                     {
                         checks[1] = true;
+                        GUI.ShowOxygenBar = true;
                     }
+                    else
+                        GUI.ShowOxygenBar = false;
 
                 }
             }
