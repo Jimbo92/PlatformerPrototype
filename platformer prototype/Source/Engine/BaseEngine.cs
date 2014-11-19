@@ -685,7 +685,7 @@ namespace Platformer_Prototype
                 if (TileX + i >= 0 && TileX + i < map.GetLength(1) && TileY + Ratio.Y >= 0 && TileY + Ratio.Y < map.GetLength(0))
                 {
 
-                    if (map[TileY + (int)Ratio.Y, TileX + i] == 01 || map[TileY + (int)Ratio.Y, TileX + i] == '♀')
+                    if (map[TileY + (int)Ratio.Y, TileX + i] == '☺' || map[TileY + (int)Ratio.Y, TileX + i] == '♀')
                     {
                         Canvas[0] = new Rectangle((TileX + i) * tileSize + (int)Camera.Position.X, ((TileY + (int)Ratio.Y) * tileSize) + (int)Camera.Position.Y - (int)leftovers - (difference * tileSize), tileSize, tileSize);
                     }

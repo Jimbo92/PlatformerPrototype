@@ -17,11 +17,7 @@ namespace Platformer_Prototype
         public Sprite sprite;
         public Texture2D capTex;
         public Vector2 Position;
-
-
-        
        
-
         public Vector2 tl = Vector2.Zero;
         public Vector2 tr = Vector2.Zero;
         public Vector2 bl = Vector2.Zero;
@@ -62,6 +58,8 @@ namespace Platformer_Prototype
 
         private bool platX = false;
         private bool platY = false;
+
+        private int OxCooldownTimer = 75;
 
         //--------------------------------------------
 
@@ -199,7 +197,6 @@ namespace Platformer_Prototype
                     {
                         checks[0] = true;
                     }
-
                 }
             }
 
@@ -211,14 +208,28 @@ namespace Platformer_Prototype
                 foreach (Rectangle noclips in BEngine.NoClip)
                 {
                     if (Bounds.Intersects(noclips))
-                    {
                         checks[1] = true;
-                        GUI.ShowOxygenBar = true;
-                    }
-                    else
-                        GUI.ShowOxygenBar = false;
 
                 }
+            }
+
+            //Oxygen
+            if (checks[1])
+            {
+                GUI.ShowOxygenBar = true;
+
+                OxCooldownTimer--;
+                if (OxCooldownTimer <= 0)
+                {
+                    GUI.PlayerOxPoints--;
+                    OxCooldownTimer = 75;
+                }
+            }
+            else
+            {
+                GUI.ShowOxygenBar = false;
+                GUI.PlayerOxPoints = 5;
+                OxCooldownTimer = 75;
             }
 
             checks[2] = false;
@@ -360,7 +371,7 @@ namespace Platformer_Prototype
            
 
 
-            if (checks[2] == true)
+            if (checks[2])
             {
                 GUI.PlayerHitPoints = 0;
                 GUI.ShowHealthBar = true;

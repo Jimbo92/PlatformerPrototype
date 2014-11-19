@@ -84,7 +84,11 @@ namespace Platformer_Prototype
 
             //Oxygen Stuff//
             if (PlayerOxPoints < 0)
+            {
+                ShowHealthBar = true;
+                PlayerHitPoints = 0;
                 PlayerOxPoints = 5;
+            }
             if (ShowOxygenBar)
             {
                 OxygenBarYPos = 75;
@@ -108,6 +112,9 @@ namespace Platformer_Prototype
                 ShowHealthBar = true;
                 ShowCoinBar = true;
             }
+
+            if (Input.KeyboardPressed(Keys.P))
+                NumOfCrystals++;
 
             //Crosshair
             Crosshair.UpdateAnimation(0.3f);
