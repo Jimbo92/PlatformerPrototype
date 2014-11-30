@@ -92,6 +92,8 @@ namespace Platformer_Prototype
         {
             if (Directory.Exists(Directory.GetCurrentDirectory() + "/maps/Temp"))
                 Directory.Delete(Directory.GetCurrentDirectory() + "/maps/Temp", true);
+
+            Exit();
         }
 
         protected override void Update(GameTime gameTime)
@@ -101,11 +103,7 @@ namespace Platformer_Prototype
             if (Input.KeyboardPressed(Keys.Escape))
             {
                 if (Global_GameState.GameState == Global_GameState.EGameState.MENU)
-                {
-                    DeleteTemp();
-
-                    Exit();
-                }
+                    DeleteTemp();                    
                 else
                     Global_GameState.GameState = Global_GameState.EGameState.MENU;
             }
