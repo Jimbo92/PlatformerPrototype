@@ -48,16 +48,18 @@ namespace Platformer_Prototype
             
             sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X + 1023, (int)BG_Pos.Y, 1023, 512), Color.White * 0.2f);
             //-------------//
-
-            Sun.Draw(sB, new Vector2(100, 100 + Camera.Position.Y / 8), 0, SpriteEffects.None);
-
-            CloudMoveX -= 0.3f;
-            for (int i = 0; i < 5; i++)
+            if (Global_GameState.ZoneState != Global_GameState.EZoneState.Mines)
             {
-                if (CloudMoveX < -Clouds[i].Texture.Width * 4)
-                    CloudMoveX = 0;
+                Sun.Draw(sB, new Vector2(100, 100 + Camera.Position.Y / 8), 0, SpriteEffects.None);
 
-                Clouds[i].Draw(sB, new Vector2((Clouds[i].Texture.Width * 4 * i) + Camera.Position.X / 3 + CloudMoveX, Camera.Position.Y / 2), 0, SpriteEffects.None);
+                CloudMoveX -= 0.3f;
+                for (int i = 0; i < 5; i++)
+                {
+                    if (CloudMoveX < -Clouds[i].Texture.Width * 4)
+                        CloudMoveX = 0;
+
+                    Clouds[i].Draw(sB, new Vector2((Clouds[i].Texture.Width * 4 * i) + Camera.Position.X / 3 + CloudMoveX, Camera.Position.Y / 2), 0, SpriteEffects.None);
+                }
             }
         }
     }

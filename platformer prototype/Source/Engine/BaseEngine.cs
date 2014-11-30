@@ -152,7 +152,7 @@ namespace Platformer_Prototype
                 case Global_GameState.EZoneState.Mines:
                     {
                         game1.BGColour = Color.Gray;
-                        background.Background_Tex = Textures._BG_Beach_Tex;
+                        background.Background_Tex = Textures._BG_Mines_Tex;
                     }; break;
                 case Global_GameState.EZoneState.HubWorld:
                     {
@@ -201,7 +201,7 @@ namespace Platformer_Prototype
                         WarpEffect.CurrentFrame = 1;
                         MapLoading = true;
                         ItemSave();
-                        //0-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+                        
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Mines;
                     }
             }
