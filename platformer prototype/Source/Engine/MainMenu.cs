@@ -41,7 +41,10 @@ namespace Platformer_Prototype
                         Global_GameState.GameState = Global_GameState.EGameState.EDITOR;
                 if (Buttons[2]._Rect.Contains(Mouse.GetState().X, Mouse.GetState().Y))
                     if (Input.ClickReleased(Input.EClicks.LEFT))
-                        game1.Exit();
+                    {
+                        game1.DeleteTemp();
+                        game1.Exit();                       
+                    }
         }
 
         public void Draw(SpriteBatch spriteBatch)

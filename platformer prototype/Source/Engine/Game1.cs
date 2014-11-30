@@ -88,6 +88,12 @@ namespace Platformer_Prototype
             CameraMode = type;
         }
 
+        public void DeleteTemp()
+        {
+            if (Directory.Exists(Directory.GetCurrentDirectory() + "/maps/Temp"))
+                Directory.Delete(Directory.GetCurrentDirectory() + "/maps/Temp", true);
+        }
+
         protected override void Update(GameTime gameTime)
         {
             Input.Begin();
@@ -96,8 +102,7 @@ namespace Platformer_Prototype
             {
                 if (Global_GameState.GameState == Global_GameState.EGameState.MENU)
                 {
-                    if (Directory.Exists(Directory.GetCurrentDirectory() + "/maps/Temp"))
-                        Directory.Delete(Directory.GetCurrentDirectory() + "/maps/Temp", true);
+                    DeleteTemp();
 
                     Exit();
                 }
