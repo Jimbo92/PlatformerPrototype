@@ -69,6 +69,8 @@ namespace Platformer_Prototype
         static public Texture2D _BG_GrassLands_Tex;
         //Beach
         static public Texture2D _BG_Beach_Tex;
+        //Beach
+        static public Texture2D _BG_Mines_Tex;
 
         //Cover
         static public Texture2D _SplashScreen_Tex;
@@ -161,6 +163,8 @@ namespace Platformer_Prototype
             _BG_GrassLands_Tex = getContent.Load<Texture2D>("backgrounds/bg_grasslands");
             //Beach
             _BG_Beach_Tex = getContent.Load<Texture2D>("backgrounds/bg_beach");
+            //Mines
+            _BG_Mines_Tex = getContent.Load<Texture2D>("backgrounds/bg_caves");
             //Cover
             _SplashScreen_Tex = getContent.Load<Texture2D>("backgrounds/cover");
 

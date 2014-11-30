@@ -47,6 +47,13 @@ namespace Platformer_Prototype
             sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X, (int)BG_Pos.Y, 1023, 512), Color.White * 0.2f);
             
             sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X + 1023, (int)BG_Pos.Y, 1023, 512), Color.White * 0.2f);
+
+            if (Global_GameState.ZoneState == Global_GameState.EZoneState.Mines)
+            {
+                sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X, (int)BG_Pos.Y - 200, 1023, 512), null, Color.White * 0.2f, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
+
+                sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X + 1023, (int)BG_Pos.Y - 200, 1023, 512), null, Color.White * 0.2f, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
+            }
             //-------------//
             if (Global_GameState.ZoneState != Global_GameState.EZoneState.Mines)
             {
