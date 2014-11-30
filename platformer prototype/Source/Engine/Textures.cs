@@ -70,6 +70,9 @@ namespace Platformer_Prototype
         //Beach
         static public Texture2D _BG_Beach_Tex;
 
+        //Cover
+        static public Texture2D _SplashScreen_Tex;
+
         static private BaseEngine Bengine;
         static private int SelectorOffset = 40;
         static private Rectangle tileDraw = new Rectangle();
@@ -151,13 +154,15 @@ namespace Platformer_Prototype
             _DBG_Line_Tex = getContent.Load<Texture2D>("debug/level");
             _DBG_WaterTop_Tex = getContent.Load<Texture2D>("editor/watertopeditor");
             _DBG_WaterBot_Tex = getContent.Load<Texture2D>("editor/waterbottomeditor");
-            
+
 
             //Backgrounds
             //Grasslands
             _BG_GrassLands_Tex = getContent.Load<Texture2D>("backgrounds/bg_grasslands");
             //Beach
             _BG_Beach_Tex = getContent.Load<Texture2D>("backgrounds/bg_beach");
+            //Cover
+            _SplashScreen_Tex = getContent.Load<Texture2D>("backgrounds/cover");
 
             //Fonts
             _BasicFont = getContent.Load<SpriteFont>("Fonts/CopperplateGothicBold");
@@ -303,7 +308,7 @@ namespace Platformer_Prototype
                         {
 
                             //----------------------------------------------------//Textures Infront//----------------------------------------------------//
-                            
+
                             //------------//Grass ForeBack//---------//
                             //Grass Solid Up
                             if (MapData[j, i] == '☺') SpriteSheetDraw(sB, _TILE_GrassSS_Tex, tileDraw, Color.White, 6, 7, 22);
@@ -367,7 +372,7 @@ namespace Platformer_Prototype
                             if (MapData[j, i] == '←') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 7);
                             //------//Dirt No Top Foreback//------//
                             //Dirt Solid Mid NoTop
-                            if (MapData[j, i] == '∟') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 30);                            
+                            if (MapData[j, i] == '∟') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 30);
                             //------------//Dirt Background//---------//
                             //Dirt Solid Mid NoTop Behind
                             if (MapData[j, i] == '↔') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.Gray, 6, 7, 30);
@@ -508,14 +513,14 @@ namespace Platformer_Prototype
 
 
                             //Foliage                            
-                            
+
                         }
                 }
         }
 
         //Draw Foreground Map Textures
         public static void DrawForegroundMapTextures(SpriteBatch sB, char[,] MapData, int tileSize, Vector2 Offset, Game1 game1)
-        {         
+        {
             for (int i = 0; i < MapData.GetLength(1); i++)
                 for (int j = MapData.GetLength(0) - 1; j > -1; j--)
                 {
@@ -624,7 +629,7 @@ namespace Platformer_Prototype
                             if (MapData[j, i] == '-') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 31);
                             //Dirt Half Down NoTop Right
                             if (MapData[j, i] == '.') SpriteSheetDraw(sB, _TILE_DirtSS_Tex, tileDraw, Color.White, 6, 7, 37);
-                            
+
                             //------------//Sand Foreground//---------//
                             //Sand Left Cliff Style 1
                             if (MapData[j, i] == '0') SpriteSheetDraw(sB, _TILE_SandSS_Tex, tileDraw, Color.White, 6, 7, 9);

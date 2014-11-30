@@ -205,6 +205,7 @@ namespace Platformer_Prototype
 
         public static void Draw(SpriteBatch sB)
         {
+            sB.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             //Health Stuff//
             for (int i = 0; i < 5; i++)
                 HPOff[i].Draw(sB, new Vector2((53 * i) + 30, HealthBarYPos), 0, SpriteEffects.None);
@@ -219,14 +220,21 @@ namespace Platformer_Prototype
 
             //Crystals
             sB.Draw(Textures._ITEM_Crystal_Tex, new Vector2(718, CrystalBarYPos - 23), Color.White);
-            sB.DrawString(Font, NumOfCrystals.ToString(), new Vector2(698, CrystalBarYPos - 11), Color.Snow);
 
             //Coins
             sB.Draw(Textures._ITEM_Coin_Tex, new Rectangle(618, (int)CoinBarYPos - 23, 32, 32), Color.White);
+            sB.End();
+
+            //Draw Strings
+            sB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            sB.DrawString(Font, NumOfCrystals.ToString(), new Vector2(698, CrystalBarYPos - 11), Color.Snow);
             sB.DrawString(Font, NumOfCoins.ToString(), new Vector2(598, CoinBarYPos - 11), Color.Snow);
-            
+            sB.End();
+
+            sB.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             //Draw Crosshair Last//
             Crosshair.Draw(sB, new Vector2(Mouse.GetState().X, Mouse.GetState().Y), 0, 0);
+            sB.End();
         }
     }
 }

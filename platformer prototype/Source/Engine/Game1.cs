@@ -200,18 +200,15 @@ namespace Platformer_Prototype
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(BGColour);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-            
-
             switch (Global_GameState.GameState)
             {
-
                 case Global_GameState.EGameState.PLAY:
                     {
-
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                         BEngine.Draw(spriteBatch);
-                       
+                        spriteBatch.End();
 
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                         if (DebugMode)
                         {
                             Color FPSColour;
@@ -229,20 +226,24 @@ namespace Platformer_Prototype
                             Vector2 realMouse = new Vector2((int)(Mouse.GetState().X - Camera.Position.X), (int)(Mouse.GetState().Y - Camera.Position.Y));
                             spriteBatch.DrawString(font, "Mouse Pos: " + realMouse.ToString(), new Vector2(10, 90), Color.DodgerBlue);
                         }
+                        spriteBatch.End();
 
                         GUI.Draw(spriteBatch);
+
+
+
                     }; break;
                 case Global_GameState.EGameState.EDITOR:
                     {
+                        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
                         MEditor.Draw(spriteBatch);
+                        spriteBatch.End();
                     }; break;
                 case Global_GameState.EGameState.MENU:
                     {
                         MMenu.Draw(spriteBatch);
                     }; break;
             }
-
-            spriteBatch.End();
 
             base.Draw(gameTime);
         }

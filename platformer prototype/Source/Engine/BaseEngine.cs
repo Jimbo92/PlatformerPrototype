@@ -191,9 +191,9 @@ namespace Platformer_Prototype
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Beach;
                     }
             }
-
+            //Mines
             WarpDoors[2] = new Rectangle(2000 + (int)Camera.Position.X, 536 + (int)Camera.Position.Y, 32, 32);
-            if (player.Bounds.Intersects(WarpDoors[1]))
+            if (player.Bounds.Intersects(WarpDoors[2]))
             {
                 if (GUI.NumOfCrystals >= 6)
                     if (Input.KeyboardPressed(Keys.Enter))

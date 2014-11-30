@@ -51,9 +51,13 @@ namespace Platformer_Prototype
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             spriteBatch.Draw(_Texture, _Rect, ButtonColour * 0.95f);
+            spriteBatch.End();
 
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             spriteBatch.DrawString(Textures._BasicFont, ButtonName, new Vector2(_Rect.X + Width / 2, _Rect.Y + Height / 2), Color.White, 0, Textures._BasicFont.MeasureString(ButtonName) / 2, 1, SpriteEffects.None, 0);
+            spriteBatch.End();
         }
 
     }
