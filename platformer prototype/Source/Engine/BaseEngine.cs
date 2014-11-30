@@ -124,6 +124,7 @@ namespace Platformer_Prototype
             //Warp Door Data
             RequiredCrystals[0] = 1;
             RequiredCrystals[1] = 3;
+            RequiredCrystals[2] = 6;
         }
 
         public void drawTriangle(SpriteBatch sB, Triangle target)
@@ -146,6 +147,11 @@ namespace Platformer_Prototype
                 case Global_GameState.EZoneState.Beach:
                     {
                         game1.BGColour = Color.LightSkyBlue;
+                        background.Background_Tex = Textures._BG_Beach_Tex;
+                    }; break;
+                case Global_GameState.EZoneState.Mines:
+                    {
+                        game1.BGColour = Color.Gray;
                         background.Background_Tex = Textures._BG_Beach_Tex;
                     }; break;
                 case Global_GameState.EZoneState.HubWorld:
@@ -183,6 +189,20 @@ namespace Platformer_Prototype
                         ItemSave();
                         //0-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Beach;
+                    }
+            }
+
+            WarpDoors[2] = new Rectangle(2000 + (int)Camera.Position.X, 536 + (int)Camera.Position.Y, 32, 32);
+            if (player.Bounds.Intersects(WarpDoors[1]))
+            {
+                if (GUI.NumOfCrystals >= 6)
+                    if (Input.KeyboardPressed(Keys.Enter))
+                    {
+                        WarpEffect.CurrentFrame = 1;
+                        MapLoading = true;
+                        ItemSave();
+                        //0-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+                        Global_GameState.ZoneState = Global_GameState.EZoneState.Mines;
                     }
             }
         }

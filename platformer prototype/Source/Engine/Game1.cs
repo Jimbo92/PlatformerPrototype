@@ -27,12 +27,17 @@ namespace Platformer_Prototype
         SpriteBatch spriteBatch;
         string CameraMode;
         public bool DebugMode = false;
+        public static Texture2D particle = null;
+
+
 
         float frameRate;
 
         BaseEngine BEngine;
         Editor MEditor;
         MainMenu MMenu;
+
+       
 
         public SpriteFont font;
 
@@ -70,6 +75,9 @@ namespace Platformer_Prototype
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+
+     
+
             GUI.LoadContent(Content);
             Textures.LoadContent(Content);
 
@@ -99,6 +107,7 @@ namespace Platformer_Prototype
         protected override void Update(GameTime gameTime)
         {
             Input.Begin();
+         
             //Code Bellow This//
             if (Input.KeyboardPressed(Keys.Escape))
             {
@@ -192,12 +201,16 @@ namespace Platformer_Prototype
         {
             GraphicsDevice.Clear(BGColour);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+            
 
             switch (Global_GameState.GameState)
             {
+
                 case Global_GameState.EGameState.PLAY:
                     {
+
                         BEngine.Draw(spriteBatch);
+                       
 
                         if (DebugMode)
                         {
