@@ -20,7 +20,7 @@ namespace Platformer_Prototype
             EDITOR,
             SELECTOR,
         };
-        static public ETextureType TextureType = ETextureType.EDITOR;
+        static public ETextureType TextureType = ETextureType.INGAME;
 
         //Object Textures
         static public Texture2D _OBJ_Ladder_Tex;
@@ -74,7 +74,8 @@ namespace Platformer_Prototype
         static private int SelectorOffset = 40;
         static private Rectangle tileDraw = new Rectangle();
 
-
+        //Font
+        static public SpriteFont _BasicFont;
 
 
 
@@ -157,6 +158,9 @@ namespace Platformer_Prototype
             _BG_GrassLands_Tex = getContent.Load<Texture2D>("backgrounds/bg_grasslands");
             //Beach
             _BG_Beach_Tex = getContent.Load<Texture2D>("backgrounds/bg_beach");
+
+            //Fonts
+            _BasicFont = getContent.Load<SpriteFont>("Fonts/CopperplateGothicBold");
         }
 
         static public void Update(BaseEngine getBengine)

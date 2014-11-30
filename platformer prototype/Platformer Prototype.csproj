@@ -41,6 +41,8 @@
     <Compile Include="Source\Engine\Global_GameState.cs" />
     <Compile Include="Source\Engine\GoalManager.cs" />
     <Compile Include="Source\Engine\HubWorld.cs" />
+    <Compile Include="Source\Engine\MainMenu.cs" />
+    <Compile Include="Source\Engine\MenuButton.cs" />
     <Compile Include="Source\Objects\Item.cs" />
     <Compile Include="Source\Map Editor\TileIndex.cs" />
     <Compile Include="Source\Objects\Door.cs" />
@@ -186,6 +188,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Editor\watertopeditor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Menu\button.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\box.png">

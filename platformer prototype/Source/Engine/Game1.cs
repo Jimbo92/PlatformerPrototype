@@ -32,6 +32,7 @@ namespace Platformer_Prototype
 
         BaseEngine BEngine;
         Editor MEditor;
+        MainMenu MMenu;
 
         public SpriteFont font;
 
@@ -78,6 +79,8 @@ namespace Platformer_Prototype
 
             BEngine = new BaseEngine(Content, ScreenSize);
 
+            MMenu = new MainMenu(Content);
+
         }
 
         public void giveType(string type)
@@ -91,10 +94,15 @@ namespace Platformer_Prototype
             //Code Bellow This//
             if (Input.KeyboardPressed(Keys.Escape))
             {
-                if (Directory.Exists(Directory.GetCurrentDirectory() + "/maps/Temp"))
-                    Directory.Delete(Directory.GetCurrentDirectory() + "/maps/Temp", true);
+                if (Global_GameState.GameState == Global_GameState.EGameState.MENU)
+                {
+                    if (Directory.Exists(Directory.GetCurrentDirectory() + "/maps/Temp"))
+                        Directory.Delete(Directory.GetCurrentDirectory() + "/maps/Temp", true);
 
-                Exit();
+                    Exit();
+                }
+                else
+                    Global_GameState.GameState = Global_GameState.EGameState.MENU;
             }
 
             if (Global_GameState.GameState == Global_GameState.EGameState.EDITOR)
@@ -110,34 +118,66 @@ namespace Platformer_Prototype
                 graphics.ApplyChanges();
             }
 
-            if (Input.KeyboardPressed(Keys.F1))
+            //if (Input.KeyboardPressed(Keys.F1))
+            //{
+            //    if (Global_GameState.GameState == Global_GameState.EGameState.EDITOR)
+            //    {
+            //        Global_GameState.GameState = Global_GameState.EGameState.PLAY;
+            //        BEngine.LoadMapTimer = 0;
+            //    }
+            //    else
+            //        Global_GameState.GameState = Global_GameState.EGameState.EDITOR;
+            //}
+
+
+
+            if (Global_GameState.GameState == Global_GameState.EGameState.MENU)
             {
-                if (Global_GameState.GameState == Global_GameState.EGameState.EDITOR)
-                {
-                    Global_GameState.GameState = Global_GameState.EGameState.PLAY;
-                    BEngine.LoadMapTimer = 0;
-                }
-                else
-                    Global_GameState.GameState = Global_GameState.EGameState.EDITOR;
+                IsMouseVisible = true;
+                MMenu.Update(this);
+            }
+            
+            if (Global_GameState.GameState == Global_GameState.EGameState.PLAY)
+            {
+                IsMouseVisible = false;
+                GUI.Update();
+                BEngine.Update(this);
+                if (Input.KeyboardPressed(Keys.F12))
+                    if (!DebugMode)
+                        DebugMode = true;
+                    else
+                        DebugMode = false;
+            }
+            
+            if (Global_GameState.GameState == Global_GameState.EGameState.EDITOR)
+            {
+                MEditor.Update(graphics, this);
+                IsMouseVisible = false;
             }
 
-            switch (Global_GameState.GameState)
-            {
-                case Global_GameState.EGameState.PLAY:
-                    {
-                        GUI.Update();
-                        BEngine.Update(this);
-                        if (Input.KeyboardPressed(Keys.F12))
-                            if (!DebugMode)
-                                DebugMode = true;
-                            else
-                                DebugMode = false;
-                    }; break;
-                case Global_GameState.EGameState.EDITOR:
-                    {
-                        MEditor.Update(graphics, this);
-                    }; break;
-            }
+
+            //switch (Global_GameState.GameState)
+            //{
+            //    case Global_GameState.EGameState.PLAY:
+            //        {
+            //            GUI.Update();
+            //            BEngine.Update(this);
+            //            if (Input.KeyboardPressed(Keys.F12))
+            //                if (!DebugMode)
+            //                    DebugMode = true;
+            //                else
+            //                    DebugMode = false;
+            //        }; break;
+            //    case Global_GameState.EGameState.EDITOR:
+            //        {
+            //            MEditor.Update(graphics, this);
+            //        }; break;
+            //    case Global_GameState.EGameState.MENU:
+            //        {
+            //            IsMouseVisible = true;
+            //            MMenu.Update();
+            //        }; break;
+            //}
 
 
             //Code Above This//
@@ -179,6 +219,10 @@ namespace Platformer_Prototype
                 case Global_GameState.EGameState.EDITOR:
                     {
                         MEditor.Draw(spriteBatch);
+                    }; break;
+                case Global_GameState.EGameState.MENU:
+                    {
+                        MMenu.Draw(spriteBatch);
                     }; break;
             }
 

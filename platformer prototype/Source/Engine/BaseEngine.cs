@@ -400,6 +400,8 @@ namespace Platformer_Prototype
 
         public void Update(Game1 getGame1)
         {
+            game1 = getGame1;
+
             Textures.Update(this);
 
             //Warp to Hub World

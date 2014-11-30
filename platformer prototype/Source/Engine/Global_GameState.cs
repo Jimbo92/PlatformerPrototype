@@ -16,11 +16,12 @@ namespace Platformer_Prototype
     {
         public enum EGameState
         {
+            MENU,
             PLAY,
             EDITOR,
         };
 
-        static public EGameState GameState = EGameState.EDITOR;
+        static public EGameState GameState = EGameState.MENU;
 
         public enum EZoneState
         {
