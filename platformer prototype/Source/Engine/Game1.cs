@@ -147,6 +147,7 @@ namespace Platformer_Prototype
             {
                 IsMouseVisible = true;
                 MMenu.Update(this);
+                BGColour = Color.DodgerBlue;
             }
             
             if (Global_GameState.GameState == Global_GameState.EGameState.PLAY)

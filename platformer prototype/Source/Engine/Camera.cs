@@ -39,6 +39,7 @@ namespace Platformer_Prototype
         static private Player player;
         static public Rectangle MouseRect;
         static private BaseEngine Bengine;
+        static public bool TopLock = false;
 
         public static void Flybuy(List<Vector4> Waypoints)
         {
@@ -159,6 +160,9 @@ namespace Platformer_Prototype
                 if (Position.X < -(Bengine.map.GetLength(1) * 32) + 800 - 1)
                     Position.X = -(Bengine.map.GetLength(1) * 32) + 800 - 1;
 
+                if (TopLock)
+                    if (Position.Y > (Bengine.map.GetLength(0) * 32) - 600)
+                        Position.Y = (Bengine.map.GetLength(0) * 32) - 600;
 
 
             }

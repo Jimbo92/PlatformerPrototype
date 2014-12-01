@@ -21,13 +21,16 @@ namespace Platformer_Prototype
         private int _SplashScreenCountDown = 150;
         private float _SplashScreenFade = 1;
 
+        private float TitleScale = 2;
+        private bool _ScaleUp;
+
         public MainMenu(ContentManager Content)
         {
             _ButtonTex = Content.Load<Texture2D>("menu/button");
 
-            Buttons[0] = new MenuButton(_ButtonTex, new Vector2(100, 100), "Play");
-            Buttons[1] = new MenuButton(_ButtonTex, new Vector2(100, 150), "Editor");
-            Buttons[2] = new MenuButton(_ButtonTex, new Vector2(100, 200), "Exit");
+            Buttons[0] = new MenuButton(_ButtonTex, new Vector2(400, 350), "Play");
+            Buttons[1] = new MenuButton(_ButtonTex, new Vector2(400, 400), "Editor");
+            Buttons[2] = new MenuButton(_ButtonTex, new Vector2(400, 450), "Exit");
 
         }
 
@@ -38,6 +41,16 @@ namespace Platformer_Prototype
             else if (_SplashScreenCountDown < 50)
                 _SplashScreenFade -= 0.05f;
 
+            //Title Animation
+            if (TitleScale >= 2.3f)
+                _ScaleUp = false;
+            else if (TitleScale <= 2)
+                _ScaleUp = true;
+
+            if (_ScaleUp)
+                TitleScale += 0.001f;
+            else
+                TitleScale -= 0.001f;
 
             foreach (MenuButton b in Buttons)
                 b.Update();
@@ -59,6 +72,9 @@ namespace Platformer_Prototype
                 b.Draw(spriteBatch);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            string Title = "   Purple's\nAdventures";
+            spriteBatch.DrawString(Textures._BasicFont, Title, new Vector2(400, 150), Color.Purple, 0, Textures._BasicFont.MeasureString(Title) / 2, TitleScale, SpriteEffects.None, 0);
+
             if (_SplashScreenFade > 0)
                 spriteBatch.Draw(Textures._SplashScreen_Tex, Vector2.Zero, Color.White * _SplashScreenFade);
             spriteBatch.End();

@@ -29,13 +29,13 @@ namespace Platformer_Prototype
             _Position = position;
             _Texture = texture2d;
             ButtonName = Name;
-            Width = (int)Textures._BasicFont.MeasureString(ButtonName).X + 10;
-            Height = (int)Textures._BasicFont.MeasureString(ButtonName).Y + 10;
+            Width = (int)Textures._BasicFont.MeasureString(ButtonName).X * 2;
+            Height = (int)Textures._BasicFont.MeasureString(ButtonName).Y * 2;
         }
 
         public void Update()
         {
-            _Rect = new Rectangle((int)_Position.X, (int)_Position.Y, Width, Height);
+            _Rect = new Rectangle((int)_Position.X - Width / 2, (int)_Position.Y - Height / 2, Width, Height);
 
             if (_Rect.Contains(Mouse.GetState().X, Mouse.GetState().Y))
             {
@@ -52,7 +52,7 @@ namespace Platformer_Prototype
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-            spriteBatch.Draw(_Texture, _Rect, ButtonColour * 0.95f);
+            spriteBatch.Draw(_Texture, new Rectangle((int)_Position.X, (int)_Position.Y, Width, Height), null, ButtonColour * 0.95f, 0, new Vector2(124, 60) / 2, SpriteEffects.None, 0);
             spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);

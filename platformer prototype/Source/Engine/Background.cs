@@ -22,6 +22,8 @@ namespace Platformer_Prototype
         private Vector2 ScreenSize;
         private float CloudMoveX;
 
+        public bool _DrawObjects = true;
+
         int offset;
 
         public Background(ContentManager getContent, Vector2 getScreenSize)
@@ -44,18 +46,12 @@ namespace Platformer_Prototype
             if (offset <= -1023)
                 offset = 0;
 
-            sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X, (int)BG_Pos.Y, 1023, 512), Color.White * 0.2f);
+            sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X, (int)BG_Pos.Y, 1023, 512), Color.White * 0.5f);
             
-            sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X + 1023, (int)BG_Pos.Y, 1023, 512), Color.White * 0.2f);
+            sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X + 1023, (int)BG_Pos.Y, 1023, 512), Color.White * 0.5f);
 
-            if (Global_GameState.ZoneState == Global_GameState.EZoneState.Mines)
-            {
-                sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X, (int)BG_Pos.Y - 200, 1023, 512), null, Color.White * 0.2f, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
-
-                sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X + 1023, (int)BG_Pos.Y - 200, 1023, 512), null, Color.White * 0.2f, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
-            }
             //-------------//
-            if (Global_GameState.ZoneState != Global_GameState.EZoneState.Mines)
+            if (_DrawObjects)
             {
                 Sun.Draw(sB, new Vector2(100, 100 + Camera.Position.Y / 8), 0, SpriteEffects.None);
 
@@ -67,6 +63,12 @@ namespace Platformer_Prototype
 
                     Clouds[i].Draw(sB, new Vector2((Clouds[i].Texture.Width * 4 * i) + Camera.Position.X / 3 + CloudMoveX, Camera.Position.Y / 2), 0, SpriteEffects.None);
                 }
+            }
+            else
+            {
+                sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X, (int)BG_Pos.Y - 200, 1023, 512), null, Color.White * 0.5f, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
+
+                sB.Draw(Background_Tex, new Rectangle((int)BG_Pos.X + 1023, (int)BG_Pos.Y - 200, 1023, 512), null, Color.White * 0.5f, 0, Vector2.Zero, SpriteEffects.FlipVertically, 0);
             }
         }
     }

@@ -151,7 +151,7 @@ namespace Platformer_Prototype
                     }; break;
                 case Global_GameState.EZoneState.Mines:
                     {
-                        game1.BGColour = Color.Gray;
+                        game1.BGColour = new Color(100,100,100);
                         background.Background_Tex = Textures._BG_Mines_Tex;
                     }; break;
                 case Global_GameState.EZoneState.HubWorld:
@@ -470,6 +470,17 @@ namespace Platformer_Prototype
                         DrawDoors = true;
                     else
                         DrawDoors = false;
+
+                    if (Global_GameState.ZoneState != Global_GameState.EZoneState.Mines)
+                    {
+                        Camera.TopLock = false;
+                        background._DrawObjects = true;
+                    }
+                    else
+                    {
+                        background._DrawObjects = false;
+                        Camera.TopLock = true;
+                    }
 
                     LoadupMapEntities();
                     PlayerWarpInTime = 0;
