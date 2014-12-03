@@ -45,6 +45,7 @@ namespace Platformer_Prototype
         public Sprite WarpEffect;
         public bool isWarping;
         public Rectangle tileDraw;
+        public static bool first = true;
 
         public GoalManager gm = new GoalManager();
 
@@ -175,6 +176,7 @@ namespace Platformer_Prototype
                         MapLoading = true;
                         ItemSave();
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Grasslands;
+                        first = false;
                     }
             }
             //Beach
@@ -189,6 +191,7 @@ namespace Platformer_Prototype
                         ItemSave();
                         //0-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Beach;
+                        first = false;
                     }
             }
             //Mines
@@ -203,6 +206,7 @@ namespace Platformer_Prototype
                         ItemSave();
                         
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Mines;
+                        first = false;
                     }
             }
         }
