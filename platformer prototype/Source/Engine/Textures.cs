@@ -71,6 +71,8 @@ namespace Platformer_Prototype
         static public Texture2D _BG_Beach_Tex;
         //Beach
         static public Texture2D _BG_Mines_Tex;
+        //Menu
+        static public Texture2D _BG_Menu_Tex;
 
         //Cover
         static public Texture2D _SplashScreen_Tex;
@@ -170,6 +172,8 @@ namespace Platformer_Prototype
             _BG_Mines_Tex = getContent.Load<Texture2D>("backgrounds/bg_caves");
             //Cover
             _SplashScreen_Tex = getContent.Load<Texture2D>("backgrounds/cover");
+            //Menu
+            _BG_Menu_Tex = getContent.Load<Texture2D>("backgrounds/bg_menu");
 
             //Fonts
             _BasicFont = getContent.Load<SpriteFont>("Fonts/CopperplateGothicBold");
