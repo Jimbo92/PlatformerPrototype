@@ -82,6 +82,9 @@ namespace Platformer_Prototype
         //Font
         static public SpriteFont _BasicFont;
 
+        //Particles
+        static public Texture2D[] _PRT_Wood_Tex = new Texture2D[3];
+
 
 
         static public void LoadContent(ContentManager getContent)
@@ -132,7 +135,7 @@ namespace Platformer_Prototype
             _OBJ_Grass_Tex = getContent.Load<Texture2D>("objects/foliage/plant");
 
 
-            //Effects
+            //Effects 
             for (int i = 0; i < 3; i++)
             {
                 _TILE_Shade_Effect[i] = getContent.Load<Texture2D>("tiles/effects/shade" + i);
@@ -170,6 +173,13 @@ namespace Platformer_Prototype
 
             //Fonts
             _BasicFont = getContent.Load<SpriteFont>("Fonts/CopperplateGothicBold");
+
+            //Particles
+            //Wood
+            for (int i = 0; i < 3; i++)
+            {
+                _PRT_Wood_Tex[i] = getContent.Load<Texture2D>("particles/wood/wood_part" + i);
+            }
         }
 
         static public void Update(BaseEngine getBengine)

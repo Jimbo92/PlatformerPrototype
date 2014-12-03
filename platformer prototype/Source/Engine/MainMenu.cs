@@ -22,7 +22,9 @@ namespace Platformer_Prototype
         private float _SplashScreenFade = 1;
 
         private float TitleScale = 2;
+        private float TitleRotation = 0;
         private bool _ScaleUp;
+        private bool _SpinRight;
 
         public MainMenu(ContentManager Content)
         {
@@ -42,6 +44,16 @@ namespace Platformer_Prototype
                 _SplashScreenFade -= 0.05f;
 
             //Title Animation
+            if (TitleRotation >= 5)
+                _SpinRight = false;
+            else if (TitleRotation <= -5)
+                _SpinRight = true;
+
+            if (_SpinRight)
+                TitleRotation += 0.02f;
+            else
+                TitleRotation -= 0.02f;
+
             if (TitleScale >= 2.3f)
                 _ScaleUp = false;
             else if (TitleScale <= 2)
@@ -73,7 +85,7 @@ namespace Platformer_Prototype
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             string Title = "   Purple's\nAdventures";
-            spriteBatch.DrawString(Textures._BasicFont, Title, new Vector2(400, 150), Color.Purple, 0, Textures._BasicFont.MeasureString(Title) / 2, TitleScale, SpriteEffects.None, 0);
+            spriteBatch.DrawString(Textures._BasicFont, Title, new Vector2(400, 150), Color.Purple, MathHelper.ToRadians(TitleRotation), Textures._BasicFont.MeasureString(Title) / 2, TitleScale, SpriteEffects.None, 0);
 
             if (_SplashScreenFade > 0)
                 spriteBatch.Draw(Textures._SplashScreen_Tex, Vector2.Zero, Color.White * _SplashScreenFade);

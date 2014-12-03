@@ -152,9 +152,6 @@ namespace Platformer_Prototype
                 float yChange = (player.Position.Y - game1.GraphicsDevice.Viewport.Height / 2 + player.Bounds.Height / 2 - -Position.Y) / 15;
                 Position.Y -= yChange;
 
-                if (Position.Y > Bengine.map.GetLength(0) * 32 - 600 && Global_GameState.ZoneState == Global_GameState.EZoneState.Mines)
-                    Position.Y = Bengine.map.GetLength(0) * 32 - 600;
-
                 if (Position.Y < 0)
                     Position.Y = 0;
                 if (Position.X > 0)

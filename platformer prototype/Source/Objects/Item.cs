@@ -65,6 +65,5 @@ namespace Platformer_Prototype
                 sprite.Draw(sB, new Vector2(Position.X, Position.Y), Vector2.Zero, 0, SpriteEffects.None, Color.White);
             }
         }
-
     }
 }

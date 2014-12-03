@@ -45,7 +45,6 @@ namespace Platformer_Prototype
         public Sprite WarpEffect;
         public bool isWarping;
         public Rectangle tileDraw;
-        public static bool first = true;
 
         public GoalManager gm = new GoalManager();
 
@@ -61,6 +60,9 @@ namespace Platformer_Prototype
         public List<Platform> Platforms = new List<Platform>();
         public List<Lever> Switches = new List<Lever>();
         public List<Door> Doors = new List<Door>();
+
+        //Particle Effects
+        public ParticleSystem WoodBreak_Effect = new ParticleSystem();
 
         public Vector2 NPCSpawn;
         //Enemy Types;
@@ -96,7 +98,6 @@ namespace Platformer_Prototype
         public Item Coin;
 
         private bool DrawDoors;
-
 
 
         //-----------------------------------------------------
@@ -176,7 +177,6 @@ namespace Platformer_Prototype
                         MapLoading = true;
                         ItemSave();
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Grasslands;
-                        first = false;
                     }
             }
             //Beach
@@ -191,7 +191,6 @@ namespace Platformer_Prototype
                         ItemSave();
                         //0-0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Beach;
-                        first = false;
                     }
             }
             //Mines
@@ -206,7 +205,6 @@ namespace Platformer_Prototype
                         ItemSave();
                         
                         Global_GameState.ZoneState = Global_GameState.EZoneState.Mines;
-                        first = false;
                     }
             }
         }
@@ -1017,8 +1015,11 @@ namespace Platformer_Prototype
                     //Wood Box Crate Collision
                     if (player.Bounds.Intersects(WoodBox.sprite.CollisionBox))
                     {
-                        if (player.Bounds.Y - 32 > WoodBox.Position.Y)
+                        if (player.Bounds.Y - 32 > WoodBox.Position.Y && player.Bounds.X + 20 > WoodBox.Position.X && player.Bounds.X - 20 < WoodBox.Position.X)
                         {
+                            //WoodBreak_Effect.BurstEffect(Textures._PRT_Wood_Tex[0], WoodBox.Position);
+                            //WoodBreak_Effect.Draw(sB);
+
                             Random Rand = new Random();
                             int RandValue = Rand.Next(3);
 

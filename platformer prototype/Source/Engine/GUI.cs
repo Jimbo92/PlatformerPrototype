@@ -228,8 +228,8 @@ namespace Platformer_Prototype
             //Draw Strings
             sB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
-            sB.DrawString(Font, NumOfCrystals.ToString(), new Vector2(698, CrystalBarYPos - 11), Color.Snow);
-            sB.DrawString(Font, NumOfCoins.ToString(), new Vector2(598, CoinBarYPos - 11), Color.Snow);
+            sB.DrawString(Font, NumOfCrystals.ToString(), new Vector2(690, CrystalBarYPos - 11), Color.Snow);
+            sB.DrawString(Font, NumOfCoins.ToString(), new Vector2(590, CoinBarYPos - 11), Color.Snow);
 
             if (Camera.CameraMode == Camera.CameraState.WAYPOINTS)
                 sB.DrawString(Textures._BasicFont, "Press Enter to skip.", new Vector2(400, 585), Color.Black, 0, Textures._BasicFont.MeasureString("Press Enter to skip.") / 2, 1, SpriteEffects.None, 0);

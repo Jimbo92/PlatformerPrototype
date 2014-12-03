@@ -43,6 +43,7 @@
     <Compile Include="Source\Engine\HubWorld.cs" />
     <Compile Include="Source\Engine\MainMenu.cs" />
     <Compile Include="Source\Engine\MenuButton.cs" />
+    <Compile Include="Source\Engine\ParticleSystem.cs" />
     <Compile Include="Source\Objects\Item.cs" />
     <Compile Include="Source\Map Editor\TileIndex.cs" />
     <Compile Include="Source\Objects\Door.cs" />
@@ -347,6 +348,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Objects\WarpPadSS.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Particles\Wood\wood_part0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Particles\Wood\wood_part1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Particles\Wood\wood_part2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Tiles\castle.png">

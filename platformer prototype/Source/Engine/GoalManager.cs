@@ -19,6 +19,8 @@ namespace Platformer_Prototype
         public List<Rectangle> Zone = new List<Rectangle>();
         public List<string> Speech = new List<string>();
         public int[] bind = new int[20];
+        private static bool WaypointFirst;
+
 
         public BaseEngine engine = null;
 
@@ -88,30 +90,7 @@ namespace Platformer_Prototype
 
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.Mines)
             {
-                bind[0] = 1;
-                bind[1] = 1;
-                bind[2] = 1;
-                bind[3] = 1;
-                bind[4] = 1;
-                bind[5] = 1;
-                bind[6] = 1;
-                bind[7] = 1;
 
-                bind[8] = 2;
-                bind[9] = 2;
-                bind[10] = 2;
-                bind[11] = 2;
-                bind[12] = 2;
-                bind[13] = 2;
-
-                Speech.Add("I'm panning for gold!!");
-                Speech.Add("CAUTION: Explosives\n Handle with care");
-                Speech.Add("Hi there! are\nyou new here?");
-                Speech.Add("You got any gold? I'll give\n you something special\nif you find me 5 coins...");
-
-                Zone.Add(new Rectangle(4452, -46, 32, 32));
-
-                
             }
 
             if (Global_GameState.ZoneState == Global_GameState.EZoneState.SnowyMountains)
@@ -198,8 +177,9 @@ namespace Platformer_Prototype
         }
         public void HubGoal(int i)
         {
-            if (i == 0 && BaseEngine.first)
+            if (i == 0 && !WaypointFirst)
             {
+                WaypointFirst = true;
                 Zone[i] = Rectangle.Empty;
 
                 List<Vector4> Desired = new List<Vector4>();
@@ -282,32 +262,8 @@ namespace Platformer_Prototype
                 Camera.Flybuy(Desired);
             }
         }
+   
 
-        public void MinesGoal(int i)
-        {
-            
-        }
-        public void MinesCheck()
-        {
-            if (GUI.NumOfCoins >= 5 && Zone[0] != Rectangle.Empty)
-            {
-                GUI.NumOfCoins -= 5;
-                GUI.ShowCoinBar = true;
-                Zone[0] = Rectangle.Empty;
-                Speech[3] = "Wow! Now I can pay\n off the insurance money!!";
-
-
-                List<Vector4> Desired = new List<Vector4>();
-                Desired.Add(new Vector4(4445, 320, 180, 60));
-
-                Camera.isControlled = true;
-                Camera.delay = 0;
-                Camera.nextDelay = 0;
-                Camera.task = -1;
-
-                Camera.Flybuy(Desired);
-            }
-        }
 
         public void Update()
         {
@@ -324,7 +280,6 @@ namespace Platformer_Prototype
                         case Global_GameState.EZoneState.HubWorld: HubGoal(i); break;
                         case Global_GameState.EZoneState.Grasslands: GrassLandsGoal(i); break;
                         case Global_GameState.EZoneState.Beach: BeachGoal(i); break;
-                        case Global_GameState.EZoneState.Mines: MinesGoal(i); break;
                     }
                 }
             }
@@ -334,7 +289,6 @@ namespace Platformer_Prototype
                 case Global_GameState.EZoneState.HubWorld: HubCheck(); break;
                 case Global_GameState.EZoneState.Grasslands: GrassLandsCheck(); break;
                 case Global_GameState.EZoneState.Beach: BeachCheck(); break;
-                case Global_GameState.EZoneState.Mines: MinesCheck(); break;
             }
             
         }
