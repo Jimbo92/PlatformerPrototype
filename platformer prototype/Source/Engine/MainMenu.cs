@@ -91,7 +91,7 @@ namespace Platformer_Prototype
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             string Title = "   Purple's\nAdventures";
             spriteBatch.DrawString(Textures._BasicFont, Title, new Vector2(400, 150), Color.Purple, MathHelper.ToRadians(TitleRotation), Textures._BasicFont.MeasureString(Title) / 2, TitleScale, SpriteEffects.None, 0);
-
+            spriteBatch.DrawString(Textures._BasicFont, "Artwork by Kenney", new Vector2(10, 580), Color.White);
 
             if (_SplashScreenFade > 0)
                 spriteBatch.Draw(Textures._SplashScreen_Tex, Vector2.Zero, Color.White * _SplashScreenFade);

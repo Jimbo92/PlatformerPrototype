@@ -68,6 +68,8 @@ namespace Platformer_Prototype
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "/maps/Temp"))
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/maps/Temp");
 
+            Window.Title = "Purple's Adventures";
+
             base.Initialize();
         }
 
